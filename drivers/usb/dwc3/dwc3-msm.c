@@ -337,6 +337,10 @@ static void vzw_drv_check_work(struct work_struct *w)
 			if (mdwc->charger.chg_type == DWC3_FLOATED_CHARGER) {
 				pr_info("%s: %s Send driver uninstalled uevent.\n",
 						__func__, "Floated charger Connected.");
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+				power_supply_set_online(&mdwc->usb_psy, 1);
+				power_supply_set_floated_charger(&mdwc->usb_psy, 1);
+#else
 				send_drv_state_uevent(0);
 				mdwc->drv_state = USB_DRV_STATE_DONE;
 				delay = 0;
@@ -344,6 +348,11 @@ static void vzw_drv_check_work(struct work_struct *w)
 				pr_info("%s: %s Send driver uninstalled uevent.\n",
 						__func__, "SDP? charger Connected, but not connected");
 				send_drv_state_uevent(0);
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+				power_supply_set_usb_driver_uninstall(&mdwc->usb_psy, 1);
+#else
+				send_drv_state_uevent(0);
+#endif
 				mdwc->drv_state = USB_DRV_STATE_DONE;
 				delay = 0;
 			} else {
@@ -361,11 +370,19 @@ static void vzw_drv_check_work(struct work_struct *w)
 		if (tmout) {
 			pr_info("%s: %s Send driver uninstalled uevent.\n",
 					__func__, "USB connected, but not configured.");
+
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+			power_supply_set_usb_driver_uninstall(&mdwc->usb_psy, 1);
+#else
 			send_drv_state_uevent(0);
 			mdwc->drv_state = USB_DRV_STATE_DONE;
 			delay = 0;
 		} else if (mdwc->charger.vzw_usb_config_state == VZW_USB_STATE_CONFIGURED) {
 			pr_info("%s: USB configured. Send driver installed uevent.\n", __func__);
+
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+			power_supply_set_usb_driver_uninstall(&mdwc->usb_psy, 0);
+#else
 			send_drv_state_uevent(1);
 			mdwc->drv_state = USB_DRV_STATE_DONE;
 			delay = 0;
@@ -384,6 +401,13 @@ static void vzw_drv_check_state_work(struct work_struct *w)
 	struct dwc3_msm *mdwc = container_of(w, struct dwc3_msm, drv_check_state_work.work);
 
 	pr_info("%s: vzw_drv_check_work ++ \n", __func__);
+
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+	if (mdwc->vbus_active)
+		mdwc->drv_state = USB_DRV_STATE_UNDEFINED;
+	else
+		mdwc->drv_state = USB_DRV_STATE_DISCONNECTED;
+#endif
 	cancel_delayed_work_sync(&mdwc->drv_check_work);
 	mdwc->drv_state = USB_DRV_STATE_UNDEFINED;
 	queue_delayed_work(system_nrt_wq, &mdwc->drv_check_work, 0);

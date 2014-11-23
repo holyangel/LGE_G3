@@ -253,6 +253,7 @@ static struct max14688_button_match max14688_button_matches[] = {
     BUTTON_MATCH("MEDIA",  Z(0,      150000), DONTCARE,    EV_KEY, KEY_MEDIA),
     BUTTON_MATCH("VOLUP",  Z(150000, 400000), DONTCARE,    EV_KEY, KEY_VOLUMEUP),
     BUTTON_MATCH("VOLDN",  Z(400000, 600000), DONTCARE,    EV_KEY, KEY_VOLUMEDOWN),
+#endif
 };
 
 static int max14688_log_level = 1;
@@ -1823,4 +1824,3 @@ struct input_dev *max14688_input_device (struct device *dev)
     return me->input_dev;
 }
 EXPORT_SYMBOL(max14688_input_device);
-

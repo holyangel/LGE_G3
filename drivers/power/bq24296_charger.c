@@ -2257,6 +2257,13 @@ static void VZW_CHG_director(struct bq24296_chip *chip)
 	else
 		goto normal_charger;
 	if (val.intval > VZW_UNDER_CURRENT_CHARGING_DETECT_MV)
+
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+		goto normal_charger;
+	bq24296_charger_psy_getprop(chip, psy_this, CURRENT_MAX, &val);
+	if (val.intval < VZW_UNDER_CURRENT_CHARGING_A)
+		goto normal_charger;
+#else
 		//goto normal_charger;
 		goto exit;
 	qpnp_vadc_read(chip->vadc_dev, LR_MUX4_AMUX_THM1, &result);
@@ -3354,6 +3361,10 @@ static int bq24296_parse_dt(struct device_node *dev_node,
 				chip->pre_input_current_ma);
 	if (ret) {
 		pr_err("Unable to read pre-fastchg-current-ma. Set 0.\n");
+
+#ifdef CONFIG_MACH_MSM8974_G3_VZW
+		chip->pre_input_current_ma = 0;
+#else
 		chip->pre_input_current_ma = 1000;
 	}
 #endif
