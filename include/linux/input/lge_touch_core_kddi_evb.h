@@ -588,7 +588,7 @@ enum{
 
 #if defined(TOUCH_INFO_PRINT)
 #define TOUCH_INFO_MSG(fmt, args...) \
-		printk(KERN_INFO "[Touch] " fmt, ##args);
+		pr_debug(KERN_INFO "[Touch] " fmt, ##args);
 #else
 #define TOUCH_INFO_MSG(fmt, args...)     {};
 #endif

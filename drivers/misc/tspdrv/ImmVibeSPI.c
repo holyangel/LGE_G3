@@ -34,7 +34,7 @@
 
 #if (VIBRATOR_INFO_PRINT)
 #define INFO_MSG(fmt, args...) \
-			printk(KERN_INFO "vib: %s() " \
+			pr_debug(KERN_INFO "vib: %s() " \
 				fmt, __FUNCTION__, ##args);
 #else
 #define INFO_MSG(fmt, args...)
@@ -42,7 +42,7 @@
 
 #if (VIBRATOR_DEBUG_PRINT)
 #define DEBUG_MSG(fmt, args...) \
-			printk(KERN_INFO "vib: %s() " \
+			pr_debug(KERN_INFO "vib: %s() " \
 				fmt, __FUNCTION__, ##args);
 #else
 #define DEBUG_MSG(fmt, args...)
@@ -328,7 +328,7 @@ static struct platform_driver sm100_driver = {
 */
 IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex)
 {
-	printk("%s : g_bAmpEnabled:%d\n", __func__, g_bAmpEnabled);
+	pr_debug("%s : g_bAmpEnabled:%d\n", __func__, g_bAmpEnabled);
     if (g_bAmpEnabled)
     {
 		if(sm100_flag) {
@@ -357,7 +357,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpDisable(VibeUInt8 nActuatorIndex
 */
 IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_AmpEnable(VibeUInt8 nActuatorIndex, VibeInt8 nForce)
 {
-	printk("%s : g_bAmpEnabled:%d\n", __func__, g_bAmpEnabled);
+	pr_debug("%s : g_bAmpEnabled:%d\n", __func__, g_bAmpEnabled);
     if (!g_bAmpEnabled)
     {
 		if(sm100_flag) {
@@ -459,7 +459,7 @@ IMMVIBESPIAPI VibeStatus ImmVibeSPI_ForceOut_SetSamples(VibeUInt8 nActuatorIndex
 	previous_nForce = nForce;
 
 	if(IMMR_DEB)
-		printk("[IMMR] Force set = %d\n", nForce);
+		pr_debug("[IMMR] Force set = %d\n", nForce);
 
 	// nForce range: SM100: -127~127,  PMIC:0~127
     if (nForce <= 0)

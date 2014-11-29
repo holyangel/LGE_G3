@@ -4361,13 +4361,11 @@ new_sack:
 
 /* RCV.NXT advances, some SACKs should be eaten. */
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Warray-bounds"
 static void tcp_sack_remove(struct tcp_sock *tp)
 {
 	struct tcp_sack_block *sp = &tp->selective_acks[0];
 	int num_sacks = tp->rx_opt.num_sacks;
-	int this_sack = 0;
+	int this_sack;
 
 	/* Empty ofo queue, hence, all the SACKs are eaten. Clear. */
 	if (skb_queue_empty(&tp->out_of_order_queue)) {
@@ -4375,20 +4373,17 @@ static void tcp_sack_remove(struct tcp_sock *tp)
 		return;
 	}
 
-	while (this_sack < num_sacks) {
+	for (this_sack = 0; this_sack < num_sacks;) {
 		/* Check if the start of the sack is covered by RCV.NXT. */
 		if (!before(tp->rcv_nxt, sp->start_seq)) {
-			int i = this_sack+1;
+			int i;
 
 			/* RCV.NXT must cover all the block! */
 			WARN_ON(before(tp->rcv_nxt, sp->end_seq));
 
 			/* Zap this SACK, by moving forward any other SACKS. */
-			while (i < num_sacks) {
-				if (i < NR_CPUS)
+			for (i=this_sack+1; i < num_sacks; i++)
 				tp->selective_acks[i-1] = tp->selective_acks[i];
-				i++;
-			}
 			num_sacks--;
 			continue;
 		}
@@ -4397,7 +4392,6 @@ static void tcp_sack_remove(struct tcp_sock *tp)
 	}
 	tp->rx_opt.num_sacks = num_sacks;
 }
-#pragma GCC diagnostic pop
 
 /* This one checks to see if we can put data from the
  * out_of_order queue into the receive_queue.

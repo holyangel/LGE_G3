@@ -34,11 +34,28 @@ synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_cn/*)
 else ifdef CONFIG_MACH_MSM8974_G3_CA
 synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_ca/*)
 else ifdef CONFIG_MACH_MSM8974_G3_TMO_US
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_tmo_us/*)
+else ifdef CONFIG_MACH_MSM8974_G3_ATT_US
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_att_us/*)
+else ifdef CONFIG_MACH_MSM8974_G3_CL_PR
 synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_clr_pr/*)
-else
-synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/$(TARGET_PRODUCT)/*)
+else ifdef CONFIG_MACH_MSM8974_G3_GLOBAL_COM
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_global_com/*)
+else ifdef CONFIG_MACH_MSM8974_G3_KDDI_JP
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_kddi_jp/*)
+else ifdef CONFIG_MACH_MSM8974_G3_LRA
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_lra/*)
+else ifdef CONFIG_MACH_MSM8974_G3_SPR_US
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_spr_us/*)
+else ifdef CONFIG_MACH_MSM8974_G3_USC_US
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_usc_us/*)
+else ifdef CONFIG_MACH_MSM8974_G3_VZW
+synaptics_img_file := $(wildcard $(srctree)/firmware/synaptics/g3_vzw/*)
 endif
+
+ifdef synaptics_img_file
 synaptics_firmware := $(subst $(srctree)/firmware/,,$(synaptics_img_file))
+endif
 
 fw-shipped-$(CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4) += $(synaptics_firmware)
 fw-shipped-$(CONFIG_3C359) += 3com/3C359.bin
@@ -167,8 +184,10 @@ quiet_cmd_mkdir = MKDIR   $(patsubst $(objtree)/%,%,$@)
 quiet_cmd_ihex  = IHEX    $@
       cmd_ihex  = $(OBJCOPY) -Iihex -Obinary $< $@
 
-quiet_cmd_copy  = COPY    $@
-      cmd_copy  = cp $(srctree)/$@ $@
+# Unsure as to why this was implemented
+# copying src onto itself will error out and kill make
+#quiet_cmd_copy  = COPY    $@
+#      cmd_copy  = cp $(srctree)/$@ $@
 
 quiet_cmd_ihex2fw  = IHEX2FW $@
       cmd_ihex2fw  = $(objtree)/$(obj)/ihex2fw $< $@

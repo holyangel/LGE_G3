@@ -749,15 +749,15 @@ int CompareNoiseReport(void)
 
 	out_buf += sprintf(wlog_buf+out_buf, "\n----------------------------------------------------------------------------------------------------------\n");
 	for (i = 0; i < TxChannelCount; i++){
-		printk("[Touch] Tx[%2d]: ", i);
+		pr_debug("[Touch] Tx[%2d]: ", i);
 		out_buf += sprintf(wlog_buf+out_buf, "   %5d : ", i);
 		for (j = 0; j < RxChannelCount; j++){
 			ImagepF[i][j] = NoiseDeltaMax[i][j] - NoiseDeltaMin[i][j];
-			printk("%3d,", ImagepF[i][j]);
+			pr_debug("%3d,", ImagepF[i][j]);
 			out_buf += sprintf(wlog_buf+out_buf, "%5d ", ImagepF[i][j]);
 			//		int temp = ImagepF[i][j];
 		}
-		printk("\n");
+		pr_debug("\n");
 		out_buf += sprintf(wlog_buf+out_buf, "\n");
 	}
 	out_buf += sprintf(wlog_buf+out_buf, "------------------------------------------------------------------------------------------------------------\n");

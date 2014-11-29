@@ -111,9 +111,10 @@ typedef struct
 /* Kernel Debug Macros */
 #ifdef __KERNEL__
     asmlinkage void _DbgOut(int level, const char *format,...);
+#if 0 // def VIBE_DEBUG
     #define DbgOut(_x_)  _DbgOut _x_
-
-
+#else /* VIBE_DEBUG */
+         #define DbgOut(_x_)
     #if (defined(VIBE_RECORD) && defined(VIBE_DEBUG)) || defined(VIBE_RUNTIME_RECORD)
         #define DbgRecorderInit(_x_) _RecorderInit _x_
         #define DbgRecorderTerminate(_x_) _RecorderTerminate _x_
@@ -132,3 +133,4 @@ typedef struct
 #endif  /* __KERNEL__ */
 
 #endif  /* _TSPDRV_H */
+#endif

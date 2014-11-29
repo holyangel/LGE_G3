@@ -1954,7 +1954,7 @@ void mmc_power_off(struct mmc_host *host)
 		 * 2014-01-16, B2-BSP-FS@lge.com
 		 */
 		if (host->ios.power_mode == MMC_POWER_OFF) {
-			printk(KERN_INFO "[LGE][MMC][%-18s( )] host->index:%d, already power-off, skip below\n", __func__, host->index);
+	//		printk(KERN_INFO "[LGE][MMC][%-18s( )] host->index:%d, already power-off, skip below\n", __func__, host->index);
 			return;
 		}
 	#endif
@@ -3158,9 +3158,9 @@ int _mmc_detect_card_removed(struct mmc_host *host)
 		pr_debug("%s: card remove detected\n", mmc_hostname(host));
 	}
 
-	#ifdef CONFIG_MACH_LGE
-	printk(KERN_INFO "[LGE][MMC][%-18s( )] end, mmc%d, return %d\n", __func__, host->index, ret);
-	#endif
+	//#ifdef CONFIG_MACH_LGE
+	//printk(KERN_INFO "[LGE][MMC][%-18s( )] end, mmc%d, return %d\n", __func__, host->index, ret);
+	//#endif
 
 	return ret;
 }
@@ -3207,13 +3207,13 @@ void mmc_rescan(struct work_struct *work)
 		container_of(work, struct mmc_host, detect.work);
 	bool extend_wakelock = false;
 
-#ifdef CONFIG_MACH_LGE
+//#ifdef CONFIG_MACH_LGE
 	/* LGE_CHANGE
 	* Adding Print
 	* 2014-01-16, B2-BSP-FS@lge.com
 	*/
-	printk(KERN_INFO "[LGE][MMC][%-18s( ) START!] mmc%d\n", __func__, host->index);
-#endif
+//	printk(KERN_INFO "[LGE][MMC][%-18s( ) START!] mmc%d\n", __func__, host->index);
+//#endif
 
 	if (host->rescan_disable)
 		return;

@@ -1477,9 +1477,10 @@ void xo_therm_logging(void)
 		if (rc)
 			pr_err("VADC read error with %d\n", rc);
 		else {
+#if 0
 			printk(KERN_INFO "[XO_THERM] Result:%lld Raw:%d\n",
 					tmp.physical, tmp.adc_code);
-
+#endif
 #ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_I2C_RMI4
 			if (tmp.physical >= TOUCH_HIGH_TEMPERATURE)
 				touch_thermal_status = 1;

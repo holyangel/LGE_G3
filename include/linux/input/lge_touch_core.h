@@ -651,8 +651,9 @@ enum{
 /* Basic Logging Macro
   *
   */
+
 #define TOUCH_INFO_MSG(fmt, args...) \
-	printk(KERN_INFO "[Touch] " fmt, ##args);
+	pr_debug(KERN_INFO "[Touch] " fmt, ##args);
 
 #define TOUCH_ERR_MSG(fmt, args...) \
 	printk(KERN_ERR "[Touch E] [%s %d] " fmt,	\
@@ -707,7 +708,7 @@ extern u32 touch_debug_mask;
 #define TOUCH_DEBUG(condition, fmt, args...)			\
 do {								\
 	if(unlikely(touch_debug_mask & (condition)))		\
-		printk(KERN_INFO "[Touch] " fmt, ##args);	\
+		pr_debug(KERN_INFO "[Touch] " fmt, ##args);	\
 } while(0)
 
 #ifdef LGE_TOUCH_TIME_DEBUG
@@ -715,7 +716,7 @@ extern u32 touch_time_debug_mask;
 #define TOUCH_TIME_DEBUG(condition, fmt, args...)		\
 do {								\
 	if(unlikely(touch_time_debug_mask & (condition))) 	\
-		printk(KERN_INFO "[Touch] " fmt, ##args);	\
+		pr_debug(KERN_INFO "[Touch] " fmt, ##args);	\
 } while(0)
 #endif
 

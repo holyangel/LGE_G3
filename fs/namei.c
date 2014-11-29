@@ -1465,15 +1465,15 @@ static inline unsigned long hash_name(const char *name, unsigned int *hashp)
 		/* Do we have any NUL or '/' bytes in this word? */
 		b = a ^ REPEAT_BYTE('/');
 	} while (!(has_zero(a, &adata, &constants) | has_zero(b, &bdata, &constants)));
-
+ 
 	adata = prep_zero_mask(a, adata, &constants);
 	bdata = prep_zero_mask(b, bdata, &constants);
 
 	mask = create_zero_mask(adata | bdata);
 
 	hash += a & zero_bytemask(mask);
-	*hashp = fold_hash(hash);
-
+ 	*hashp = fold_hash(hash);
+ 
 	return len + find_zero(mask);
 }
 
