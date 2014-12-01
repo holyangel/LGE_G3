@@ -1,4 +1,17 @@
-	Linux kernel release 3.x <http://kernel.org/>
+How To Build This Kernel
+
+- When you compile the kernel source code, you have to add either google original prebuilt source(toolchain) or another toolchain of you're choosing into the android directory.
+  - Run following scripts to build kernel with prebuilt google toolchain
+a) cd LGE_G3
+b) export PATH=$PATH:tools/lz4demo
+c) make ARCH=arm CROSS_COMPILE=../prebuilts/gcc/linux-x86/arm/arm-eabi-4.6/bin/arm-eabi- sd-g3-vzw-perf_defconfig zImage-dtb -j4	
+
+  - If you are using a different toolchain, edit the path to your toolchain folder and name
+  - Can also make sd-g3-tmo-perf_defconfig
+  - "-j4" can be changed to however many core's your processor has
+  - Must build the zImage-dtb
+
+Linux kernel release 3.x <http://kernel.org/>
 
 These are the release notes for Linux version 3.  Read them carefully,
 as they tell you what this is all about, explain how to install the
