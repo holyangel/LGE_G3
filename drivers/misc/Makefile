@@ -71,11 +71,9 @@ obj-$(CONFIG_QSEECOM) += qseecom.o
 obj-$(CONFIG_QFP_FUSE) += qfp_fuse.o
 obj-$(CONFIG_TI_DRV2667) += ti_drv2667.o
 obj-$(CONFIG_QPNP_MISC) += qpnp-misc.o
-
 obj-$(CONFIG_LGE_IRRC)			+= lge_uei_irrc.o
 obj-$(CONFIG_BU52031NVX) += pm8xxx-cradle.o
 obj-$(CONFIG_BU52031NVX_CARKIT) += pm8xxx-carkit.o
 obj-$(CONFIG_TSPDRV) += tspdrv/
 obj-$(CONFIG_ANDROID_SW_IRRC)	+= android_irrc.o
 obj-$(CONFIG_LGE_IRDA_KDDI)	+= lge_irtty-kddi.o
-obj-$(CONFIG_SOUND_CONTROL_HAX_3_GPL) += sound_control.o
