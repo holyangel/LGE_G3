@@ -70,8 +70,8 @@ struct platform_driver g3_display_driver = {
 
 static int g3_cur_level = _LV_END_ - 1;
 struct display_opp_table g3_display_opp_table[] = {
-	{LV_0, 50, 0},
-	{LV_1, 60, 0},
+	{LV_0, 60, 0},
+	{LV_1, 120, 0},
 };
 
 static int g3_get_cur_freq(struct device *dev, unsigned long *freq){
@@ -258,11 +258,11 @@ int g3_display_send_event_to_mdss_display(unsigned long val, void *v){
 
 	if (wdfps < 38) {
 		pr_err("Unsupported FPS. Configuring to min_fps = 30\n");
-		wdfps = 38;
+		wdfps = 30;
 		ret = mdss_mdp_ctl_update_fps(mdp5_data->ctl, wdfps);
-	} else if (wdfps > 60) {
-		pr_err("Unsupported FPS. Configuring to max_fps = 60\n");
-		wdfps = 60;
+	} else if (wdfps > 120) {
+		pr_err("Unsupported FPS. Configuring to max_fps = 120\n");
+		wdfps = 120;
 		ret = mdss_mdp_ctl_update_fps(mdp5_data->ctl, wdfps);
 	} else {
 		ret = mdss_mdp_ctl_update_fps(mdp5_data->ctl, wdfps);
