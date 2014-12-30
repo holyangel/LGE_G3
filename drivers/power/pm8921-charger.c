@@ -2003,26 +2003,28 @@ static void __pm8921_charger_vbus_draw(unsigned int mA)
 			i = 14;
 		else if (force_fast_charge == 2) {
 			switch (fast_charge_level) {
-				case FAST_CHARGE_500:
-					i = 2;
-					break;
-				case FAST_CHARGE_700:
-					i = 4;
-					break;
-				case FAST_CHARGE_900:
-					i = 8;
-					break;
-				case FAST_CHARGE_1100:
-					i = 10;
-					break;
-				case FAST_CHARGE_1300:
-					i = 12;
-					break;
-				case FAST_CHARGE_1500:
-					i = 14;
-					break;
-				default:
-					break;
+			case FAST_CHARGE_500:
+				i = 2;
+				custom_ma = FAST_CHARGE_500;
+				break;
+			case FAST_CHARGE_900:
+				i = 3;
+				custom_ma = FAST_CHARGE_900;
+				break;
+			case FAST_CHARGE_1200:
+				i = 4;
+				custom_ma = FAST_CHARGE_1200;
+				break;
+			case FAST_CHARGE_1500:
+				i = 5;
+				custom_ma = FAST_CHARGE_1500;
+				break;
+			case FAST_CHARGE_2000:
+				i = 6;
+				custom_ma = FAST_CHARGE_2000;
+				break;
+			default:
+				break;
 			}
 		}
 		rc = pm_chg_iusbmax_set(the_chip, i);
