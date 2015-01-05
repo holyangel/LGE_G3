@@ -199,6 +199,13 @@ config CPU_FREQ_DEFAULT_GOV_DANCEDANCE
 	select CPU_FREQ_GOV_DANCEDANCE
 	help
 	
+config CPU_FREQ_DEFAULT_GOV_INTELLIMM
+        bool "intelliminmax"
+        select CPU_FREQ_GOV_INTELLIMM
+        help
+          Use the CPUFreq governor 'intelliminmax' as default. This
+          governor will use only 3 different frequencies, idle, UI and max.
+
 endchoice
 
 config CPU_FREQ_GOV_INTELLIACTIVE
@@ -559,6 +566,17 @@ config CPU_FREQ_SAMPLING_LATENCY_MULTIPLIER
 config CPU_FREQ_GOV_DANCEDANCE
 	tristate "'dancedance' cpufreq governor"
 	depends on CPU_FREQ
+
+config CPU_FREQ_GOV_INTELLIMM
+        tristate "'intelliminmax' cpufreq policy governor"
+        default y
+        help
+          To compile this driver as a module, choose M here: the
+          module will be called cpufreq_interactive.
+
+          For details, take a look at linux/Documentation/cpu-freq.
+
+          If in doubt, say N.
 
 menu "x86 CPU frequency scaling drivers"
 depends on X86
