@@ -3092,3 +3092,6 @@ config FORCE_FAST_CHARGE
         A simple sysfs interface to force adapters that
         are detected as USB to charge as AC.
 endif
+
+config KEXEC_HARDBOOT_G3_3GB
+	bool "If the kexec patch for the 3GB or 2GB version should be used"
