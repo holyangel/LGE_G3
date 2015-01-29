@@ -1567,7 +1567,7 @@
 	qcom,msm-cpufreq@0 {
 		compatible = "qcom,msm-cpufreq";
 		qcom,cpufreq-table =
-			<  268800  268800  600 /*  75 MHz */ >,
+			<  268000  268000  600 /*  75 MHz */ >,
 			<  300000  300000  600 /*  75 MHz */ >,
 			<  422400  422400 1200 /* 150 MHz */ >,
 			<  652800  499200 1600 /* 200 MHz */ >,
@@ -1609,7 +1609,7 @@
 	qcom,chipid = <0x03030002>;
 	qcom,msm-bus,num-cases = <15>;
 	qcom,bus-control;
-	qcom,initial-pwrlevel = <5>;
+	qcom,initial-pwrlevel = <6>;
 
 	/* Updated bus bandwidth requirements */
 	qcom,msm-bus,vectors-KBps =
@@ -1694,6 +1694,13 @@
 
                qcom,gpu-pwrlevel@6 {
                        reg = <6>;
+                       qcom,gpu-freq = <100000000>;
+                       qcom,bus-freq = <1>;
+                       qcom,io-fraction = <101>;
+               };
+
+               qcom,gpu-pwrlevel@7 {
+                       reg = <7>;
                        qcom,gpu-freq = <27000000>;
                        qcom,bus-freq = <0>;
                        qcom,io-fraction = <101>;
