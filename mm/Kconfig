@@ -250,7 +250,7 @@ config KSM
 config KSM_CHECK_PAGE
 	bool "Check page before scanning"
 	depends on KSM
-	default n
+	default y
 	help
 	  If enabled, this will check and skip if page is already scanned in
 	  same KSM scan cycle.
@@ -370,7 +370,7 @@ config NEED_PER_CPU_KM
 
 config CLEANCACHE
 	bool "Enable cleancache driver to cache clean pages if tmem is present"
-	default n
+	default y
 	help
 	  Cleancache can be thought of as a page-granularity victim cache
 	  for clean pages that the kernel's pageframe replacement algorithm
