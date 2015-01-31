@@ -44,3 +44,8 @@ config LGE_VSYNC_SKIP
 	bool "MDSS VSYNC Skip scheme"
 	---help---
 	This feature provides VSYNC skip scheme.
+
+config LCD_NOTIFY
+	depends on FB_MSM_MDSS
+	bool "Enable LCD Notifier Helper"
+	default y
