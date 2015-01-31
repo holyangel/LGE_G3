@@ -57,3 +57,8 @@ config LGE_SHARPENING
 	bool "LGE display sharpening control"
 	---help---
 	  Allow control of the display sharpening via sysfs node.
+
+config LCD_NOTIFY
+	depends on FB_MSM_MDSS
+	bool "Enable LCD Notifier Helper"
+	default y
