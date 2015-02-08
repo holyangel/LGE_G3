@@ -33,6 +33,7 @@ struct kcal_lut_data {
 	int green;
 	int blue;
 	int minimum;
+	int invert;
 };
 
 void update_preset_lcdc_lut(int kr, int kg, int kb);

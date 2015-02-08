@@ -21,6 +21,7 @@
 #include <linux/init.h>
 #include <linux/module.h>
 
+#include "mdss_mdp.h"
 #include "mdss_mdp_kcal_ctrl.h"
 
 static void kcal_apply_values(struct kcal_lut_data *lut_data)
@@ -102,8 +103,40 @@ static ssize_t kcal_min_show(struct device *dev,
 	return sprintf(buf, "%d\n", lut_data->minimum);
 }
 
+static ssize_t kcal_invert_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int kcal_invert;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	if (count != 2)
+		return -EINVAL;
+
+	sscanf(buf, "%d", &kcal_invert);
+
+	if (kcal_invert != 0 && kcal_invert != 1)
+		return -EINVAL;
+
+	if (lut_data->invert == kcal_invert)
+		return -EINVAL;
+
+	lut_data->invert = kcal_invert;
+
+	mdss_dsi_panel_invert(lut_data->invert);
+
+return count;
+}
+
+static ssize_t kcal_invert_show(struct device *dev,
+	struct device_attribute *attr, char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	return sprintf(buf, "%d\n", lut_data->invert)
+
 static DEVICE_ATTR(kcal, 0644, kcal_show, kcal_store);
 static DEVICE_ATTR(kcal_min, 0644, kcal_min_show, kcal_min_store);
+static DEVICE_ATTR(kcal_invert, 0644, kcal_invert_show, kcal_invert_store);
 
 static int __devinit kcal_ctrl_probe(struct platform_device *pdev)
 {
@@ -121,11 +154,13 @@ static int __devinit kcal_ctrl_probe(struct platform_device *pdev)
 	lut_data->green = mdss_mdp_pp_get_kcal(KCAL_DATA_G);
 	lut_data->blue = mdss_mdp_pp_get_kcal(KCAL_DATA_B);
 	lut_data->minimum = 35;
-
+	lut_data->invert = 0;
+	
 	platform_set_drvdata(pdev, lut_data);
 
 	ret = device_create_file(&pdev->dev, &dev_attr_kcal);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_min);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_invert);
 	if (ret)
 		pr_err("%s: unable to create sysfs entries\n", __func__);
 
