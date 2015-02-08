@@ -244,10 +244,11 @@ CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	  else if [ -x /bin/bash ]; then echo /bin/bash; \
 	  else echo sh; fi ; fi)
 
-HOSTCC       = gcc
-HOSTCXX      = g++
-HOSTCFLAGS   = -Wmissing-prototypes -Wstrict-prototypes -O2 -fomit-frame-pointer -fgcse-las
-HOSTCXXFLAGS = -Ofast -fgcse-las
+HOSTCC       = $(CCACHE) gcc
+HOSTCXX      = $(CCACHE) g++
+HOSTCXXFLAGS += -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+HOSTCFLAGS += -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+
 
 # Decide whether to build built-in, modular, or both.
 # Normally, just do built-in.
@@ -352,21 +353,15 @@ CHECKFLAGS     := -D__linux__ -Dlinux -D__STDC__ -Dunix -D__unix__ \
 MODFLAGS        = -DMODULE \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
-				  -fgcse-las \
-				  -fpredictive-commoning \
-                  -Ofast
+                  -Ofast \
+                  -fgcse-las \
+				  -fpredictive-commoning
 
 CFLAGS_MODULE   = $(MODFLAGS)
-AFLAGS_MODULE   = $(MODFLAGS)
+AFLAGS_KERNEL	+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
-CFLAGS_KERNEL   = -mfpu=neon-vfpv4 \
-                  -mtune=cortex-a15 \
-		  -fgcse-las \
-		  -fpredictive-commoning \
-                  -Ofast
-ifeq ($(ENABLE_GRAPHITE),true)
-CFLAGS_KERNEL	+= -fgraphite -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-endif
+CFLAGS_KERNEL	+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
 # Use LINUXINCLUDE when you must reference the include/ directory.
 # Needed to be compatible with the O= option
@@ -381,14 +376,16 @@ CFLAGS_A15 = -mtune=cortex-a15 -mfpu=neon -funsafe-math-optimizations
 CFLAGS_MODULO = -fmodulo-sched -fmodulo-sched-allow-regmoves
 KERNEL_MODS        = $(CFLAGS_A15) $(CFLAGS_MODULO)
  
-KBUILD_CFLAGS   := -Ofast -funswitch-loops \
- 		           -Wundef -Wstrict-prototypes -Wno-trigraphs \
- 		           -fno-strict-aliasing -fno-common \
- 		           -Werror-implicit-function-declaration \
- 		           -Wno-format-security \
- 		           -fno-delete-null-pointer-checks
- 		           -mtune=cortex-a15 -mfpu=neon-vfpv4 \
-                   -funsafe-math-optimizations -ftree-vectorize \
+KBUILD_CPPFLAGS := -D__KERNEL__
+
+KBUILD_CFLAGS   := -Wall -Wundef -Wstrict-prototypes -Wno-trigraphs \
+		   -fno-strict-aliasing -fno-common \
+		   -Werror-implicit-function-declaration \
+		   -Wno-format-security \
+		   -Wno-sizeof-pointer-memaccess \
+		   -mno-unaligned-access \
+		   -fno-delete-null-pointer-checks \
+		   -pipe
  
 KBUILD_AFLAGS_KERNEL :=
 KBUILD_CFLAGS_KERNEL :=
@@ -582,10 +579,7 @@ all: vmlinux
 ifdef CONFIG_CC_OPTIMIZE_FOR_SIZE
 KBUILD_CFLAGS	+= -O2 $(call cc-disable-warning,maybe-uninitialized,)
 else
-KBUILD_CFLAGS	+= -Ofast
-ifeq ($(ENABLE_GRAPHITE),true)
-KBUILD_CFLAGS	+= -fgraphite -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-endif
+KBUILD_CFLAGS	+= -Ofast -fgraphite -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 endif
 
 include $(srctree)/arch/$(SRCARCH)/Makefile
