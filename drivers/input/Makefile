@@ -2,6 +2,8 @@
 # Makefile for the input core drivers.
 #
 
+KBUILD_CFLAGS	+=-O3
+
 # Each configuration option enables a list of files.
 
 obj-$(CONFIG_INPUT)		+= input-core.o
