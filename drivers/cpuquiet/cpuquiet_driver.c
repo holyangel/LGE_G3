@@ -560,4 +560,3 @@ void __init cpq_auto_hotplug_exit(void)
 	cpuquiet_unregister_driver(&cpuquiet_driver);
 	kobject_put(auto_sysfs_kobject);
 }
-

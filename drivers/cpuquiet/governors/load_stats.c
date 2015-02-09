@@ -56,6 +56,8 @@ static struct workqueue_struct *load_stats_wq;
 static unsigned int load_threshold[8] = {90, 80, 80, 70, 70, 60, 60, 50};
 static unsigned int twts_threshold[8] = {70, 0, 70, 120, 70, 120, 0, 120};
 
+extern unsigned int get_rq_info(void);
+
 static u64 input_boost_end_time = 0;
 static bool input_boost_running = false;
 static unsigned int input_boost_duration = 3 * 70; /* ms */
@@ -63,8 +65,6 @@ static unsigned int input_boost_cpus = 2;
 static unsigned int input_boost_enabled = true;
 static bool input_boost_task_alive = false;
 static struct task_struct *input_boost_task;
-
-extern unsigned int get_rq_info(void);
 
 static unsigned int rq_depth_threshold = 40;
 static unsigned int rq_depth_load_threshold = 70;
@@ -636,4 +636,3 @@ static void __exit exit_load_stats(void)
 MODULE_LICENSE("GPL");
 module_init(init_load_stats);
 module_exit(exit_load_stats);
-

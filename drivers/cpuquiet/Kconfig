@@ -29,7 +29,7 @@ config CPUQUIET_DEFAULT_GOV_RUNNABLE
 	select CPUQUIET_GOVERNOR_RUNNABLE
 	help
 	  Use the CPUQuiet governor 'runnable' as default. This uses
-	  the number of running threads to scale the number of cpus  
+	  the number of running threads ato scale the number of cpus  
 	  online in the system
 	  
 config CPUQUIET_DEFAULT_GOV_RQ_STATS
