@@ -10,6 +10,8 @@
 
 HOST_EXTRACFLAGS += -I$(srctree)/tools/include
 
+KBUILD_CFLAGS	+=-O3
+
 hostprogs-$(CONFIG_KALLSYMS)     += kallsyms
 hostprogs-$(CONFIG_LOGO)         += pnmtologo
 hostprogs-$(CONFIG_VT)           += conmakehash
