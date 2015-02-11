@@ -21,12 +21,7 @@
 #define KCAL_DATA_G 0x02
 #define KCAL_DATA_B 0x03
 
-#define NUM_QLUT 256
-#define MAX_KCAL (NUM_QLUT - 1)
-
-#define SCALED_BY_KCAL(rgb, kcal) \
-	(((((unsigned int)(rgb) * (unsigned int)(kcal)) << 10) / \
-		(unsigned int)MAX_KCAL) >> 10)
+#define NUM_QLUT 0x100
 
 struct kcal_lut_data {
 	int red;
@@ -37,8 +32,6 @@ struct kcal_lut_data {
 	int invert;
 };
 
-void update_preset_lcdc_lut(int kr, int kg, int kb);
-
-int mdss_mdp_pp_get_kcal(int data);
-
+void mdss_mdp_pp_kcal_enable(bool enable);
+void mdss_mdp_pp_kcal_update(int kr, int kg, int kb);
 #endif
