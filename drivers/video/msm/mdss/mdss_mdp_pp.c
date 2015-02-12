@@ -1811,6 +1811,20 @@ int mdss_mdp_pp_resume(struct mdss_mdp_ctl *ctl, u32 dspp_num)
 	return 0;
 }
 
+void mdss_mdp_pp_kcal_sat(int level)
+{
+	u32 copyback = 0;
+	struct mdp_pa_cfg_data pa_config;
+
+	memset(&pa_config, 0, sizeof(struct mdp_pa_cfg_data));
+
+	pa_config.block = MDP_LOGICAL_BLOCK_DISP_0;
+	pa_config.pa_data.flags = MDP_PP_OPS_WRITE | MDP_PP_OPS_ENABLE;
+	pa_config.pa_data.sat_adj = level;
+
+	mdss_mdp_pa_config(&pa_config, &copyback);
+}
+
 void mdss_mdp_pp_kcal_enable(bool enable)
 {
 	u32 disp_num = 0, copybit = 0;

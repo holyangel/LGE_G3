@@ -30,8 +30,10 @@ struct kcal_lut_data {
 	int minimum;
 	int enable;
 	int invert;
+	int sat;
 };
 
 void mdss_mdp_pp_kcal_enable(bool enable);
 void mdss_mdp_pp_kcal_update(int kr, int kg, int kb);
+void mdss_mdp_pp_kcal_sat(int level);
 #endif
