@@ -24,6 +24,10 @@
 #include "mdss_mdp.h"
 #include "mdss_mdp_kcal_ctrl.h"
 
+#ifdef CONFIG_FURNACE_BOOTMODE
+#include <mach/board_lge.h>
+#endif
+
 static void kcal_apply_values(struct kcal_lut_data *lut_data)
 {
 	/* gc_lut_* will save lut values even when disabled and
@@ -186,7 +190,7 @@ static ssize_t kcal_sat_store(struct device *dev,
 
 	lut_data->sat = kcal_sat;
 
-	mdss_mdp_pp_kcal_sat(lut_data->sat);
+	mdss_mdp_pp_kcal_pa(lut_data);
 
 	return count;
 }
@@ -199,11 +203,101 @@ static ssize_t kcal_sat_show(struct device *dev,
 	return sprintf(buf, "%d\n", lut_data->sat);
 }
 
+static ssize_t kcal_hue_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int kcal_hue;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	if (count > 5)
+		return -EINVAL;
+
+	sscanf(buf, "%d", &kcal_hue);
+
+	if (kcal_hue < 0 || kcal_hue > 1536)
+		return -EINVAL;
+
+	lut_data->hue = kcal_hue;
+
+	mdss_mdp_pp_kcal_pa(lut_data);
+
+	return count;
+}
+
+static ssize_t kcal_hue_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	return sprintf(buf, "%d\n", lut_data->hue);
+}
+
+static ssize_t kcal_val_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int kcal_val;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	if (count != 4)
+		return -EINVAL;
+
+	sscanf(buf, "%d", &kcal_val);
+
+	if (kcal_val < 128 || kcal_val > 383)
+		return -EINVAL;
+
+	lut_data->val = kcal_val;
+
+	mdss_mdp_pp_kcal_pa(lut_data);
+
+	return count;
+}
+
+static ssize_t kcal_val_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	return sprintf(buf, "%d\n", lut_data->val);
+}
+
+static ssize_t kcal_cont_store(struct device *dev,
+		struct device_attribute *attr, const char *buf, size_t count)
+{
+	int kcal_cont;
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	if (count != 4)
+		return -EINVAL;
+
+	sscanf(buf, "%d", &kcal_cont);
+
+	if (kcal_cont < 128 || kcal_cont > 383)
+		return -EINVAL;
+
+	lut_data->cont = kcal_cont;
+
+	mdss_mdp_pp_kcal_pa(lut_data);
+
+	return count;
+}
+
+static ssize_t kcal_cont_show(struct device *dev,
+		struct device_attribute *attr, char *buf)
+{
+	struct kcal_lut_data *lut_data = dev_get_drvdata(dev);
+
+	return sprintf(buf, "%d\n", lut_data->cont);
+}
+
 static DEVICE_ATTR(kcal, 0644, kcal_show, kcal_store);
 static DEVICE_ATTR(kcal_min, 0644, kcal_min_show, kcal_min_store);
 static DEVICE_ATTR(kcal_enable, 0644, kcal_enable_show, kcal_enable_store);
 static DEVICE_ATTR(kcal_invert, 0644, kcal_invert_show, kcal_invert_store);
 static DEVICE_ATTR(kcal_sat, 0644, kcal_sat_show, kcal_sat_store);
+static DEVICE_ATTR(kcal_hue, 0644, kcal_hue_show, kcal_hue_store);
+static DEVICE_ATTR(kcal_val, 0644, kcal_val_show, kcal_val_store);
+static DEVICE_ATTR(kcal_cont, 0644, kcal_cont_show, kcal_cont_store);
 
 static int __devinit kcal_ctrl_probe(struct platform_device *pdev)
 {
@@ -218,15 +312,30 @@ static int __devinit kcal_ctrl_probe(struct platform_device *pdev)
 	}
 
 	mdss_mdp_pp_kcal_enable(true);
-	mdss_mdp_pp_kcal_update(NUM_QLUT, NUM_QLUT, NUM_QLUT);
 
-	lut_data->red = NUM_QLUT;
-	lut_data->green = NUM_QLUT;
-	lut_data->blue = NUM_QLUT;
+#ifdef CONFIG_FURNACE_BOOTMODE
+	if (lge_get_android_dlcomplete() == 0) {
+		mdss_mdp_pp_kcal_update(NUM_QLUT, NUM_QLUT, NUM_QLUT);
+		lut_data->red = lut_data->green = lut_data->blue = NUM_QLUT;
+	} else {
+		mdss_mdp_pp_kcal_update(232, 226, 242);
+		lut_data->red = 232;
+		lut_data->green = 226;
+		lut_data->blue = 242;
+	}
+#else
+	mdss_mdp_pp_kcal_update(NUM_QLUT, NUM_QLUT, NUM_QLUT);
+	lut_data->red = lut_data->green = lut_data->blue = NUM_QLUT;
+#endif
+
+	// These values are NOT final, they will be revised in a later commit.
 	lut_data->minimum = 35;
 	lut_data->enable = 1;
 	lut_data->invert = 0;
 	lut_data->sat = 256;
+	lut_data->hue = 0;
+	lut_data->val = 256;
+	lut_data->cont = 256;
 
 	platform_set_drvdata(pdev, lut_data);
 
@@ -235,6 +344,9 @@ static int __devinit kcal_ctrl_probe(struct platform_device *pdev)
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_enable);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_invert);
 	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_sat);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_hue);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_val);
+	ret |= device_create_file(&pdev->dev, &dev_attr_kcal_cont);
 	if (ret)
 		pr_err("%s: unable to create sysfs entries\n", __func__);
 
@@ -250,6 +362,9 @@ static int __devexit kcal_ctrl_remove(struct platform_device *pdev)
 	device_remove_file(&pdev->dev, &dev_attr_kcal_enable);
 	device_remove_file(&pdev->dev, &dev_attr_kcal_invert);
 	device_remove_file(&pdev->dev, &dev_attr_kcal_sat);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_hue);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_val);
+	device_remove_file(&pdev->dev, &dev_attr_kcal_cont);
 
 	kfree(lut_data);
 

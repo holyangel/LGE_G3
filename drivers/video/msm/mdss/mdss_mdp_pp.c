@@ -24,10 +24,6 @@
 
 #include "mdss_mdp_kcal_ctrl.h"
 
-#ifdef CONFIG_FURNACE_BOOTMODE
-#include <mach/board_lge.h>
-#endif
-
 struct mdp_csc_cfg mdp_csc_convert[MDSS_MDP_MAX_CSC] = {
 	[MDSS_MDP_CSC_RGB2RGB] = {
 		0,
@@ -1811,23 +1807,9 @@ int mdss_mdp_pp_resume(struct mdss_mdp_ctl *ctl, u32 dspp_num)
 	return 0;
 }
 
-void mdss_mdp_pp_kcal_sat(int level)
-{
-	u32 copyback = 0;
-	struct mdp_pa_cfg_data pa_config;
-
-	memset(&pa_config, 0, sizeof(struct mdp_pa_cfg_data));
-
-	pa_config.block = MDP_LOGICAL_BLOCK_DISP_0;
-	pa_config.pa_data.flags = MDP_PP_OPS_WRITE | MDP_PP_OPS_ENABLE;
-	pa_config.pa_data.sat_adj = level;
-
-	mdss_mdp_pa_config(&pa_config, &copyback);
-}
-
 void mdss_mdp_pp_kcal_enable(bool enable)
 {
-	u32 disp_num = 0, copybit = 0;
+	u32 disp_num = 0, copyback = 0;
 	struct mdp_pgc_lut_data *pgc_config;
 
 	pgc_config = &mdss_pp_res->pgc_disp_cfg[disp_num];
@@ -1841,17 +1823,16 @@ void mdss_mdp_pp_kcal_enable(bool enable)
 	} else
 		pgc_config->flags = MDP_PP_OPS_WRITE | MDP_PP_OPS_DISABLE;
 
-	mdss_mdp_argc_config(pgc_config, &copybit);
+	mdss_mdp_argc_config(pgc_config, &copyback);
 }
 
 void mdss_mdp_pp_kcal_update(int kr, int kg, int kb)
 {
 	int i;
-	u32 disp_num = 0, copybit = 0;
+	u32 disp_num = 0, copyback = 0;
 	struct mdp_pgc_lut_data *pgc_config;
 
 	pgc_config = &mdss_pp_res->pgc_disp_cfg[disp_num];
-	pgc_config->block = MDP_LOGICAL_BLOCK_DISP_0;
 
 	for (i = 0; i < GC_LUT_SEGMENTS; i++) {
 		pgc_config->r_data[i].slope = kr;
@@ -1859,7 +1840,24 @@ void mdss_mdp_pp_kcal_update(int kr, int kg, int kb)
 		pgc_config->b_data[i].slope = kb;
 	}
 
-	mdss_mdp_argc_config(pgc_config, &copybit);
+	mdss_mdp_argc_config(pgc_config, &copyback);
+}
+
+void mdss_mdp_pp_kcal_pa(struct kcal_lut_data *lut_data)
+{
+	u32 copyback = 0;
+	struct mdp_pa_cfg_data pa_config;
+
+	memset(&pa_config, 0, sizeof(struct mdp_pa_cfg_data));
+
+	pa_config.block = MDP_LOGICAL_BLOCK_DISP_0;
+	pa_config.pa_data.flags = MDP_PP_OPS_WRITE | MDP_PP_OPS_ENABLE;
+	pa_config.pa_data.sat_adj = lut_data->sat;
+	pa_config.pa_data.hue_adj = lut_data->hue;
+	pa_config.pa_data.val_adj = lut_data->val;
+	pa_config.pa_data.cont_adj = lut_data->cont;
+
+	mdss_mdp_pa_config(&pa_config, &copyback);
 }
 
 int mdss_mdp_pp_init(struct device *dev)
