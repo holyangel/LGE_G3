@@ -316,7 +316,6 @@ static ssize_t nfc_write(struct file *filp, const char __user *buf,
 	char tmp[MAX_BUFFER_SIZE];
 	int ret = 0;
 	enum ehandler_mode dmode;
-	int nfcc_buffer = 0;
 
 	if (count > MAX_BUFFER_SIZE) {
 		dev_err(&qca199x_dev->client->dev, "out of memory\n");
@@ -326,24 +325,6 @@ static ssize_t nfc_write(struct file *filp, const char __user *buf,
 		dev_err(&qca199x_dev->client->dev,
 			"nfc-nci write: failed to copy from user space\n");
 		return -EFAULT;
-	}
-	/*
-                                                          
-                                                            
-                                                             
-                                        
- */
-	if ((qca199x_dev->sent_first_nci_write == false) &&
-		 (qca199x_dev->irq_enabled == false)) {
-		/*                                          */
-		nfcc_buffer = nfcc_read_buff_svc(qca199x_dev);
-		/*                                                 */
-		if (nfcc_buffer < 0) {
-			dev_err(&qca199x_dev->client->dev,
-				"nfc-nci write: error while servicing nfcc read buffer\n");
-		}
-		qca199x_dev->sent_first_nci_write = true;
-		qca199x_enable_irq(qca199x_dev);
 	}
 	mutex_lock(&qca199x_dev->read_mutex);
 	dmode = device_mode.handle_flavour;
