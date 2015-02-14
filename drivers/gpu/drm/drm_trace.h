@@ -58,9 +58,9 @@ TRACE_EVENT(drm_vblank_event_delivered,
 		      __entry->seq)
 );
 
-#endif /* _DRM_TRACE_H_ */
+#endif /*               */
 
-/* This part must be outside protection */
+/*                                      */
 #undef TRACE_INCLUDE_PATH
 #define TRACE_INCLUDE_PATH .
 #include <trace/define_trace.h>

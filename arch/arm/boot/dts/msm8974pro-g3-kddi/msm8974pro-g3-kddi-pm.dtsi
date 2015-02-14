@@ -31,9 +31,9 @@
 		};
 	};
 	qcom,msm-thermal {
-		qcom,limit-temp = <85>;
+		qcom,limit-temp = <80>;
 		qcom,temp-hysteresis = <5>;
-		qcom,core-limit-temp = <95>;
+		qcom,core-limit-temp = <90>;
 		qcom,core-temp-hysteresis = <5>;
 	};
 	pm8941,lge_boost_gpio {
@@ -173,29 +173,11 @@
 			};
 
 			chan@b5 {
-				lge,rev-check;
-				rev_b {
-					revision = "...rev_b";
-					sub_reg = <0xb7>;
-				};
-
-				rev_1{
-					revision = "rev_c...";
-					sub_reg = <0xb5>;
-				};
+				reg = <0xb7>;
 			};
 
 			chan@b7 {
-				lge,rev-check;
-				rev_b {
-					revision = "...rev_b";
-					sub_reg = <0xb8>;
-				};
-
-				rev_1 {
-					revision = "rev_c...";
-					sub_reg = <0xb7>;
-				};
+				reg = <0xb8>;
 			};
 		};
 

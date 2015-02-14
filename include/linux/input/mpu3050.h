@@ -29,4 +29,4 @@ struct mpu3050_gyro_platform_data {
 	int gpio_fsync;
 };
 
-#endif /* __MPU3050_H__ */
+#endif /*               */

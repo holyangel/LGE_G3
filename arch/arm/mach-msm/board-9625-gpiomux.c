@@ -44,49 +44,49 @@ static struct gpiomux_setting gpio_i2c_config = {
 
 static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 	{
-		.gpio      = 4,		/* BLSP1 QUP2 SPI_DATA_MOSI */
+		.gpio      = 4,		/*                          */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
 	{
-		.gpio      = 5,		/* BLSP1 QUP2 SPI_DATA_MISO */
+		.gpio      = 5,		/*                          */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
 	{
-		.gpio      = 6,		/* BLSP1 QUP2 SPI_CS_N */
+		.gpio      = 6,		/*                     */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_cs_config,
 		},
 	},
 	{
-		.gpio      = 7,		/* BLSP1 QUP2 SPI_CLK */
+		.gpio      = 7,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_spi_config,
 		},
 	},
 	{
-		.gpio      = 8,	       /* BLSP1 UART TX */
+		.gpio      = 8,	       /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 9,	       /* BLSP1 UART RX */
+		.gpio      = 9,	       /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 10,		/* BLSP1 QUP3 I2C_DAT */
+		.gpio      = 10,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
 	{
-		.gpio      = 11,		/* BLSP1 QUP3 I2C_CLK */
+		.gpio      = 11,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
@@ -114,35 +114,35 @@ static struct gpiomux_setting codec_reset = {
 
 static struct msm_gpiomux_config mdm9625_mi2s_configs[] __initdata = {
 	{
-		.gpio	= 12,		/* mi2s ws */
+		.gpio	= 12,		/*         */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mi2s_suspend_cfg,
 			[GPIOMUX_ACTIVE] = &mi2s_active_cfg,
 		},
 	},
 	{
-		.gpio	= 15,		/* mi2s sclk */
+		.gpio	= 15,		/*           */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mi2s_suspend_cfg,
 			[GPIOMUX_ACTIVE] = &mi2s_active_cfg,
 		},
 	},
 	{
-		.gpio	= 14,		/* mi2s dout */
+		.gpio	= 14,		/*           */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mi2s_suspend_cfg,
 			[GPIOMUX_ACTIVE] = &mi2s_active_cfg,
 		},
 	},
 	{
-		.gpio	= 13,		/* mi2s din */
+		.gpio	= 13,		/*          */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mi2s_suspend_cfg,
 			[GPIOMUX_ACTIVE] = &mi2s_active_cfg,
 		},
 	},
 	{
-		.gpio	= 71,		/* mi2s mclk */
+		.gpio	= 71,		/*           */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mi2s_suspend_cfg,
 			[GPIOMUX_ACTIVE] = &mi2s_active_cfg,
@@ -152,7 +152,7 @@ static struct msm_gpiomux_config mdm9625_mi2s_configs[] __initdata = {
 
 static struct msm_gpiomux_config mdm9625_cdc_reset_config[] __initdata = {
 	{
-		.gpio   = 22,           /* SYS_RST_N */
+		.gpio   = 22,           /*           */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &codec_reset,
 		},
@@ -251,7 +251,7 @@ static struct gpiomux_setting wlan_ath6kl_suspend_config = {
 
 static struct msm_gpiomux_config wlan_ath6kl_configs[] __initdata = {
 	{
-		.gpio      = 62,/* CHIP_PWD_L */
+		.gpio      = 62,/*            */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &wlan_ath6kl_active_config,
 			[GPIOMUX_SUSPENDED] = &wlan_ath6kl_suspend_config,
@@ -303,25 +303,25 @@ static struct gpiomux_setting qpic_lcdc_te = {
 
 static struct msm_gpiomux_config msm9625_qpic_lcdc_configs[] __initdata = {
 	{
-		.gpio      = 20,	/* a_d */
+		.gpio      = 20,	/*     */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &qpic_lcdc_a_d,
 		},
 	},
 	{
-		.gpio      = 21,	/* cs */
+		.gpio      = 21,	/*    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &qpic_lcdc_cs,
 		},
 	},
 	{
-		.gpio      = 22,	/* te */
+		.gpio      = 22,	/*    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &qpic_lcdc_te,
 		},
 	},
 	{
-		.gpio      = 23,	/* rs */
+		.gpio      = 23,	/*    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &qpic_lcdc_rs,
 		},
@@ -337,7 +337,7 @@ static void msm9625_disp_init_gpiomux(void)
 static void msm9625_disp_init_gpiomux(void)
 {
 }
-#endif /* CONFIG_FB_MSM_QPIC */
+#endif /*                    */
 
 void __init msm9625_init_gpiomux(void)
 {

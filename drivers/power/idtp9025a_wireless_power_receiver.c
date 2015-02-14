@@ -44,14 +44,11 @@
 
 #define OUTPUT_CURRENT_TH	512
 
-#define FREQ_TH_1	157
-#define FREQ_HYSTERESIS_UP_1	3
-#define FREQ_HYSTERESIS_DOWN_1	3
+#define FREQ_TH_1	134
+#define FREQ_HYSTERESIS_1	3
 
-#define FREQ_TH_2	147
-#define FREQ_HYSTERESIS_UP_2	3
-#define FREQ_HYSTERESIS_DOWN_2	3
-
+#define FREQ_TH_2	125
+#define FREQ_HYSTERESIS_2	3
 
 #define FREQ_MIN	100
 
@@ -150,17 +147,14 @@ static int idtp9025_get_frequency(void)
 static int idtp9025_calc_alignment(int freq, int curr)
 {
 	int freq_th = 0;
-	int freq_hystersis_up = 0;
-	int freq_hystersis_down = 0;	
+	int freq_hystersis = 0;
 
 	if(curr < OUTPUT_CURRENT_TH) {
 		freq_th = FREQ_TH_1;
-		freq_hystersis_up = FREQ_HYSTERESIS_UP_1;
-		freq_hystersis_down = FREQ_HYSTERESIS_DOWN_1;			
+		freq_hystersis = FREQ_HYSTERESIS_1;
 	} else {
 		freq_th = FREQ_TH_2;
-		freq_hystersis_up = FREQ_HYSTERESIS_UP_2;
-		freq_hystersis_down = FREQ_HYSTERESIS_DOWN_2;		
+		freq_hystersis = FREQ_HYSTERESIS_2;
 	}
 
 	switch(last_alignment) {
@@ -183,7 +177,7 @@ static int idtp9025_calc_alignment(int freq, int curr)
 			break;
 		case WLC_ALIGNMENT_LEVEL_1:
 			{
-				if(freq > (freq_th+freq_hystersis_up)) {
+				if(freq > (freq_th+freq_hystersis)) {
 					last_freq = freq;
 					last_current = curr;
 					last_alignment = WLC_ALIGNMENT_LEVEL_2;
@@ -200,7 +194,7 @@ static int idtp9025_calc_alignment(int freq, int curr)
 					last_freq = freq;
 					last_current = curr;
 					last_alignment = WLC_ALIGNMENT_LEVEL_NC;
-				} else if(freq <= (freq_th-freq_hystersis_down)) {
+				} else if(freq <= (freq_th-freq_hystersis)) {
 					last_freq = freq;
 					last_current = curr;
 					last_alignment = WLC_ALIGNMENT_LEVEL_1;
@@ -302,7 +296,7 @@ static int __devinit idtp9025_probe(struct i2c_client *client, const struct i2c_
 		return -EIO;
 	}
 	idtp9025_client = client;
-	/* need dts parser */	
+	/*                 */	
 	if (dev_node) {
 		ret = idtp9025a_parse_dt(dev_node);
 	}

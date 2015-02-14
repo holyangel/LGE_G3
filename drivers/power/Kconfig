@@ -520,15 +520,6 @@ config LGE_QC_2_0_SCENARIO
 	help
 	  LGE CHARGING SCENARIO of QC 2.0
 
-config LGE_QC_2_0_SCENARIO_WITH_VOLTAGE
-	tristate "lge usb input voltage scenario of QC 2.0"
-	depends on QPNP_CHARGER
-	depends on LGE_PM
-	depends on LGE_QC_2_0_SCENARIO
-	default n
-	help
-	  lge usb input voltage scenario of QC 2.0
-
 config MAX17048_FUELGAUGE
 	tristate "Maxim MAX17048 fuel gauging external driver"
 	depends on I2C && LGE_PM
@@ -612,11 +603,13 @@ choice
 config CHARGER_UNIFIED_WLC_ALIGNMENT_IDT9025A
 	tristate "wireless charger alignment"
 	select CHARGER_UNIFIED_WLC_ALIGNMENT
+	default n
 	help
 		wireless charger alignment
 config CHARGER_UNIFIED_WLC_ALIGNMENT_BQ5102X
 	tristate "wireless charger alignment"
 	select CHARGER_UNIFIED_WLC_ALIGNMENT
+	default n
 	help
 		wireless charger alignment
 endchoice

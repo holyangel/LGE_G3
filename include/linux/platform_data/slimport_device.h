@@ -55,4 +55,4 @@ struct anx7808_platform_data
 
 };
 
-#endif /* SLIMPORT_DEVICE */
+#endif /*                 */

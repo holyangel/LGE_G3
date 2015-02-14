@@ -10,19 +10,15 @@
 #include <linux/mutex.h>
 #include <linux/pm_wakeup.h>
 
-#ifdef CONFIG_POWERSUSPEND
-#include <linux/powersuspend.h>
-#endif
-
 #include "power.h"
 
 static suspend_state_t autosleep_state;
 static struct workqueue_struct *autosleep_wq;
 /*
- * Note: it is only safe to mutex_lock(&autosleep_lock) if a wakeup_source
- * is active, otherwise a deadlock with try_to_suspend() is possible.
- * Alternatively mutex_lock_interruptible() can be used.  This will then fail
- * if an auto_sleep cycle tries to freeze processes.
+                                                                          
+                                                                     
+                                                                             
+                                                    
  */
 static DEFINE_MUTEX(autosleep_lock);
 static struct wakeup_source *autosleep_ws;
@@ -56,9 +52,9 @@ static void try_to_suspend(struct work_struct *work)
 		goto out;
 
 	/*
-	 * If the wakeup occured for an unknown reason, wait to prevent the
-	 * system from trying to suspend and waking up in a tight loop.
-	 */
+                                                                    
+                                                                
+  */
 	if (final_count == initial_count)
 		schedule_timeout_uninterruptible(HZ / 2);
 
@@ -108,14 +104,8 @@ int pm_autosleep_set_state(suspend_state_t state)
 	if (state > PM_SUSPEND_ON) {
 		pm_wakep_autosleep_enabled(true);
 		queue_up_suspend_work();
-#ifdef CONFIG_POWERSUSPEND
-		set_power_suspend_state_hook(POWER_SUSPEND_ACTIVE); // Yank555.lu : add hook to handle powersuspend tasks
-#endif
- 	} else {
- 		pm_wakep_autosleep_enabled(false);
-#ifdef CONFIG_POWERSUSPEND
-		set_power_suspend_state_hook(POWER_SUSPEND_INACTIVE); // Yank555.lu : add hook to handle powersuspend tasks
-#endif
+	} else {
+		pm_wakep_autosleep_enabled(false);
 	}
 
 	mutex_unlock(&autosleep_lock);

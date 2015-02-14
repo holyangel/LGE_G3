@@ -27,7 +27,7 @@ static struct kobj_attribute _name##_attr = \
 	__ATTR(_name, 0644, _name##_show, _name##_store)
 
 #if defined(CONFIG_HOTPLUG)
-/* current uevent sequence number */
+/*                                */
 static ssize_t uevent_seqnum_show(struct kobject *kobj,
 				  struct kobj_attribute *attr, char *buf)
 {
@@ -35,7 +35,7 @@ static ssize_t uevent_seqnum_show(struct kobject *kobj,
 }
 KERNEL_ATTR_RO(uevent_seqnum);
 
-/* uevent helper program, used during early boot */
+/*                                               */
 static ssize_t uevent_helper_show(struct kobject *kobj,
 				  struct kobj_attribute *attr, char *buf)
 {
@@ -71,10 +71,10 @@ static ssize_t profiling_store(struct kobject *kobj,
 	if (prof_on)
 		return -EEXIST;
 	/*
-	 * This eventually calls into get_option() which
-	 * has a ton of callers and is not const.  It is
-	 * easiest to cast it away here.
-	 */
+                                                 
+                                                 
+                                 
+  */
 	profile_setup((char *)buf);
 	ret = profile_init();
 	if (ret)
@@ -131,9 +131,9 @@ static ssize_t vmcoreinfo_show(struct kobject *kobj,
 }
 KERNEL_ATTR_RO(vmcoreinfo);
 
-#endif /* CONFIG_KEXEC */
+#endif /*              */
 
-/* whether file capabilities are enabled */
+/*                                       */
 static ssize_t fscaps_show(struct kobject *kobj,
 				  struct kobj_attribute *attr, char *buf)
 {
@@ -142,7 +142,7 @@ static ssize_t fscaps_show(struct kobject *kobj,
 KERNEL_ATTR_RO(fscaps);
 
 /*
- * Make /sys/kernel/notes give the raw contents of our kernel .notes section.
+                                                                             
  */
 extern const void __start_notes __attribute__((weak));
 extern const void __stop_notes __attribute__((weak));
@@ -189,45 +189,9 @@ static struct attribute_group kernel_attr_group = {
 	.attrs = kernel_attrs,
 };
 
-static unsigned int Lgentle_fair_sleepers = 0;
-extern void relay_gfs(unsigned int gfs);
-
-static ssize_t gentle_fair_sleepers_show(struct kobject *kobj, struct kobj_attribute *attr, char *buf)
-{
-	return sprintf(buf, "%u\n", Lgentle_fair_sleepers);
-}
-static ssize_t gentle_fair_sleepers_store(struct kobject *kobj, struct kobj_attribute *attr, const char *buf, size_t count)
-{
-	unsigned int input;
-	int ret;
-	ret = sscanf(buf, "%u", &input);
-	if (input != 0 && input != 1)
-		input = 0;
-	
-	Lgentle_fair_sleepers = input;
-	relay_gfs(Lgentle_fair_sleepers);
-	return count;
-}
-
-static struct kobj_attribute gentle_fair_sleepers_attribute =
-__ATTR(gentle_fair_sleepers, 0666, gentle_fair_sleepers_show, gentle_fair_sleepers_store);
-
-static struct attribute *gentle_fair_sleepers_attrs[] = {
-&gentle_fair_sleepers_attribute.attr,
-NULL,
-};
-
-static struct attribute_group gentle_fair_sleepers_attr_group = {
-.attrs = gentle_fair_sleepers_attrs,
-};
-
-/* Initialize fast charge sysfs folder */
-static struct kobject *gentle_fair_sleepers_kobj;
-
 static int __init ksysfs_init(void)
 {
 	int error;
-	int retval;
 
 	kernel_kobj = kobject_create_and_add("kernel", NULL);
 	if (!kernel_kobj) {
@@ -237,12 +201,6 @@ static int __init ksysfs_init(void)
 	error = sysfs_create_group(kernel_kobj, &kernel_attr_group);
 	if (error)
 		goto kset_exit;
-
-	gentle_fair_sleepers_kobj = kobject_create_and_add("sched", kernel_kobj);
-	retval = sysfs_create_group(gentle_fair_sleepers_kobj, &gentle_fair_sleepers_attr_group);
-
-	if (retval)
-		kobject_put(gentle_fair_sleepers_kobj);
 
 	if (notes_size > 0) {
 		notes_attr.size = notes_size;

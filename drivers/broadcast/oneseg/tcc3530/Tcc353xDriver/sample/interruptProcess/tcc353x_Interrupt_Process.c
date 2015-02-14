@@ -27,7 +27,7 @@ unsigned int RingBufId = 0;
 #endif
 extern TcpalSemaphore_t Tcc353xStreamSema;
 
-/* for overflow test */
+/*                   */
 #define _DBG_CHK_OVERFLOW_CNT_
 I32U gOverflowcnt = 0;
 I32U gDbgIsrCnt = 0;
@@ -129,7 +129,7 @@ I32U Tcc353xGetStreamBuffer(I32S _moduleIndex, I08U * _buff, I32U _size)
 
 	nextRp = ((rp+tsSize)%TCC353X_STREAM_BUFFER_SIZE);
 	
-	if(rp+tsSize>TCC353X_STREAM_BUFFER_SIZE) {	/* read twice */
+	if(rp+tsSize>TCC353X_STREAM_BUFFER_SIZE) {	/*            */
 		I32U first;
 		I32U remain;
 		first = TCC353X_STREAM_BUFFER_SIZE - rp;
@@ -143,7 +143,7 @@ I32U Tcc353xGetStreamBuffer(I32S _moduleIndex, I08U * _buff, I32U _size)
 
 	TcpalSemaphoreLock(&Tcc353xStreamSema);
 	if(Tcc353xStreamFlushFlag[_moduleIndex]!=0) {
-		/* no update read pointer & no push data */
+		/*                                       */
 		Tcc353xStreamFlushFlag[_moduleIndex] = 0;
 		tsSize = 0;
 	} else {
@@ -185,21 +185,21 @@ I32U Tcc353xInterruptProcess(void)
 	I32S moduleIndex = 0;
 	I32U totalSize = 0;
 
-	/* Read BB Interrupt Status */
+	/*                          */
 	Tcc353xApiGetIrqStatus(moduleIndex, &irqStatus);
 
-	/* Stream Interrupt */
+	/*                  */
 	if (irqStatus&0x01) {
 		TcpalPrintErr((I08S *)
 			      "[TCC353X] FIFO overflow[0x%02X] flush!!!\n",
 			      irqStatus);
-		/* Tcc353x IRQ Clear */
+		/*                   */
 		Tcc353xApiIrqClear(moduleIndex, irqStatus);
 		Tcc353xApiInterruptBuffClr(moduleIndex);
 		gOverflowcnt ++;
 		ret = 0;
 	} else {
-		/* Tcc353x IRQ Clear */
+		/*                   */
 		Tcc353xApiIrqClear(moduleIndex, irqStatus);
 		Tcc353xApiGetFifoStatus(moduleIndex, &totalSize);
 		ret = totalSize;
@@ -228,14 +228,14 @@ void Tcc353xInterruptGetStream(I32U _fifoSize)
 
 	totalSize = _fifoSize - (_fifoSize%188);
 
-	//[Fix Start]align TS size to use DMA only mode - 20121228 hyewon.eum@lge.com
-	//TcpalPrintErr((I08S *) "Tcc353xInterruptGetStream size[%d]\n", totalSize);
+	//                                                                           
+	//                                                                          
 
 	totalSize = (totalSize/188/4)*188*4;
 
 	if(totalSize > 188 * 87)
 		totalSize = 188 * 84;
-	//[Fix End]align TS size to use DMA only mode - 20121228 hyewon.eum@lge.com
+	//                                                                         
 
 	if(totalSize>=188) {
 		I32U nextwp;
@@ -249,7 +249,7 @@ void Tcc353xInterruptGetStream(I32U _fifoSize)
 
 		nextwp = ((wp+totalSize)%TCC353X_STREAM_BUFFER_SIZE);
 		
-		if(wp+totalSize>TCC353X_STREAM_BUFFER_SIZE) {	/* read twice */
+		if(wp+totalSize>TCC353X_STREAM_BUFFER_SIZE) {	/*            */
 			I32U first;
 			first = TCC353X_STREAM_BUFFER_SIZE - wp;
 			Tcc353xApiStreamRead(moduleIndex,
@@ -286,14 +286,14 @@ void Tcc353xInterruptGetStream(I32U _fifoSize)
 
 	totalSize = _fifoSize - (_fifoSize%188);
 
-	//[Fix Start]align TS size to use DMA only mode - 20121228 hyewon.eum@lge.com
-	//TcpalPrintErr((I08S *) "Tcc353xInterruptGetStream size[%d]\n", totalSize);
+	//                                                                           
+	//                                                                          
 
 	totalSize = (totalSize/188/4)*188*4;
 
 	if(totalSize > 188 * 87)
 		totalSize = 188 * 84;
-	//[Fix End]align TS size to use DMA only mode - 20121228 hyewon.eum@lge.com
+	//                                                                         
 
 	if(totalSize>=188) {
 		Tcc353xApiStreamRead(0,

@@ -1253,19 +1253,6 @@ config USB_G_LGE_MULTIPLE_CONFIGURATION
 
 	default n
 
-config USB_G_LGE_MULTICONFIG_ATF_WA
-	boolean "LGE Multiple Configuration"
-	depends on USB_G_LGE_MULTIPLE_CONFIGURATION
-	help
-	  If USB multiple configuration applied, AFT can't recognize device.
-	  Thus, change ACM interfaceclass by OS type.
-	  You need to change host driver if this config enabled.
-	  Just workaround until AFT update.
-
-	  Say y if this must be needed.
-
-	default y
-
 config USB_G_LGE_SERIALNO_REDIRECTION
 	boolean "LGE specific serial number support in LGE Android"
 	help

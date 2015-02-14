@@ -25,19 +25,6 @@
 #define CPUID_EXT_ISAR4	"c2, 4"
 #define CPUID_EXT_ISAR5	"c2, 5"
 
-#define MPIDR_SMP_BITMASK (0x3 << 30)
-#define MPIDR_SMP_VALUE (0x2 << 30)
-
-#define MPIDR_MT_BITMASK (0x1 << 24)
-
-#define MPIDR_HWID_BITMASK 0xFFFFFF
-
-#define MPIDR_LEVEL_BITS 8
-#define MPIDR_LEVEL_MASK ((1 << MPIDR_LEVEL_BITS) - 1)
-
-#define MPIDR_AFFINITY_LEVEL(mpidr, level) \
-	((mpidr >> (MPIDR_LEVEL_BITS * level)) & MPIDR_LEVEL_MASK)
-
 extern unsigned int processor_id;
 
 #ifdef CONFIG_CPU_CP15
@@ -65,9 +52,9 @@ extern unsigned int processor_id;
 #endif
 
 /*
- * The CPU ID never changes at run time, so we might as well tell the
- * compiler that it's constant.  Use this function to read the CPU ID
- * rather than directly reading processor_id or read_cpuid() directly.
+                                                                     
+                                                                     
+                                                                      
  */
 static inline unsigned int __attribute_const__ read_cpuid_id(void)
 {
@@ -90,9 +77,9 @@ static inline unsigned int __attribute_const__ read_cpuid_mpidr(void)
 }
 
 /*
- * Intel's XScale3 core supports some v6 features (supersections, L2)
- * but advertises itself as v5 as it does not support the v6 ISA.  For
- * this reason, we need a way to explicitly test for this type of CPU.
+                                                                     
+                                                                      
+                                                                      
  */
 #ifndef CONFIG_CPU_XSC3
 #define cpu_is_xsc3()	0
@@ -101,7 +88,7 @@ static inline int cpu_is_xsc3(void)
 {
 	unsigned int id;
 	id = read_cpuid_id() & 0xffffe000;
-	/* It covers both Intel ID and Marvell ID */
+	/*                                        */
 	if ((id == 0x69056000) || (id == 0x56056000))
 		return 1;
 

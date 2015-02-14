@@ -704,10 +704,6 @@ config LGE_IRDA_KDDI
 		bool "LGE IrDA driver for KDDI"
 		default n
 
-config HPH_HIGHPERF
-	bool "Sysfs for headphone high performance mode"
-	default n
-
 source "drivers/misc/c2port/Kconfig"
 source "drivers/misc/eeprom/Kconfig"
 source "drivers/misc/cb710/Kconfig"

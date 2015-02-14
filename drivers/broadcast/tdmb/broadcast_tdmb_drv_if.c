@@ -5,14 +5,14 @@
 #include <linux/cdev.h>
 #include <linux/device.h>
 #include <linux/kdev_t.h>
-#include <linux/uaccess.h>        /* copy_to_user */
+#include <linux/uaccess.h>        /*              */
 
 #include "broadcast_tdmb_typedef.h"
 #include "broadcast_tdmb_drv_ifdef.h"
 
 #include <mach/board_lge.h>
 
-#define BROADCAST_TDMB_NUM_DEVS 	1 /**< support this many devices */
+#define BROADCAST_TDMB_NUM_DEVS 	1 /*                             */
 
 static struct class *broadcast_tdmb_class;
 static dev_t broadcast_tdmb_dev;
@@ -30,7 +30,7 @@ static int broadcast_tdmb_power_on(void)
 {
 	int rc = ERROR;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_power_on_fci();
@@ -38,7 +38,7 @@ static int broadcast_tdmb_power_on(void)
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_power_on();
 	broadcast_drv_if_user_stop( 0 );
 
@@ -49,7 +49,7 @@ static int broadcast_tdmb_power_on(void)
 static int broadcast_tdmb_power_off(void)
 {
 	int rc = ERROR;
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_power_off_fci();
@@ -57,7 +57,7 @@ static int broadcast_tdmb_power_off(void)
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_power_off();
 	broadcast_drv_if_user_stop( 0 );	
 
@@ -68,14 +68,14 @@ static int broadcast_tdmb_open(void)
 {
 	int rc = ERROR;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_open_fci();
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_open();
 	return rc;
 }
@@ -83,7 +83,7 @@ static int broadcast_tdmb_open(void)
 static int broadcast_tdmb_close(void)
 {
 	int rc = ERROR;
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		broadcast_drv_if_user_stop_fci(0);
@@ -91,7 +91,7 @@ static int broadcast_tdmb_close(void)
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	broadcast_drv_if_user_stop(0);
 	rc = broadcast_drv_if_close();
 
@@ -110,7 +110,7 @@ static int broadcast_tdmb_set_channel(void __user *arg)
 	}
 	else
 	{
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 		if(lge_get_board_revno() == HW_REV_A){
 			broadcast_drv_if_user_stop_fci( 0 );
@@ -119,7 +119,7 @@ static int broadcast_tdmb_set_channel(void __user *arg)
 			return rc;
 		}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 		broadcast_drv_if_user_stop( 0 );
 		printk("broadcast_tdmb_set_ch ch_num = %d, mode = %d, sub_ch_id = %d \n", udata.ch_num, udata.mode, udata.sub_ch_id);
 		rc = broadcast_drv_if_set_channel(udata.ch_num, udata.sub_ch_id, udata.mode);
@@ -141,14 +141,14 @@ static int broadcast_tdmb_detect_sync(void __user *arg)
 	int __user* puser = (int __user*)arg;
 	udata = *puser;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_detect_sync_fci(udata);
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_detect_sync(udata);
 
 	return rc;
@@ -161,14 +161,14 @@ static int broadcast_tdmb_get_sig_info(void __user *arg)
 
 	if((void *)arg == NULL) return rc;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_get_sig_info_fci(&udata);
 	}
 	else
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_get_sig_info(&udata);
 
 	if(copy_to_user((void *)arg, &udata, sizeof(struct broadcast_tdmb_sig_info)))
@@ -200,14 +200,14 @@ static int broadcast_tdmb_get_ch_info(void __user *arg)
 
 	memset(fic_kernel_buffer, 0x00, sizeof(fic_kernel_buffer));
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_get_ch_info_fci(fic_kernel_buffer, &fic_len);
 	}
 	else
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_get_ch_info(fic_kernel_buffer, &fic_len);
 
 	if(rc == OK)
@@ -241,14 +241,14 @@ static int broadcast_tdmb_get_dmb_data(void __user *arg)
 
 	while(1)
 	{
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR)
 		if(lge_get_board_revno() == HW_REV_A){
 			rc = broadcast_drv_if_get_dmb_data_fci(&read_buffer_ptr, &read_buffer_size, puserdata->data_buf_size - copied_buffer_size);
 		}
 		else
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 		rc = broadcast_drv_if_get_dmb_data(&read_buffer_ptr, &read_buffer_size, puserdata->data_buf_size - copied_buffer_size);
 		if((rc != OK) ||(read_buffer_size ==0))
 		{
@@ -292,14 +292,14 @@ static int8 broadcast_tdmb_reset_ch(void)
 {
 	int rc = ERROR;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR) 
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_reset_ch_fci();
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	
 	rc = broadcast_drv_if_reset_ch();
 
@@ -313,16 +313,16 @@ static int8 broadcast_tdmb_user_stop(void __user *arg)
 
 	udata = *puser;
 
-	//printk("broadcast_tdmb_user_stop data =(%d)\n", udata);
+	//                                                       
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR) 
 	if(lge_get_board_revno() == HW_REV_A){
 		broadcast_drv_if_user_stop_fci( udata );
 		return OK;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	broadcast_drv_if_user_stop( udata );
 
 	return OK;
@@ -336,14 +336,14 @@ static int8 broadcast_tdmb_select_antenna(void __user *arg)
 
 	udata = *puser;
 
-//20130516_wonhee.jeong Code for revision separation [START]
+//                                                          
 #if defined (CONFIG_MACH_MSM8974_Z_KR) 
 	if(lge_get_board_revno() == HW_REV_A){
 		rc = broadcast_drv_if_select_antenna_fci(udata);
 		return rc;
 	}
 #endif
-//20130516_wonhee.jeong Code for revision separation [END]
+//                                                        
 	rc = broadcast_drv_if_select_antenna(udata);
 
 	return rc;
@@ -372,55 +372,55 @@ static long broadcast_tdmb_ioctl_control(struct file *filep, unsigned int cmd,	u
 	{
 	case LGE_BROADCAST_TDMB_IOCTL_ON:
 		rc = broadcast_tdmb_power_on();
-		//printk("LGE_BROADCAST_TDMB_IOCTL_ON OK %d \n", rc);
+		//                                                   
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_OFF:
 		rc = broadcast_tdmb_power_off();
-		//printk("LGE_BROADCAST_TDMB_IOCTL_OFF OK %d \n", rc);
+		//                                                    
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_OPEN:
 		rc = broadcast_tdmb_open();
-		//printk("LGE_BROADCAST_TDMB_IOCTL_OPEN OK %d \n", rc);
+		//                                                     
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_CLOSE:
 		broadcast_tdmb_close();
-		//printk("LGE_BROADCAST_TDMB_IOCTL_CLOSE OK \n");
+		//                                               
 		rc = 0;
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_SET_CH:
 		rc = broadcast_tdmb_set_channel(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_SET_CH result = %d \n", rc);
+		//                                                             
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_RESYNC:
 		rc = broadcast_tdmb_resync(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_RESYNC result = %d \n", rc);
+		//                                                             
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_DETECT_SYNC:
 		rc = broadcast_tdmb_detect_sync(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_DETECT_SYNC result = %d \n", rc);
+		//                                                                  
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_GET_SIG_INFO:
 		rc = broadcast_tdmb_get_sig_info(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_GET_SIG_INFO result = %d \n", rc);
+		//                                                                   
 		break;
 	case LGE_BROADCAST_TDMB_IOCTL_GET_CH_INFO:
 		rc = broadcast_tdmb_get_ch_info(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_GET_CH_INFO result = %d \n", rc);
+		//                                                                  
 		break;
 
 	case LGE_BROADCAST_TDMB_IOCTL_RESET_CH:
-		//printk("LGE_BROADCAST_TDMB_IOCTL_RESET_CH result = %d \n", rc);
+		//                                                               
 		rc = broadcast_tdmb_reset_ch();
 		break;
 
 	case LGE_BROADCAST_TDMB_IOCTL_USER_STOP:
-		//printk("LGE_BROADCAST_TDMB_IOCTL_USER_STOP !!! \n");
+		//                                                    
 		rc = broadcast_tdmb_user_stop(argp);
 		break;
 
 	case LGE_BROADCAST_TDMB_IOCTL_GET_DMB_DATA:
 		rc = broadcast_tdmb_get_dmb_data(argp);
-		//printk("LGE_BROADCAST_TDMB_IOCTL_GET_DMB_DATA TBD... !!! \n");
+		//                                                              
 		break;
 
 	case LGE_BROADCAST_TDMB_IOCTL_SELECT_ANTENNA:
@@ -495,7 +495,7 @@ int8 broadcast_tdmb_blt_power_off(void)
 
 	rc = broadcast_drv_if_power_off();
 
-	broadcast_drv_if_user_stop( 0 ); /* 0 or 1 */
+	broadcast_drv_if_user_stop( 0 ); /*        */
 
 	return rc;
 

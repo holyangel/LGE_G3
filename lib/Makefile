@@ -2,8 +2,6 @@
 # Makefile for some libs needed in the kernel.
 #
 
-KBUILD_CFLAGS	+=-O3
-
 ifdef CONFIG_FUNCTION_TRACER
 ORIG_CFLAGS := $(KBUILD_CFLAGS)
 KBUILD_CFLAGS = $(subst -pg,,$(ORIG_CFLAGS))
@@ -14,7 +12,7 @@ lib-y := ctype.o string.o vsprintf.o cmdline.o \
 	 idr.o int_sqrt.o extable.o prio_tree.o \
 	 sha1.o md5.o irq_regs.o reciprocal_div.o argv_split.o \
 	 proportions.o prio_heap.o ratelimit.o show_mem.o \
-	 is_single_threaded.o plist.o decompress.o memory_alloc.o \
+	 is_single_threaded.o plist.o decompress.o memory_alloc.o
 
 lib-$(CONFIG_MMU) += ioremap.o
 lib-$(CONFIG_SMP) += cpumask.o
@@ -131,9 +129,6 @@ obj-$(CONFIG_SIGNATURE) += digsig.o
 obj-$(CONFIG_CLZ_TAB) += clz_tab.o
 
 obj-$(CONFIG_QMI_ENCDEC) += qmi_encdec.o
-
-obj-$(CONFIG_GENERIC_STRNCPY_FROM_USER) += strncpy_from_user.o
-obj-$(CONFIG_GENERIC_STRNLEN_USER) += strnlen_user.o
 
 hostprogs-y	:= gen_crc32table
 clean-files	:= crc32table.h

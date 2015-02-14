@@ -11,4 +11,4 @@ int TcpalIrqEnable(void);
 
 int TcpalRegisterIrqHandler(void);
 int TcpalUnRegisterIrqHandler(void);
-#endif /*__BROADCAST_TCC3530_H__*/
+#endif /*                       */

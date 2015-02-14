@@ -9,7 +9,7 @@
 #define _ASMARM_UACCESS_H
 
 /*
- * User space memory access functions
+                                     
  */
 #include <linux/string.h>
 #include <linux/thread_info.h>
@@ -23,16 +23,16 @@
 #define VERIFY_WRITE 1
 
 /*
- * The exception table consists of pairs of addresses: the first is the
- * address of an instruction that is allowed to fault, and the second is
- * the address at which the program should continue.  No registers are
- * modified, so it is entirely up to the continuation code to figure out
- * what to do.
- *
- * All the routines below use bits of fixup code that are out of line
- * with the main instruction path.  This means when everything is well,
- * we don't even have to jump over them.  Further, they do not intrude
- * on our cache or tlb entries.
+                                                                       
+                                                                        
+                                                                      
+                                                                        
+              
+  
+                                                                     
+                                                                       
+                                                                      
+                               
  */
 
 struct exception_table_entry
@@ -43,14 +43,14 @@ struct exception_table_entry
 extern int fixup_exception(struct pt_regs *regs);
 
 /*
- * These two are intentionally not defined anywhere - if the kernel
- * code generates any references to them, that's a bug.
+                                                                   
+                                                       
  */
 extern int __get_user_bad(void);
 extern int __put_user_bad(void);
 
 /*
- * Note that this is actually 0x1,0000,0000
+                                           
  */
 #define KERNEL_DS	0x00000000
 #define get_ds()	(KERNEL_DS)
@@ -76,7 +76,7 @@ static inline void set_fs(mm_segment_t fs)
 		: "cc"); \
 	(flag == 0); })
 
-/* We use 33-bit arithmetic here... */
+/*                                  */
 #define __range_ok(addr,size) ({ \
 	unsigned long flag, roksum; \
 	__chk_user_ptr(addr);	\
@@ -87,15 +87,15 @@ static inline void set_fs(mm_segment_t fs)
 	flag; })
 
 /*
- * Single-value transfer routines.  They automatically use the right
- * size if we just have the right pointer type.  Note that the functions
- * which read from user space (*get_*) need to take care not to leak
- * kernel data even if the calling code is buggy and fails to check
- * the return value.  This means zeroing out the destination variable
- * or buffer on error.  Normally this is done out of line by the
- * fixup code, but there are a few places where it intrudes on the
- * main code path.  When we only write to user space, there is no
- * problem.
+                                                                    
+                                                                        
+                                                                    
+                                                                   
+                                                                     
+                                                                
+                                                                  
+                                                                 
+           
  */
 extern int __get_user_1(void *);
 extern int __get_user_2(void *);
@@ -180,10 +180,10 @@ extern int __put_user_8(void *, unsigned long long);
 		__e;							\
 	})
 
-#else /* CONFIG_MMU */
+#else /*            */
 
 /*
- * uClinux has only one addr space, so has simplified address limits.
+                                                                     
  */
 #define USER_DS			KERNEL_DS
 
@@ -199,21 +199,18 @@ static inline void set_fs(mm_segment_t fs)
 #define get_user(x,p)	__get_user(x,p)
 #define put_user(x,p)	__put_user(x,p)
 
-#endif /* CONFIG_MMU */
+#endif /*            */
 
 #define access_ok(type,addr,size)	(__range_ok(addr,size) == 0)
 
-#define user_addr_max() \
-	(segment_eq(get_fs(), USER_DS) ? TASK_SIZE : ~0UL)
-
 /*
- * The "__xxx" versions of the user access functions do not verify the
- * address space - it must have been done previously with a separate
- * "access_ok()" call.
- *
- * The "xxx_error" versions set the third argument to EFAULT if an
- * error occurs, and leave it unchanged on success.  Note that these
- * versions are void (ie, don't return a value as such).
+                                                                      
+                                                                    
+                      
+  
+                                                                  
+                                                                    
+                                                        
  */
 #define __get_user(x,ptr)						\
 ({									\
@@ -415,11 +412,14 @@ extern unsigned long __must_check __clear_user_std(void __user *addr, unsigned l
 #define __clear_user(addr,n)		(memset((void __force *)addr, 0, n), 0)
 #endif
 
+extern unsigned long __must_check __strncpy_from_user(char *to, const char __user *from, unsigned long count);
+extern unsigned long __must_check __strnlen_user(const char __user *s, long n);
+
 static inline unsigned long __must_check copy_from_user(void *to, const void __user *from, unsigned long n)
 {
 	if (access_ok(VERIFY_READ, from, n))
 		n = __copy_from_user(to, from, n);
-	else /* security hole - plug it */
+	else /*                         */
 		memset(to, 0, n);
 	return n;
 }
@@ -441,9 +441,24 @@ static inline unsigned long __must_check clear_user(void __user *to, unsigned lo
 	return n;
 }
 
-extern long strncpy_from_user(char *dest, const char __user *src, long count);
+static inline long __must_check strncpy_from_user(char *dst, const char __user *src, long count)
+{
+	long res = -EFAULT;
+	if (access_ok(VERIFY_READ, src, 1))
+		res = __strncpy_from_user(dst, src, count);
+	return res;
+}
 
-extern __must_check long strlen_user(const char __user *str);
-extern __must_check long strnlen_user(const char __user *str, long n);
+#define strlen_user(s)	strnlen_user(s, ~0UL >> 1)
 
-#endif /* _ASMARM_UACCESS_H */
+static inline long __must_check strnlen_user(const char __user *s, long n)
+{
+	unsigned long res = 0;
+
+	if (__addr_ok(s))
+		res = __strnlen_user(s, n);
+
+	return res;
+}
+
+#endif /*                   */

@@ -21,7 +21,7 @@
 #include "mdss_io_util.h"
 #include "mdss_dsi_cmd.h"
 
-#define MMSS_SERDES_BASE_PHY 0x04f01000 /* mmss (De)Serializer CFG */
+#define MMSS_SERDES_BASE_PHY 0x04f01000 /*                         */
 
 #define MIPI_OUTP(addr, data) writel_relaxed((data), (addr))
 #define MIPI_INP(addr) readl_relaxed(addr)
@@ -48,7 +48,7 @@
 #define MIPI_DSI_PANEL_720P_PT	8
 #define DSI_PANEL_MAX	8
 
-enum {		/* mipi dsi panel */
+enum {		/*                */
 DSI_VIDEO_MODE,
 DSI_CMD_MODE,
 };
@@ -142,10 +142,10 @@ DSI_LANE_MAP_3210,
 #define DSI_INTR_CMD_DMA_DONE_MASK	BIT(1)
 #define DSI_INTR_CMD_DMA_DONE		BIT(0)
 
-#define DSI_CMD_TRIGGER_NONE		0x0	/* mdp trigger */
+#define DSI_CMD_TRIGGER_NONE		0x0	/*             */
 #define DSI_CMD_TRIGGER_TE		0x02
 #define DSI_CMD_TRIGGER_SW		0x04
-#define DSI_CMD_TRIGGER_SW_SEOF		0x05	/* cmd dma only */
+#define DSI_CMD_TRIGGER_SW_SEOF		0x05	/*              */
 #define DSI_CMD_TRIGGER_SW_TE		0x06
 
 #define DSI_VIDEO_TERM  BIT(16)
@@ -166,8 +166,8 @@ struct dsiphy_pll_divider_config {
 u32 clk_rate;
 u32 fb_divider;
 u32 ref_divider_ratio;
-u32 bit_clk_divider;	/* oCLK1 */
-u32 byte_clk_divider;	/* oCLK2 */
+u32 bit_clk_divider;	/*       */
+u32 byte_clk_divider;	/*       */
 u32 analog_posDiv;
 u32 digital_posDiv;
 };
@@ -223,9 +223,6 @@ struct regulator *vdd_vreg;
 struct regulator *vdd_io_vreg;
 struct regulator *vdda_vreg;
 int broadcast_enable;
-#ifdef CONFIG_LGE_SHARPENING
-int sharpening_state;
-#endif
 };
 
 enum {
@@ -244,17 +241,12 @@ DSI_CTRL_MAX,
 #define DSI_FLAG_CLOCK_MASTER		0x80000000
 
 struct mdss_dsi_ctrl_pdata {
-int ndx;	/* panel_num */
+int ndx;	/*           */
 int (*on) (struct mdss_panel_data *pdata);
 int (*off) (struct mdss_panel_data *pdata);
 int (*partial_update_fnc) (struct mdss_panel_data *pdata);
 int (*check_status) (struct mdss_dsi_ctrl_pdata *pdata);
 int (*cmdlist_commit)(struct mdss_dsi_ctrl_pdata *ctrl, int from_mdp);
-#ifdef CONFIG_LGE_SHARPENING
-int (*set_sharpening)(struct mdss_dsi_ctrl_pdata *ctrl, int state,
-	void *resuming);
-int (*get_sharpening)(struct mdss_dsi_ctrl_pdata *ctrl);
-#endif
 struct mdss_panel_data panel_data;
 unsigned char *ctrl_base;
 int reg_size;
@@ -280,14 +272,14 @@ int rst_gpio_requested;
 int disp_en_gpio_requested;
 int disp_te_gpio_requested;
 int mode_gpio_requested;
-int bklt_ctrl;	/* backlight ctrl */
+int bklt_ctrl;	/*                */
 int pwm_period;
 int pwm_pmic_gpio;
 int pwm_lpg_chan;
 int bklt_max;
 int new_fps;
 int pwm_enabled;
-int io_gpio; /* for china model */
+int io_gpio; /*                 */
 struct pwm_device *pwm_bl;
 struct dsi_drv_cm_data shared_pdata;
 u32 pclk_rate;
@@ -319,10 +311,6 @@ struct mutex cmd_mutex;
 
 struct dsi_buf tx_buf;
 struct dsi_buf rx_buf;
-#ifdef CONFIG_LGE_SHARPENING
-struct dsi_panel_cmds sharpening_on;
-struct dsi_panel_cmds sharpening_off;
-#endif
 };
 
 int dsi_panel_device_register(struct device_node *pan_node,
@@ -387,4 +375,4 @@ int mdss_dsi_bta_status_check(struct mdss_dsi_ctrl_pdata *ctrl);
 int mdss_dsi_panel_init(struct device_node *node,
 		struct mdss_dsi_ctrl_pdata *ctrl_pdata,
 		bool cmd_cfg_cont_splash);
-#endif /* MDSS_DSI_H */
+#endif /*            */

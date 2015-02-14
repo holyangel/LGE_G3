@@ -50,6 +50,16 @@
 #include "../platsmp.h"
 #include <mach/board_lge.h>
 
+#if defined(CONFIG_LCD_KCAL)
+/*             
+                          
+                                
+*/
+#include <linux/module.h>
+#include "../../../../drivers/video/msm/mdss/mdss_fb.h"
+extern int update_preset_lcdc_lut(void);
+#endif /*                 */
+
 static struct memtype_reserve msm8974_reserve_table[] __initdata = {
 	[MEMTYPE_SMI] = {
 	},
@@ -100,17 +110,83 @@ void __init lge_add_lcd_misc_devices(void)
 }
 #endif
 
+#if defined(CONFIG_LCD_KCAL)
+/*             
+                          
+                                
+*/
+extern int g_kcal_r;
+extern int g_kcal_g;
+extern int g_kcal_b;
+
+int kcal_set_values(int kcal_r, int kcal_g, int kcal_b)
+{
+#if 0
+		int is_update = 0;
+
+		int kcal_r_limit = 250;
+		int kcal_g_limit = 250;
+		int kcal_b_limit = 253;
+
+		g_kcal_r = kcal_r < kcal_r_limit ? kcal_r_limit : kcal_r;
+		g_kcal_g = kcal_g < kcal_g_limit ? kcal_g_limit : kcal_g;
+		g_kcal_b = kcal_b < kcal_b_limit ? kcal_b_limit : kcal_b;
+
+		if (kcal_r < kcal_r_limit || kcal_g < kcal_g_limit || kcal_b < kcal_b_limit)
+			is_update = 1;
+		if (is_update)
+			update_preset_lcdc_lut();
+#else
+	g_kcal_r = kcal_r;
+	g_kcal_g = kcal_g;
+	g_kcal_b = kcal_b;
+#endif
+	return 0;
+}
+
+static int kcal_get_values(int *kcal_r, int *kcal_g, int *kcal_b)
+{
+	*kcal_r = g_kcal_r;
+	*kcal_g = g_kcal_g;
+	*kcal_b = g_kcal_b;
+	return 0;
+}
+
+static int kcal_refresh_values(void)
+{
+	return update_preset_lcdc_lut();
+}
+
+static struct kcal_platform_data kcal_pdata = {
+	.set_values = kcal_set_values,
+	.get_values = kcal_get_values,
+	.refresh_display = kcal_refresh_values
+};
+
+static struct platform_device kcal_platrom_device = {
+	.name   = "kcal_ctrl",
+	.dev = {
+		.platform_data = &kcal_pdata,
+	}
+};
+
+void __init lge_add_lcd_kcal_devices(void)
+{
+	pr_info(" KCAL_DEBUG : %s\n", __func__);
+	platform_device_register(&kcal_platrom_device);
+}
+#endif /*                 */
 /*
- * Used to satisfy dependencies for devices that need to be
- * run early or in a particular order. Most likely your device doesn't fall
- * into this category, and thus the driver should not be added here. The
- * EPROBE_DEFER can satisfy most dependency problems.
+                                                           
+                                                                           
+                                                                        
+                                                     
  */
-/* LGE_CHANGE_S, [WiFi][hayun.kim@lge.com], 2013-01-22, Wifi Bring Up */
+/*                                                                    */
 #if defined(CONFIG_BCMDHD) || defined(CONFIG_BCMDHD_MODULE)
 extern void init_bcm_wifi(void);
 #endif
-/* LGE_CHANGE_E, [WiFi][hayun.kim@lge.com], 2013-01-22, Wifi Bring Up */
+/*                                                                    */
 
 void __init msm8974_add_drivers(void)
 {
@@ -127,11 +203,7 @@ void __init msm8974_add_drivers(void)
 	else
 		msm_clock_init(&msm8974_clock_init_data);
 	tsens_tm_init_driver();
-#ifdef CONFIG_INTELLI_THERMAL
-        msm_thermal_init(NULL);
-#else
- 	msm_thermal_device_init();
-#endif
+	msm_thermal_device_init();
 	lge_add_persistent_device();
 #ifdef CONFIG_LGE_QFPROM_INTERFACE
 	lge_add_qfprom_devices();
@@ -142,11 +214,18 @@ void __init msm8974_add_drivers(void)
 #ifdef CONFIG_LGE_LCD_TUNING
 	lge_add_lcd_misc_devices();
 #endif
-/* LGE_CHANGE_S, [WiFi][hayun.kim@lge.com], 2013-01-22, Wifi Bring Up */
+/*                                                                    */
 #if defined(CONFIG_BCMDHD) || defined(CONFIG_BCMDHD_MODULE)
 	init_bcm_wifi();
 #endif
-
+/*                                                                    */
+#if defined(CONFIG_LCD_KCAL)
+/*             
+                          
+                                
+*/
+	lge_add_lcd_kcal_devices();
+#endif /*                 */
 #if defined(CONFIG_LGE_PM_BATTERY_ID_CHECKER)
 	lge_battery_id_devices();
 #endif

@@ -72,49 +72,49 @@ static struct gpiomux_setting ap2mdm_wakeup = {
 };
 
 static struct msm_gpiomux_config mdm_configs[] __initdata = {
-	/* AP2MDM_STATUS */
+	/*               */
 	{
 		.gpio = 105,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &ap2mdm_cfg,
 		}
 	},
-	/* MDM2AP_STATUS */
+	/*               */
 	{
 		.gpio = 46,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mdm2ap_status_cfg,
 		}
 	},
-	/* MDM2AP_ERRFATAL */
+	/*                 */
 	{
 		.gpio = 82,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mdm2ap_errfatal_cfg,
 		}
 	},
-	/* AP2MDM_ERRFATAL */
+	/*                 */
 	{
 		.gpio = 106,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &ap2mdm_cfg,
 		}
 	},
-	/* AP2MDM_SOFT_RESET, aka AP2MDM_PON_RESET_N */
+	/*                                           */
 	{
 		.gpio = 24,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &ap2mdm_soft_reset_cfg,
 		}
 	},
-	/* AP2MDM_WAKEUP */
+	/*               */
 	{
 		.gpio = 104,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &ap2mdm_wakeup,
 		}
 	},
-	/* MDM2AP_PBL_READY*/
+	/*                 */
 	{
 		.gpio = 80,
 		.settings = {
@@ -176,16 +176,16 @@ static struct msm_gpiomux_config msm_eth_configs[] = {
 };
 #endif
 
-/* Comment out Temporary, because gpio_suspend_config is not used */
+/*                                                                */
 #if 0
 static struct gpiomux_setting gpio_suspend_config[] = {
 	{
-		.func = GPIOMUX_FUNC_GPIO,  /* IN-NP */
+		.func = GPIOMUX_FUNC_GPIO,  /*       */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_NONE,
 	},
 	{
-		.func = GPIOMUX_FUNC_GPIO,  /* O-LOW */
+		.func = GPIOMUX_FUNC_GPIO,  /*       */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_NONE,
 		.dir = GPIOMUX_OUT_LOW,
@@ -246,10 +246,10 @@ static struct gpiomux_setting ath_gpio_suspend_cfg = {
 static struct gpiomux_setting gpio_i2c_config = {
 	.func = GPIOMUX_FUNC_3,
 	/*
-	 * Please keep I2C GPIOs drive-strength at minimum (2ma). It is a
-	 * workaround for HW issue of glitches caused by rapid GPIO current-
-	 * change.
-	 */
+                                                                  
+                                                                     
+           
+  */
 	.drv = GPIOMUX_DRV_2MA,
 	.pull = GPIOMUX_PULL_NONE,
 };
@@ -319,7 +319,7 @@ static struct gpiomux_setting touch_reset_act_cfg = {
 	.dir = GPIOMUX_IN,
 };
 #ifndef CONFIG_LGE_IRRC
-/* NOT USED: GPIO 86 is used as IRRC_RxD in G3 board */
+/*                                                   */
 static struct gpiomux_setting hap_lvl_shft_suspended_config = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
@@ -344,14 +344,14 @@ static struct msm_gpiomux_config hap_lvl_shft_config[] __initdata = {
 
 static struct msm_gpiomux_config msm_touch_configs[] __initdata = {
 	{
-		.gpio      = 8,		/* TOUCH RESET */
+		.gpio      = 8,		/*             */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &touch_reset_act_cfg,
 			[GPIOMUX_SUSPENDED] = &touch_reset_sus_cfg,
 		},
 	},
 	{
-		.gpio      = 73,		/* TOUCH IRQ */
+		.gpio      = 73,		/*           */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &touch_int_act_cfg,
 			[GPIOMUX_SUSPENDED] = &touch_int_sus_cfg,
@@ -394,7 +394,7 @@ static struct gpiomux_setting hsic_resume_susp_cfg = {
 
 static struct msm_gpiomux_config msm_hsic_configs[] = {
 	{
-		.gpio = 144,               /*HSIC_STROBE */
+		.gpio = 144,               /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &hsic_act_cfg,
 			[GPIOMUX_SUSPENDED] = &hsic_sus_cfg,
@@ -402,7 +402,7 @@ static struct msm_gpiomux_config msm_hsic_configs[] = {
 	},
 #ifndef CONFIG_MACH_LGE
 	{
-		.gpio = 145,               /* HSIC_DATA */
+		.gpio = 145,               /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &hsic_act_cfg,
 			[GPIOMUX_SUSPENDED] = &hsic_sus_cfg,
@@ -420,7 +420,7 @@ static struct msm_gpiomux_config msm_hsic_configs[] = {
 
 static struct msm_gpiomux_config msm_hsic_hub_configs[] = {
 	{
-		.gpio = 50,               /* HSIC_HUB_INT_N */
+		.gpio = 50,               /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &hsic_hub_act_cfg,
 			[GPIOMUX_SUSPENDED] = &hsic_sus_cfg,
@@ -428,7 +428,7 @@ static struct msm_gpiomux_config msm_hsic_hub_configs[] = {
 	},
 };
 
-/* LGE_CHANGE_S matthew.choi@lge.com 130319 GPIO Setting for Hall IC */
+/*                                                                   */
 static struct gpiomux_setting hall_ic_act_cfg = {
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_2MA,
@@ -450,7 +450,7 @@ static struct msm_gpiomux_config msm_hall_ic_configs[] = {
 		},
 	},
 };
-/* LGE_CHANGE_E matthew.choi@lge.com 130319 GPIO Setting for Hall IC */
+/*                                                                   */
 
 
 static struct gpiomux_setting mhl_suspend_config = {
@@ -492,7 +492,7 @@ static struct gpiomux_setting hdmi_active_2_cfg = {
 
 static struct msm_gpiomux_config msm_mhl_configs[] __initdata = {
 	{
-		/* mhl-sii8334 pwr */
+		/*                 */
 		.gpio = 12,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mhl_suspend_config,
@@ -500,7 +500,7 @@ static struct msm_gpiomux_config msm_mhl_configs[] __initdata = {
 		},
 	},
 	{
-		/* mhl-sii8334 intr */
+		/*                  */
 		.gpio = 82,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &mhl_suspend_config,
@@ -555,28 +555,28 @@ static struct gpiomux_setting gpio_uart7_suspend_cfg = {
 
 static struct msm_gpiomux_config msm_blsp2_uart7_configs[] __initdata = {
 	{
-		.gpio	= 41,	/* BLSP2 UART7 TX */
+		.gpio	= 41,	/*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &gpio_uart7_active_cfg,
 			[GPIOMUX_SUSPENDED] = &gpio_uart7_suspend_cfg,
 		},
 	},
 	{
-		.gpio	= 42,	/* BLSP2 UART7 RX */
+		.gpio	= 42,	/*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &gpio_uart7_active_cfg,
 			[GPIOMUX_SUSPENDED] = &gpio_uart7_suspend_cfg,
 		},
 	},
 	{
-		.gpio	= 43,	/* BLSP2 UART7 CTS */
+		.gpio	= 43,	/*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &gpio_uart7_active_cfg,
 			[GPIOMUX_SUSPENDED] = &gpio_uart7_suspend_cfg,
 		},
 	},
 	{
-		.gpio	= 44,	/* BLSP2 UART7 RFR */
+		.gpio	= 44,	/*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &gpio_uart7_active_cfg,
 			[GPIOMUX_SUSPENDED] = &gpio_uart7_suspend_cfg,
@@ -586,13 +586,13 @@ static struct msm_gpiomux_config msm_blsp2_uart7_configs[] __initdata = {
 
 static struct msm_gpiomux_config msm_rumi_blsp_configs[] __initdata = {
 	{
-		.gpio      = 45,	/* BLSP2 UART8 TX */
+		.gpio      = 45,	/*                */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 46,	/* BLSP2 UART8 RX */
+		.gpio      = 46,	/*                */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
@@ -611,19 +611,19 @@ static struct msm_gpiomux_config msm_lcd_configs[] __initdata = {
 
 static struct msm_gpiomux_config msm_epm_configs[] __initdata = {
 	{
-		.gpio      = 81,		/* EPM enable */
+		.gpio      = 81,		/*            */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_epm_config,
 		},
 	},
 	{
-		.gpio      = 85,		/* EPM MARKER2 */
+		.gpio      = 85,		/*             */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_epm_marker_config,
 		},
 	},
 	{
-		.gpio      = 96,		/* EPM MARKER1 */
+		.gpio      = 96,		/*             */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_epm_marker_config,
 		},
@@ -633,35 +633,35 @@ static struct msm_gpiomux_config msm_epm_configs[] __initdata = {
 static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 #if defined(CONFIG_KS8851) || defined(CONFIG_KS8851_MODULE)
 	{
-		.gpio      = 0,		/* BLSP1 QUP SPI_DATA_MOSI */
+		.gpio      = 0,		/*                         */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_spi_susp_config,
 		},
 	},
 	{
-		.gpio      = 1,		/* BLSP1 QUP SPI_DATA_MISO */
+		.gpio      = 1,		/*                         */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_spi_susp_config,
 		},
 	},
 	{
-		.gpio      = 3,		/* BLSP1 QUP SPI_CLK */
+		.gpio      = 3,		/*                   */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_spi_susp_config,
 		},
 	},
 	{
-		.gpio      = 9,		/* BLSP1 QUP SPI_CS2A_N */
+		.gpio      = 9,		/*                      */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_cs2_config,
 			[GPIOMUX_SUSPENDED] = &gpio_spi_susp_config,
 		},
 	},
 	{
-		.gpio      = 8,		/* BLSP1 QUP SPI_CS1_N */
+		.gpio      = 8,		/*                     */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_cs1_config,
 			[GPIOMUX_SUSPENDED] = &gpio_spi_susp_config,
@@ -669,40 +669,40 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 	},
 #endif
 	{
-		.gpio      = 6,		/* BLSP1 QUP2 I2C_DAT */
+		.gpio      = 6,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &touch_i2c_sus_cfg,
 			[GPIOMUX_ACTIVE] = &touch_i2c_act_cfg,
 		},
 	},
 	{
-		.gpio      = 7,		/* BLSP1 QUP2 I2C_CLK */
+		.gpio      = 7,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &touch_i2c_sus_cfg,
 			[GPIOMUX_ACTIVE] = &touch_i2c_act_cfg,
 		},
 	},
 	{
-		.gpio      = 83,		/* BLSP11 QUP I2C_DAT */
+		.gpio      = 83,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
 	{
-		.gpio      = 84,		/* BLSP11 QUP I2C_CLK */
+		.gpio      = 84,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
 #ifdef CONFIG_LGE_IRRC
 	{
-		.gpio	   = 85,		/* BLSP2 UART TX */
+		.gpio	   = 85,		/*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio	   = 86,		/* BLSP2 UART RX */
+		.gpio	   = 86,		/*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
@@ -711,40 +711,40 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 
 #ifdef CONFIG_MACH_LGE
 	{
-		.gpio      = 0,                 /* BLSP2 UART TX */
+		.gpio      = 0,                 /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 1,                 /* BLSP2 UART RX */
+		.gpio      = 1,                 /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
-#else   /*QCT Original code */
+#else   /*                  */
 	{
-		.gpio      = 4,			/* BLSP2 UART TX */
+		.gpio      = 4,			/*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 5,			/* BLSP2 UART RX */
+		.gpio      = 5,			/*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 #endif
 #ifndef CONFIG_MACH_LGE
-	{                           /* NFC */
-		.gpio      = 29,		/* BLSP1 QUP6 I2C_DAT */
+	{                           /*     */
+		.gpio      = 29,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
-	{                           /* NFC */
-		.gpio      = 30,		/* BLSP1 QUP6 I2C_CLK */
+	{                           /*     */
+		.gpio      = 30,		/*                    */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
@@ -752,28 +752,28 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 #endif
 #if defined(CONFIG_KS8851) || defined(CONFIG_KS8851_MODULE)
 	{
-		.gpio      = 53,		/* BLSP2 QUP4 SPI_DATA_MOSI */
+		.gpio      = 53,		/*                          */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio      = 54,		/* BLSP2 QUP4 SPI_DATA_MISO */
+		.gpio      = 54,		/*                          */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio      = 56,		/* BLSP2 QUP4 SPI_CLK */
+		.gpio      = 56,		/*                    */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio      = 55,		/* BLSP2 QUP4 SPI_CS0_N */
+		.gpio      = 55,		/*                      */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &gpio_spi_config,
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
@@ -784,13 +784,13 @@ static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 
 static struct msm_gpiomux_config msm8974_slimbus_config[] __initdata = {
 	{
-		.gpio	= 70,		/* slimbus clk */
+		.gpio	= 70,		/*             */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &slimbus,
 		},
 	},
 	{
-		.gpio	= 71,		/* slimbus data */
+		.gpio	= 71,		/*              */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &slimbus,
 		},
@@ -844,44 +844,44 @@ static struct msm_gpiomux_config msm8974_qua_mi2s_configs[] __initdata = {
 
 static struct gpiomux_setting cam_settings[] = {
 	{
-		.func = GPIOMUX_FUNC_1, /*active 1*/ /* 0 */
+		.func = GPIOMUX_FUNC_1, /*        */ /*   */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_NONE,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_1, /*suspend*/ /* 1 */
+		.func = GPIOMUX_FUNC_1, /*       */ /*   */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_DOWN,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_1, /*i2c suspend*/ /* 2 */
+		.func = GPIOMUX_FUNC_1, /*           */ /*   */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_KEEPER,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_GPIO, /*active 0*/ /* 3 */
+		.func = GPIOMUX_FUNC_GPIO, /*        */ /*   */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_NONE,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_GPIO, /*suspend 0*/ /* 4 */
+		.func = GPIOMUX_FUNC_GPIO, /*         */ /*   */
 		.drv = GPIOMUX_DRV_2MA,
 		.pull = GPIOMUX_PULL_DOWN,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_GPIO, /*active 2*/ /* 5 */ // for INPUT pin
+		.func = GPIOMUX_FUNC_GPIO, /*        */ /*   */ //              
 		.drv = GPIOMUX_DRV_8MA,
 		.pull = GPIOMUX_PULL_UP,
 		.dir = GPIOMUX_IN,
 	},
 
 	{
-		.func = GPIOMUX_FUNC_GPIO, /*suspend 2*/ /* 6 */ // for INPUT pin
+		.func = GPIOMUX_FUNC_GPIO, /*         */ /*   */ //              
 		.drv = GPIOMUX_DRV_8MA,
 		.pull = GPIOMUX_PULL_NONE,
 		.dir = GPIOMUX_IN,
@@ -934,91 +934,91 @@ static struct msm_gpiomux_config sd_card_det __initdata = {
 #if 0
 static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	{
-		.gpio = 15, /* CAM_MCLK0 */
+		.gpio = 15, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 16, /* CAM_MCLK1 */
+		.gpio = 16, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 17, /* CAM_MCLK2 */
+		.gpio = 17, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 18, /* WEBCAM1_RESET_N / CAM_MCLK3 */
+		.gpio = 18, /*                             */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 19, /* CCI_I2C_SDA0 */
+		.gpio = 19, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 20, /* CCI_I2C_SCL0 */
+		.gpio = 20, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 21, /* CCI_I2C_SDA1 */
+		.gpio = 21, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 22, /* CCI_I2C_SCL1 */
+		.gpio = 22, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 23, /* FLASH_LED_EN */
+		.gpio = 23, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 24, /* FLASH_LED_NOW */
+		.gpio = 24, /*               */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 25, /* WEBCAM2_RESET_N */
+		.gpio = 25, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 26, /* CAM_IRQ */
+		.gpio = 26, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 27, /* OIS_SYNC */
+		.gpio = 27, /*          */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
@@ -1026,7 +1026,7 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	},
 #ifndef CONFIG_MACH_LGE
 	{
-		.gpio = 28, /* WEBCAM1_STANDBY */
+		.gpio = 28, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
@@ -1034,128 +1034,128 @@ static struct msm_gpiomux_config msm_sensor_configs[] __initdata = {
 	},
 #endif
 	{
-		.gpio = 89, /* CAM1_STANDBY_N */
+		.gpio = 89, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 90, /* CAM1_RST_N */
+		.gpio = 90, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 91, /* CAM2_STANDBY_N */
+		.gpio = 91, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
-/* LGE change_start,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                             */
 #if defined(CONFIG_LGE_NFC) || defined(CONFIG_NFC_BCM2079X) || defined(CONFIG_LGE_NFC_PN547_C2)
 #else
 	{
-		.gpio = 92, /* CAM2_RST_N */
+		.gpio = 92, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 #endif
-/* LGE change_end,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                           */
 
 };
 
 static struct msm_gpiomux_config msm_sensor_configs_dragonboard[] __initdata = {
 	{
-		.gpio = 15, /* CAM_MCLK0 */
+		.gpio = 15, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 16, /* CAM_MCLK1 */
+		.gpio = 16, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 17, /* CAM_MCLK2 */
+		.gpio = 17, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 18, /* WEBCAM1_RESET_N / CAM_MCLK3 */
+		.gpio = 18, /*                             */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 19, /* CCI_I2C_SDA0 */
+		.gpio = 19, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 20, /* CCI_I2C_SCL0 */
+		.gpio = 20, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 21, /* CCI_I2C_SDA1 */
+		.gpio = 21, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 22, /* CCI_I2C_SCL1 */
+		.gpio = 22, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[0],
 		},
 	},
 	{
-		.gpio = 23, /* FLASH_LED_EN */
+		.gpio = 23, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 24, /* FLASH_LED_NOW */
+		.gpio = 24, /*               */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 25, /* WEBCAM2_RESET_N */
+		.gpio = 25, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 26, /* CAM_IRQ */
+		.gpio = 26, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 27, /* OIS_SYNC */
+		.gpio = 27, /*          */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
@@ -1163,7 +1163,7 @@ static struct msm_gpiomux_config msm_sensor_configs_dragonboard[] __initdata = {
 	},
 #ifndef CONFIG_MACH_LGE
 	{
-		.gpio = 28, /* WEBCAM1_STANDBY */
+		.gpio = 28, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
@@ -1171,237 +1171,237 @@ static struct msm_gpiomux_config msm_sensor_configs_dragonboard[] __initdata = {
 	},
 #endif
 	{
-		.gpio = 89, /* CAM1_STANDBY_N */
+		.gpio = 89, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 90, /* CAM1_RST_N */
+		.gpio = 90, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 	{
-		.gpio = 91, /* CAM2_STANDBY_N */
+		.gpio = 91, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
-/* LGE change_start,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                             */
 #if defined(CONFIG_LGE_NFC) || defined(CONFIG_NFC_BCM2079X) || defined(CONFIG_LGE_NFC_PN547_C2)
 #else
 	{
-		.gpio = 94, /* CAM2_RST_N */
+		.gpio = 94, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &gpio_suspend_config[1],
 		},
 	},
 #endif
-/* LGE change_end,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                           */
 };
 #endif
-/* EVB */
+/*     */
 static struct msm_gpiomux_config msm_sensor_configs_evb[] __initdata = {
 	{
-		.gpio = 15, /* CAM_MCLK0 */
+		.gpio = 15, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 16, /* 13M_VANA / CAM_MCLK1 */
+		.gpio = 16, /*                      */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 17, /* CAM_MCLK2 */
+		.gpio = 17, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 18, /* CAM2_RST_N / CAM_MCLK3 */
+		.gpio = 18, /*                        */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 19, /* CCI_I2C_SDA0 */
+		.gpio = 19, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 20, /* CCI_I2C_SCL0 */
+		.gpio = 20, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 21, /* CCI_I2C_SDA1 */
+		.gpio = 21, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 22, /* CCI_I2C_SCL1 */
+		.gpio = 22, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 29, /* OIS_RESET */
+		.gpio = 29, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 30, /* AF_MVDD */
+		.gpio = 30, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 43, /* FLASH_LED_STROBE */
+		.gpio = 43, /*                  */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 49, /* CAM1_RST_N */
+		.gpio = 49, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 57, /* 13M_VCM_EN */
+		.gpio = 57, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 145, /* OIS_LDO_EN */
+		.gpio = 145, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 96, /* 13M_VIO */
+		.gpio = 96, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 };
-/* REV A*/
+/*      */
 static struct msm_gpiomux_config msm_sensor_configs_rev_a[] __initdata = {
 	{
-		.gpio = 4, /* CAM1_RST_N */
+		.gpio = 4, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 15, /* CAM_MCLK0 */
+		.gpio = 15, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 16, /* 13M_VANA / CAM_MCLK1 */
+		.gpio = 16, /*                      */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 17, /* CAM_MCLK2 */
+		.gpio = 17, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 18, /* CAM2_RST_N  / CAM_MCLK3 */
+		.gpio = 18, /*                         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 19, /* CCI_I2C_SDA0 */
+		.gpio = 19, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 20, /* CCI_I2C_SCL0 */
+		.gpio = 20, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 21, /* CCI_I2C_SDA1 */
+		.gpio = 21, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 22, /* CCI_I2C_SCL1 */
+		.gpio = 22, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 29, /* OIS_RESET */
+		.gpio = 29, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 30, /* AF_MVDD */
+		.gpio = 30, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 43, /* FLASH_LED_STROBE */
+		.gpio = 43, /*                  */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
-#if 0 // from REV A , pm_gpio_4
+#if 0 //                       
 	{
-		.gpio = 57, /* 13M_VCM_EN */
+		.gpio = 57, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -1409,14 +1409,14 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_a[] __initdata = {
 	},
 #endif
 	{
-		.gpio = 96, /* 13M_VIO */
+		.gpio = 96, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 145, /* OIS_LDO_EN */
+		.gpio = 145, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -1424,80 +1424,80 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_a[] __initdata = {
 	},
 };
 
-/* REV B*/
+/*      */
 static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
 	{
-		.gpio = 4, /* CAM1_RST_N */
+		.gpio = 4, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 15, /* CAM_MCLK0 */
+		.gpio = 15, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 16, /* 13M_VANA / CAM_MCLK1 */
+		.gpio = 16, /*                      */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 17, /* CAM_MCLK2 */
+		.gpio = 17, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[1],
 		},
 	},
 	{
-		.gpio = 18, /* CAM2_RST_N  / CAM_MCLK3 */
+		.gpio = 18, /*                         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 19, /* CCI_I2C_SDA0 */
+		.gpio = 19, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 20, /* CCI_I2C_SCL0 */
+		.gpio = 20, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 21, /* CCI_I2C_SDA1 */
+		.gpio = 21, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 22, /* CCI_I2C_SCL1 */
+		.gpio = 22, /*              */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[0],
 			[GPIOMUX_SUSPENDED] = &cam_settings[2],
 		},
 	},
 	{
-		.gpio = 29, /* OIS_RESET */
+		.gpio = 29, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 30, /* OIS_ANA/OIS_DIG */
+		.gpio = 30, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -1505,7 +1505,7 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
 	},
 #if 0
 	{
-		.gpio = 89, /* VT_CAM_EN */
+		.gpio = 89, /*           */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
@@ -1513,21 +1513,21 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
 	},
 #endif
 	{
-		.gpio = 96, /* 13M_VIO */
+		.gpio = 96, /*         */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
 	{
-		.gpio = 145, /* VCM_LDO_EN */
+		.gpio = 145, /*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[3],
 			[GPIOMUX_SUSPENDED] = &cam_settings[4],
 		},
 	},
  	{
-		.gpio = 61, /* LDAF_INT */
+		.gpio = 61, /*          */
  		.settings = {
 			[GPIOMUX_ACTIVE]    = &cam_settings[5],
 			[GPIOMUX_SUSPENDED] = &cam_settings[6],
@@ -1535,7 +1535,7 @@ static struct msm_gpiomux_config msm_sensor_configs_rev_b[] __initdata = {
  	},
 };
 
-#endif /* #if defined(CONFIG_MACH_LGE) */
+#endif /*                              */
 static struct gpiomux_setting auxpcm_act_cfg = {
 	.func = GPIOMUX_FUNC_1,
 	.drv = GPIOMUX_DRV_8MA,
@@ -1566,7 +1566,7 @@ static struct msm_gpiomux_config tpa2015d_extamp_configs[] = {
 	},
 };
 #endif
-/* Primary AUXPCM port sharing GPIO lines with Primary MI2S */
+/*                                                          */
 #ifndef CONFIG_MACH_LGE
 static struct msm_gpiomux_config msm8974_pri_pri_auxpcm_configs[] __initdata = {
 	{
@@ -1600,7 +1600,7 @@ static struct msm_gpiomux_config msm8974_pri_pri_auxpcm_configs[] __initdata = {
 };
 #endif
 
-/* Primary AUXPCM port sharing GPIO lines with Tertiary MI2S */
+/*                                                           */
 static struct msm_gpiomux_config msm8974_pri_ter_auxpcm_configs[] __initdata = {
 	{
 		.gpio = 74,
@@ -1758,13 +1758,13 @@ static struct msm_gpiomux_config ath_gpio_configs[] = {
 
 static struct msm_gpiomux_config msm_taiko_config[] __initdata = {
 	{
-		.gpio	= 63,		/* SYS_RST_N */
+		.gpio	= 63,		/*           */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &taiko_reset,
 		},
 	},
 	{
-		.gpio	= 72,		/* CDC_INT */
+		.gpio	= 72,		/*         */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &taiko_int,
 		},
@@ -1781,7 +1781,7 @@ static struct gpiomux_setting slimport_int_sus_cfg = {
 
 static struct msm_gpiomux_config slimport_configs[] __initdata = {
 	{
-		.gpio      = 28,        /* SLIMPORT IRQ */
+		.gpio      = 28,        /*              */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &slimport_int_sus_cfg,
 		},
@@ -1901,7 +1901,7 @@ static struct gpiomux_setting sdc3_data_1_suspend_cfg = {
 
 static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 	{
-		/* DAT3 */
+		/*      */
 		.gpio      = 35,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_cmd_data_0_3_actv_cfg,
@@ -1909,7 +1909,7 @@ static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 		},
 	},
 	{
-		/* DAT2 */
+		/*      */
 		.gpio      = 36,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_cmd_data_0_3_actv_cfg,
@@ -1917,7 +1917,7 @@ static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 		},
 	},
 	{
-		/* DAT1 */
+		/*      */
 		.gpio      = 37,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_cmd_data_0_3_actv_cfg,
@@ -1925,7 +1925,7 @@ static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 		},
 	},
 	{
-		/* DAT0 */
+		/*      */
 		.gpio      = 38,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_cmd_data_0_3_actv_cfg,
@@ -1933,7 +1933,7 @@ static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 		},
 	},
 	{
-		/* CMD */
+		/*     */
 		.gpio      = 39,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_cmd_data_0_3_actv_cfg,
@@ -1941,7 +1941,7 @@ static struct msm_gpiomux_config msm8974_sdc3_configs[] __initdata = {
 		},
 	},
 	{
-		/* CLK */
+		/*     */
 		.gpio      = 40,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc3_clk_actv_cfg,
@@ -1983,10 +1983,10 @@ static struct gpiomux_setting sdc4_data_1_suspend_cfg = {
 
 static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 	{
-/* LGE change_start,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                             */
 #if defined(CONFIG_LGE_NFC) || defined(CONFIG_NFC_BCM2079X) || defined(CONFIG_LGE_NFC_PN547_C2)
 #else
-		/* DAT3 */
+		/*      */
 		.gpio      = 92,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_cmd_data_0_3_actv_cfg,
@@ -1994,7 +1994,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 	{
-		/* DAT2 */
+		/*      */
 		.gpio      = 94,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_cmd_data_0_3_actv_cfg,
@@ -2002,9 +2002,9 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 #endif
-/* LGE change_end,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                           */
 	{
-		/* DAT1 */
+		/*      */
 		.gpio      = 95,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_cmd_data_0_3_actv_cfg,
@@ -2012,7 +2012,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 	{
-		/* DAT0 */
+		/*      */
 		.gpio      = 96,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_cmd_data_0_3_actv_cfg,
@@ -2020,7 +2020,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 	{
-		/* CMD */
+		/*     */
 		.gpio      = 91,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_cmd_data_0_3_actv_cfg,
@@ -2028,7 +2028,7 @@ static struct msm_gpiomux_config msm8974_sdc4_configs[] __initdata = {
 		},
 	},
 	{
-		/* CLK */
+		/*     */
 		.gpio      = 93,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &sdc4_clk_actv_cfg,
@@ -2044,38 +2044,38 @@ static void msm_gpiomux_sdc4_install(void)
 }
 #else
 static void msm_gpiomux_sdc4_install(void) {}
-#endif /* CONFIG_MMC_MSM_SDC4_SUPPORT */
+#endif /*                             */
 
-/* LGE_CHANGE_S, [BT][younghyun.kwon@lge.com], 2013-01-29 */
+/*                                                        */
 #ifdef CONFIG_LGE_BLUETOOTH
 static struct gpiomux_setting bt_blsp5_uart_tx_config = {
     .func = GPIOMUX_FUNC_3,
     .drv = GPIOMUX_DRV_8MA,
-    .pull = GPIOMUX_PULL_NONE, /* Should be PULL NONE */
+    .pull = GPIOMUX_PULL_NONE, /*                     */
 };
 
 static struct gpiomux_setting bt_blsp5_uart_rx_config = {
     .func = GPIOMUX_FUNC_3,
     .drv = GPIOMUX_DRV_8MA,
-    .pull = GPIOMUX_PULL_NONE, /* Should be PULL NONE */
+    .pull = GPIOMUX_PULL_NONE, /*                     */
 };
 
 static struct gpiomux_setting bt_blsp5_uart_cts_config = {
     .func = GPIOMUX_FUNC_3,
     .drv = GPIOMUX_DRV_8MA,
-    .pull = GPIOMUX_PULL_NONE, /* Should be PULL NONE */
+    .pull = GPIOMUX_PULL_NONE, /*                     */
 };
 
 static struct gpiomux_setting bt_blsp5_uart_rfr_config = {
     .func = GPIOMUX_FUNC_4,
     .drv = GPIOMUX_DRV_8MA,
-    .pull = GPIOMUX_PULL_NONE, /* Should be PULL NONE */
+    .pull = GPIOMUX_PULL_NONE, /*                     */
 };
 
 static struct gpiomux_setting bt_gpio_uart_suspend_config = {
     .func = GPIOMUX_FUNC_GPIO,
     .drv = GPIOMUX_DRV_2MA,
-    .pull = GPIOMUX_PULL_NONE, /* PULL Configuration */
+    .pull = GPIOMUX_PULL_NONE, /*                    */
 };
 
 static struct gpiomux_setting bt_rfkill_active_config = {
@@ -2130,28 +2130,28 @@ static struct gpiomux_setting bt_pcm_suspend_config = {
 
 static struct msm_gpiomux_config bt_msm_blsp_configs[] __initdata = {
 	{
-		.gpio = 23, /* BLSP1 UART5 TX */
+		.gpio = 23, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &bt_blsp5_uart_tx_config ,
 			[GPIOMUX_SUSPENDED] = &bt_gpio_uart_suspend_config ,
 		},
 	},
 	{
-		.gpio = 24, /* BLSP1 UART5 RX */
+		.gpio = 24, /*                */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &bt_blsp5_uart_rx_config ,
 			[GPIOMUX_SUSPENDED] = &bt_gpio_uart_suspend_config ,
 		},
 	},
 	{
-		.gpio = 25, /* BLSP1 UART5 CTS */
+		.gpio = 25, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &bt_blsp5_uart_cts_config ,
 			[GPIOMUX_SUSPENDED] = &bt_gpio_uart_suspend_config ,
 		},
 	},
 	{
-		.gpio = 26, /* BLSP1 UART5 RFR */
+		.gpio = 26, /*                 */
 		.settings = {
 			[GPIOMUX_ACTIVE] = &bt_blsp5_uart_rfr_config ,
 			[GPIOMUX_SUSPENDED] = &bt_gpio_uart_suspend_config ,
@@ -2161,7 +2161,7 @@ static struct msm_gpiomux_config bt_msm_blsp_configs[] __initdata = {
 
 static struct msm_gpiomux_config bt_rfkill_configs[] = {
 	{
-		.gpio = 41,	/* BT_RESET_N */
+		.gpio = 41,	/*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &bt_rfkill_active_config,
 			[GPIOMUX_SUSPENDED] = &bt_rfkill_suspend_config,
@@ -2191,28 +2191,28 @@ static struct msm_gpiomux_config bt_wakeup_configs[] __initdata = {
 
 static struct msm_gpiomux_config bt_pcm_configs[] __initdata = {
 	{
-		.gpio	   = 79,	/* BT_PCM_CLK */
+		.gpio	   = 79,	/*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]	= &bt_pcm_active_config,
 			[GPIOMUX_SUSPENDED] = &bt_pcm_suspend_config,
 		},
 	},
 	{
-		.gpio	   = 80,	/* BT_PCM_SYNC */
+		.gpio	   = 80,	/*             */
 		.settings = {
 			[GPIOMUX_ACTIVE]	= &bt_pcm_active_config,
 			[GPIOMUX_SUSPENDED] = &bt_pcm_suspend_config,
 		},
 	},
 	{
-		.gpio	   = 81,	/* BT_PCM_DIN */
+		.gpio	   = 81,	/*            */
 		.settings = {
 			[GPIOMUX_ACTIVE]	= &bt_pcm_active_config,
 			[GPIOMUX_SUSPENDED] = &bt_pcm_suspend_config,
 		},
 	},
 	{
-		.gpio	   = 82,	/* BT_PCM_DOUT */
+		.gpio	   = 82,	/*             */
 		.settings = {
 			[GPIOMUX_ACTIVE]	= &bt_pcm_active_config,
 			[GPIOMUX_SUSPENDED] = &bt_pcm_suspend_config,
@@ -2222,32 +2222,32 @@ static struct msm_gpiomux_config bt_pcm_configs[] __initdata = {
 
 static void bluetooth_msm_gpiomux_install(void)
 {
-    /* UART */
+    /*      */
     msm_gpiomux_install(bt_msm_blsp_configs, ARRAY_SIZE(bt_msm_blsp_configs));
 
-    /* RFKILL */
+    /*        */
     msm_gpiomux_install(bt_rfkill_configs, ARRAY_SIZE(bt_rfkill_configs));
 
-    /* HOST WAKE-UP */
+    /*              */
     msm_gpiomux_install(bt_host_wakeup_configs, ARRAY_SIZE(bt_host_wakeup_configs));
 
-    /* BT WAKE-UP */
+    /*            */
     msm_gpiomux_install(bt_wakeup_configs, ARRAY_SIZE(bt_wakeup_configs));
 
-    /* PCM I/F */
+    /*         */
     msm_gpiomux_install(bt_pcm_configs, ARRAY_SIZE(bt_pcm_configs));
 }
-#endif /* CONFIG_LGE_BLUETOOTH */
-/* LGE_CHANGE_E, [BT][younghyun.kwon@lge.com], 2013-01-29 */
+#endif /*                      */
+/*                                                        */
 
 static struct gpiomux_setting max17048_i2c_sda_config = {
-	/* GPIO_2 */
+	/*        */
 	.func = GPIOMUX_FUNC_3,
 	.drv = GPIOMUX_DRV_8MA,
 	.pull = GPIOMUX_PULL_NONE,
 };
 static struct gpiomux_setting max17048_i2c_scl_config = {
-	/* GPIO_3 */
+	/*        */
 	.func = GPIOMUX_FUNC_3,
 	.drv = GPIOMUX_DRV_8MA,
 	.pull = GPIOMUX_PULL_NONE,
@@ -2259,21 +2259,21 @@ static struct gpiomux_setting max17048_int_config = {
 };
 static struct msm_gpiomux_config msm_fuel_gauge_configs[] __initdata = {
 	{
-		.gpio      = 2,		/* BLSP1 QUP1 I2C_DAT */
+		.gpio      = 2,		/*                    */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &max17048_i2c_sda_config,
 			[GPIOMUX_SUSPENDED] = &max17048_i2c_sda_config,
 		},
 	},
 	{
-		.gpio      = 3,		/* BLSP1 QUP1 I2C_CLK */
+		.gpio      = 3,		/*                    */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &max17048_i2c_scl_config,
 			[GPIOMUX_SUSPENDED] = &max17048_i2c_scl_config,
 		},
 	},
 	{
-		.gpio      = 9,		/* FUEL_GAUGE_INT_N */
+		.gpio      = 9,		/*                  */
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &max17048_int_config,
 			[GPIOMUX_SUSPENDED] = &max17048_int_config,
@@ -2281,19 +2281,19 @@ static struct msm_gpiomux_config msm_fuel_gauge_configs[] __initdata = {
 	},
 };
 
-#ifdef CONFIG_MACH_LGE /*temporary code for bringup */
+#ifdef CONFIG_MACH_LGE /*                           */
 
-#else /*QCT Original code */
+#else /*                  */
 static struct msm_gpiomux_config apq8074_dragonboard_ts_config[] __initdata = {
 	{
-		/* BLSP1 QUP I2C_DATA */
+		/*                    */
 		.gpio      = 2,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
 		},
 	},
 	{
-		/* BLSP1 QUP I2C_CLK */
+		/*                   */
 		.gpio      = 3,
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_i2c_config,
@@ -2303,7 +2303,7 @@ static struct msm_gpiomux_config apq8074_dragonboard_ts_config[] __initdata = {
 #endif
 
 
-/* LGE change_start,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                             */
 #if defined(CONFIG_LGE_NFC) || defined(CONFIG_NFC_BCM2079X) || defined(CONFIG_LGE_NFC_PN547_C2)
 static struct gpiomux_setting nfc_sda_cfg = {
 	.func = GPIOMUX_FUNC_3,
@@ -2331,7 +2331,7 @@ static struct gpiomux_setting nfc_irq_cfg = {
 	.dir = GPIOMUX_IN,
 };
 
-static struct gpiomux_setting nfc_mode_cfg = {	/* WAKE */
+static struct gpiomux_setting nfc_mode_cfg = {	/*      */
 	.func = GPIOMUX_FUNC_GPIO,
 	.drv = GPIOMUX_DRV_8MA,
 	.pull = GPIOMUX_PULL_NONE,
@@ -2339,7 +2339,7 @@ static struct gpiomux_setting nfc_mode_cfg = {	/* WAKE */
 };
 static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 	{
-		/* I2C SDA */
+		/*         */
 		.gpio      = 83,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &nfc_sda_cfg,
@@ -2347,7 +2347,7 @@ static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 		},
 	},
 	{
-		/* I2C SCL */
+		/*         */
 		.gpio      = 84,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &nfc_scl_cfg,
@@ -2355,7 +2355,7 @@ static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 		},
 	},
 	{
-		/* VEN */
+		/*     */
 		.gpio      = 94,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &nfc_ven_cfg,
@@ -2363,7 +2363,7 @@ static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 		},
 	},
 	{
-		/* IRQ */
+		/*     */
 		.gpio      = 5,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &nfc_irq_cfg,
@@ -2371,7 +2371,7 @@ static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 		},
 	},
 	{
-		/* MODE *//* WAKE */
+		/*      *//*      */
 		.gpio      = 92,
 		.settings = {
 			[GPIOMUX_ACTIVE]    = &nfc_mode_cfg,
@@ -2380,7 +2380,7 @@ static struct msm_gpiomux_config msm8974_nfc_configs[] __initdata = {
 	},
 };
 #endif
-/* LGE change_end,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                           */
 
 
 void __init msm_8974_init_gpiomux(void)
@@ -2435,7 +2435,7 @@ void __init msm_8974_init_gpiomux(void)
 		msm_gpiomux_install(msm_sensor_configs_rev_b, ARRAY_SIZE(msm_sensor_configs_rev_b));
 		break;
 	}
-#else /* QCT Original */
+#else /*              */
 	if (of_board_is_dragonboard() && machine_is_apq8074())
 		msm_gpiomux_install(msm_sensor_configs_dragonboard, \
 				ARRAY_SIZE(msm_sensor_configs_dragonboard));
@@ -2506,12 +2506,12 @@ void __init msm_8974_init_gpiomux(void)
 				ARRAY_SIZE(slimport_configs));
 #endif
 
-/* LGE_CHANGE_S matthew.choi@lge.com 130319 GPIO Setting for Hall IC */
+/*                                                                   */
 	msm_gpiomux_install(msm_hall_ic_configs, ARRAY_SIZE(msm_hall_ic_configs));
-/* LGE_CHANGE_E matthew.choi@lge.com 130319 GPIO Setting for Hall IC */
+/*                                                                   */
 
 
-#ifndef CONFIG_MACH_LGE /*QCT Original code */
+#ifndef CONFIG_MACH_LGE /*                  */
 	if (of_board_is_dragonboard() && machine_is_apq8074())
 		msm_gpiomux_install(apq8074_dragonboard_ts_config,
 			ARRAY_SIZE(apq8074_dragonboard_ts_config));
@@ -2520,18 +2520,18 @@ void __init msm_8974_init_gpiomux(void)
 			ARRAY_SIZE(msm_fuel_gauge_configs));
 #endif
 
-/* LGE change_start,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                             */
 #if defined(CONFIG_LGE_NFC) || defined(CONFIG_NFC_BCM2079X) || defined(CONFIG_LGE_NFC_PN547_C2)
 	msm_gpiomux_install(msm8974_nfc_configs, ARRAY_SIZE(msm8974_nfc_configs));
 #endif
-/* LGE change_end,[nfc][seunghoon65.lee@lge.com]  B2 Bringup */
+/*                                                           */
 
 
-/* LGE_CHANGE_S, [BT][younghyun.kwon@lge.com], 2013-01-29 */
+/*                                                        */
 #ifdef CONFIG_LGE_BLUETOOTH
     bluetooth_msm_gpiomux_install();
-#endif /* CONFIG_LGE_BLUETOOTH */
-/* LGE_CHANGE_E, [BT][younghyun.kwon@lge.com], 2013-01-29 */
+#endif /*                      */
+/*                                                        */
 
 #if defined(CONFIG_SWITCH_MAX1462X)
 		msm_gpiomux_install(headset_configs, ARRAY_SIZE(headset_configs));
@@ -2539,7 +2539,7 @@ void __init msm_8974_init_gpiomux(void)
 #ifdef CONFIG_SND_SOC_CS35L32
 	if (lge_get_board_revno() >= HW_REV_A)
 		msm_gpiomux_install(msm8974_qua_mi2s_configs, ARRAY_SIZE(msm8974_qua_mi2s_configs));
-#endif /*CONFIG_SND_SOC_CS35L32*/
+#endif /*                      */
 #ifdef CONFIG_SND_SOC_TPA2015D
 		msm_gpiomux_install(tpa2015d_extamp_configs, ARRAY_SIZE(tpa2015d_extamp_configs));
 #endif
@@ -2547,11 +2547,11 @@ void __init msm_8974_init_gpiomux(void)
 
 static void wcnss_switch_to_gpio(void)
 {
-	/* Switch MUX to GPIO */
+	/*                    */
 	msm_gpiomux_install(wcnss_5gpio_interface,
 			ARRAY_SIZE(wcnss_5gpio_interface));
 
-	/* Ensure GPIO config */
+	/*                    */
 	gpio_direction_input(WLAN_DATA2);
 	gpio_direction_input(WLAN_DATA1);
 	gpio_direction_input(WLAN_DATA0);
@@ -2574,11 +2574,11 @@ u32 wcnss_rf_read_reg(u32 rf_reg_addr)
 
 	wcnss_switch_to_gpio();
 
-	/* Reset the signal if it is already being used. */
+	/*                                               */
 	gpio_set_value(WLAN_SET, 0);
 	gpio_set_value(WLAN_CLK, 0);
 
-	/* We start with cmd_set high WLAN_SET = 1. */
+	/*                                          */
 	gpio_set_value(WLAN_SET, 1);
 
 	gpio_direction_output(WLAN_DATA0, 1);
@@ -2589,9 +2589,9 @@ u32 wcnss_rf_read_reg(u32 rf_reg_addr)
 	gpio_set_value(WLAN_DATA1, 0);
 	gpio_set_value(WLAN_DATA2, 0);
 
-	/* Prepare command and RF register address that need to sent out.
-	 * Make sure that we send only 14 bits from LSB.
-	 */
+	/*                                                               
+                                                 
+  */
 	rf_cmd_and_addr  = (((WLAN_RF_READ_REG_CMD) |
 		(rf_reg_addr << WLAN_RF_REG_ADDR_START_OFFSET)) &
 		WLAN_RF_READ_CMD_MASK);
@@ -2611,14 +2611,14 @@ u32 wcnss_rf_read_reg(u32 rf_reg_addr)
 		gpio_set_value(WLAN_DATA2, rf_bit ? 1 : 0);
 		rf_cmd_and_addr = (rf_cmd_and_addr >> 1);
 
-		/* Send the data out WLAN_CLK = 1 */
+		/*                                */
 		gpio_set_value(WLAN_CLK, 1);
 	}
 
-	/* Pull down the clock signal */
+	/*                            */
 	gpio_set_value(WLAN_CLK, 0);
 
-	/* Configure data pins to input IO pins */
+	/*                                      */
 	gpio_direction_input(WLAN_DATA0);
 	gpio_direction_input(WLAN_DATA1);
 	gpio_direction_input(WLAN_DATA2);

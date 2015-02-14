@@ -113,7 +113,7 @@ static void mdss_dsi_panel_bklt_pwm(struct mdss_dsi_ctrl_pdata *ctrl, int level)
 	ctrl->pwm_enabled = 1;
 }
 
-static char dcs_cmd[2] = {0x54, 0x00}; /* DTYPE_DCS_READ */
+static char dcs_cmd[2] = {0x54, 0x00}; /*                */
 static struct dsi_cmd_desc dcs_read_cmd = {
 	{DTYPE_DCS_READ, 1, 0, 1, 5, sizeof(dcs_cmd)},
 	dcs_cmd
@@ -132,11 +132,11 @@ u32 mdss_dsi_panel_cmd_read(struct mdss_dsi_ctrl_pdata *ctrl, char cmd0,
 	cmdreq.flags = CMD_REQ_RX | CMD_REQ_COMMIT;
 	cmdreq.rlen = len;
 	cmdreq.rbuf = rbuf;
-	cmdreq.cb = fxn; /* call back */
+	cmdreq.cb = fxn; /*           */
 	mdss_dsi_cmdlist_put(ctrl, &cmdreq);
 	/*
-	 * blocked here, until call back called
-	 */
+                                        
+  */
 
 	return 0;
 }
@@ -156,7 +156,7 @@ static void mdss_dsi_panel_cmds_send(struct mdss_dsi_ctrl_pdata *ctrl,
 	cmdreq.cmds_cnt = pcmds->cmd_cnt;
 	cmdreq.flags = CMD_REQ_COMMIT;
 
-	/*Panel ON/Off commands should be sent in DSI Low Power Mode*/
+	/*                                                          */
 	if (pcmds->link_state == DSI_LP_MODE)
 		cmdreq.flags  |= CMD_REQ_LP_MODE;
 
@@ -166,7 +166,7 @@ static void mdss_dsi_panel_cmds_send(struct mdss_dsi_ctrl_pdata *ctrl,
 	mdss_dsi_cmdlist_put(ctrl, &cmdreq);
 }
 
-static char led_pwm1[2] = {0x51, 0x0};	/* DTYPE_DCS_WRITE1 */
+static char led_pwm1[2] = {0x51, 0x0};	/*                  */
 static struct dsi_cmd_desc backlight_cmd = {
 	{DTYPE_DCS_WRITE1, 1, 0, 0, 1, sizeof(led_pwm1)},
 	led_pwm1
@@ -359,7 +359,7 @@ void mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable)
 #ifdef CONFIG_MACH_LGE
 		if (pinfo->lcd_marker)
 			mdelay(20);
-		else{ /* for SIC panel */
+		else{ /*               */
 			mdelay(25);
 			gpio_set_value((ctrl_pdata->rst_gpio), 0);
 			mdelay(10);
@@ -368,8 +368,8 @@ void mdss_dsi_panel_reset(struct mdss_panel_data *pdata, int enable)
 	}
 }
 
-static char caset[] = {0x2a, 0x00, 0x00, 0x03, 0x00};	/* DTYPE_DCS_LWRITE */
-static char paset[] = {0x2b, 0x00, 0x00, 0x05, 0x00};	/* DTYPE_DCS_LWRITE */
+static char caset[] = {0x2a, 0x00, 0x00, 0x03, 0x00};	/*                  */
+static char paset[] = {0x2b, 0x00, 0x00, 0x05, 0x00};	/*                  */
 
 static struct dsi_cmd_desc partial_update_enable_cmd[] = {
 	{{DTYPE_DCS_LWRITE, 1, 0, 0, 1, sizeof(caset)}, caset},
@@ -448,10 +448,10 @@ static void mdss_dsi_panel_bl_ctrl(struct mdss_panel_data *pdata,
 				panel_data);
 
 	/*
-	 * Some backlight controllers specify a minimum duty cycle
-	 * for the backlight brightness. If the brightness is less
-	 * than it, the controller can malfunction.
-	 */
+                                                           
+                                                           
+                                            
+  */
 
 	if ((bl_level < pdata->panel_info.bl_min) && (bl_level != 0))
 		bl_level = pdata->panel_info.bl_min;
@@ -543,13 +543,6 @@ static int mdss_dsi_panel_on(struct mdss_panel_data *pdata)
 	}
 #else
 		mdss_dsi_panel_cmds_send(ctrl, &ctrl->on_cmds);
-#endif
-
-#ifdef CONFIG_LGE_SHARPENING
-	/* Change to '1' if LG ever decides to disable by default */
-	if (ctrl->shared_pdata.sharpening_state == 0)
-		ctrl->set_sharpening(ctrl, ctrl->shared_pdata.sharpening_state,
-			(void *) 1);
 #endif
 
 	pr_info("%s-:\n", __func__);
@@ -744,7 +737,7 @@ static int mdss_dsi_parse_dcs_cmds(struct device_node *np,
 
 	memcpy(buf, data, blen);
 
-	/* scan dcs commands */
+	/*                   */
 	bp = buf;
 	len = blen;
 	cnt = 0;
@@ -959,31 +952,6 @@ static int mdss_dsi_parse_reset_seq(struct device_node *np,
 	return 0;
 }
 
-#ifdef CONFIG_LGE_SHARPENING
-static int mdss_dsi_panel_set_sharpening(struct mdss_dsi_ctrl_pdata *ctrl,
-	int state, void *resuming)
-{
-	if (ctrl->shared_pdata.sharpening_state == state && !resuming) {
-		pr_info("sharpening already in requested state");
-		return 0;
-	}
-
-	mdss_dsi_panel_cmds_send(ctrl, state ? &ctrl->sharpening_on :
-		&ctrl->sharpening_off);
-
-	ctrl->shared_pdata.sharpening_state = state;
-
-	pr_info("%s: sharpening %s for ndx %d\n", __func__,
-		state ?	"enabled" : "disabled", ctrl->ndx);
-
-	return 0;
-}
-
-static int mdss_dsi_panel_get_sharpening(struct mdss_dsi_ctrl_pdata *ctrl)
-{
-	return ctrl->shared_pdata.sharpening_state;
-}
-#endif
 
 static int mdss_panel_parse_dt(struct device_node *np,
 			struct mdss_dsi_ctrl_pdata *ctrl_pdata)
@@ -1137,11 +1105,11 @@ static int mdss_panel_parse_dt(struct device_node *np,
 	pinfo->bl_max = (!rc ? tmp : 255);
 
 #ifdef CONFIG_MACH_LGE
-	/* LGE_CHANGE
-	 * max brightness level set to 2048,
-	 * using lm3631 at REV A. In other case, set to 255
-	 * 2014-01-17, baryun.hwang@lge.com
-	 */
+	/*           
+                                     
+                                                    
+                                    
+  */
 #ifndef CONFIG_MACH_MSM8974_G3_CN
 	if(pinfo->bl_max > 255 && lge_get_board_revno() < HW_REV_A)
 		pinfo->bl_max = 255;
@@ -1222,7 +1190,7 @@ static int mdss_panel_parse_dt(struct device_node *np,
 		"qcom,mdss-dsi-lane-3-state");
 
 #ifdef CONFIG_MACH_LGE
-	if (!pinfo->lcd_marker) { /* for SIC panel */
+	if (!pinfo->lcd_marker) { /*               */
 		rc = of_property_read_u32(np, "qcom,mdss-dsi-lane-hs", &tmp);
 		pinfo->mipi.force_clk_lane_hs = (!rc ? tmp : 0);
 	}
@@ -1296,15 +1264,6 @@ static int mdss_panel_parse_dt(struct device_node *np,
 #ifdef CONFIG_MACH_LGE_G3_KDDI_LGD_FHD
         mdss_dsi_parse_dcs_cmds(np, &ctrl_pdata->set_address_mode_cmds,
             "lge,mdss-set-address-mode-command", "qcom,mdss-dsi-off-command-state");
-#endif
-#ifdef CONFIG_LGE_SHARPENING
-		mdss_dsi_parse_dcs_cmds(np, &ctrl_pdata->sharpening_on,
-			"qcom,mdss-dsi-sharpening-on", "qcom,mdss-dsi-sharpening-mode");
-		mdss_dsi_parse_dcs_cmds(np, &ctrl_pdata->sharpening_off,
-			"qcom,mdss-dsi-sharpening-off", "qcom,mdss-dsi-sharpening-mode");
-
-		/* Change to 'false' if LG ever decides to disable by default */
-		ctrl_pdata->shared_pdata.sharpening_state = true;
 #endif
 	return 0;
 
@@ -1382,15 +1341,11 @@ int mdss_dsi_panel_init(struct device_node *node,
 	ctrl_pdata->on = mdss_dsi_panel_on;
 	ctrl_pdata->off = mdss_dsi_panel_off;
 	ctrl_pdata->panel_data.set_backlight = mdss_dsi_panel_bl_ctrl;
-#ifdef CONFIG_LGE_SHARPENING
-	ctrl_pdata->set_sharpening = mdss_dsi_panel_set_sharpening;
-	ctrl_pdata->get_sharpening = mdss_dsi_panel_get_sharpening;
-#endif
 
 #ifdef CONFIG_MACH_LGE
-	/* Panel device is not created in KK release										*/
-	/* create the node file for controling the ief under the dsi controller device 				*/
-	/* file path: /sys/devices/fd922800.qcom,mdss_dsi/ief_on_off 						*/
+	/*                                                    */
+	/*                                                                                 */
+	/*                                                                 */
 
 	dsi_ctrl_np = of_parse_phandle(node,
 				"qcom,mdss-dsi-panel-controller", 0);

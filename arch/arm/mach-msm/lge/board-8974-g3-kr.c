@@ -51,14 +51,14 @@
 #include <mach/board_lge.h>
 
 #if defined(CONFIG_LCD_KCAL)
-/* LGE_CHANGE_S
-* change code for LCD KCAL
-* 2013-05-08, seojin.lee@lge.com
+/*             
+                          
+                                
 */
 #include <linux/module.h>
 #include "../../../../drivers/video/msm/mdss/mdss_fb.h"
 extern int update_preset_lcdc_lut(void);
-#endif /* CONFIG_LCD_KCAL */
+#endif /*                 */
 
 #ifdef CONFIG_MFD_WM5110
 #include <linux/slimbus/slimbus.h>
@@ -115,9 +115,9 @@ void __init lge_add_lcd_misc_devices(void)
 #endif
 
 #if defined(CONFIG_LCD_KCAL)
-/* LGE_CHANGE_S
-* change code for LCD KCAL
-* 2013-05-08, seojin.lee@lge.com
+/*             
+                          
+                                
 */
 extern int g_kcal_r;
 extern int g_kcal_g;
@@ -179,18 +179,18 @@ void __init lge_add_lcd_kcal_devices(void)
 	pr_info(" KCAL_DEBUG : %s\n", __func__);
 	platform_device_register(&kcal_platrom_device);
 }
-#endif /* CONFIG_LCD_KCAL */
+#endif /*                 */
 /*
- * Used to satisfy dependencies for devices that need to be
- * run early or in a particular order. Most likely your device doesn't fall
- * into this category, and thus the driver should not be added here. The
- * EPROBE_DEFER can satisfy most dependency problems.
+                                                           
+                                                                           
+                                                                        
+                                                     
  */
-/* LGE_CHANGE_S, [WiFi][jaewoo.hwang@lge.com], 2013-01-28, Wifi Bring Up */
+/*                                                                       */
 #if defined (CONFIG_BCMDHD) || defined (CONFIG_BCMDHD_MODULE)
 extern void init_bcm_wifi(void);
 #endif
-/* LGE_CHANGE_E, [WiFi][jaewoo.hwang@lge.com], 2013-01-28, Wifi Bring Up */
+/*                                                                       */
 
 void __init msm8974_add_drivers(void)
 {
@@ -215,18 +215,18 @@ void __init msm8974_add_drivers(void)
 	lge_add_lcd_misc_devices();
 #endif
 	lge_add_persistent_device();
-/* LGE_CHANGE_S, [WiFi][jaewoo.hwang@lge.com], 2013-01-28, Wifi Bring Up */
+/*                                                                       */
 #if defined (CONFIG_BCMDHD) || defined (CONFIG_BCMDHD_MODULE)
 	init_bcm_wifi();
 #endif
-/* LGE_CHANGE_E, [WiFi][jaewoo.hwang@lge.com], 2013-01-28, Wifi Bring Up */
+/*                                                                       */
 #if defined(CONFIG_LCD_KCAL)
-/* LGE_CHANGE_S
-* change code for LCD KCAL
-* 2013-05-08, seojin.lee@lge.com
+/*             
+                          
+                                
 */
 	lge_add_lcd_kcal_devices();
-#endif /* CONFIG_LCD_KCAL */
+#endif /*                 */
 #if defined(CONFIG_LGE_PM_BATTERY_ID_CHECKER)
 	lge_battery_id_devices();
 #endif
@@ -286,7 +286,7 @@ static struct of_dev_auxdata msm8974_auxdata_lookup[] __initdata = {
 	{}
 };
 
-/* LGE_CHANGE, yeri.lee@lge.com, 2013-10-31, wm5110 Bring up*/
+/*                                                          */
 #ifdef CONFIG_MFD_WM5110
 static struct slim_device wm5110_slim_audio = {
 	.name = "wm5110-slim-audio",
@@ -318,7 +318,7 @@ void __init msm8974_init(void)
 	board_dt_populate(adata);
 	msm8974_add_drivers();
 #ifdef CONFIG_MFD_WM5110
-	/* Register the Wolfson WM5119 slimbus codec */
+	/*                                           */
 	slim_register_board_info(msm_slim_devices, 1);
 #endif
 }

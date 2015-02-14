@@ -40,5 +40,5 @@ extern fci_s32 fc8080_tuner_deinit(HANDLE handle);
 }
 #endif
 
-#endif /* __FC8080_TUNER__ */
+#endif /*                  */
 

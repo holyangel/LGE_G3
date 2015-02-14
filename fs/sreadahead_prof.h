@@ -1,10 +1,10 @@
 
-/* LGE_CHANGE_S
- *
- * do read/mmap profiling during booting
- * in order to use the data as readahead args
- *
- * matia.kim@lge.com 20130403
+/*             
+  
+                                        
+                                             
+  
+                             
  */
 #include <linux/semaphore.h>
 #include <linux/pagemap.h>
@@ -29,7 +29,7 @@
 #define PROF_OPT	3
 #define PROF_DONE	4
 
-/* #define DEBUG */
+/*               */
 #ifdef DEBUG
 #define _DBG(fmt, args...) (printk(KERN_DEBUG "%s: " fmt "\n", __func__, ##args))
 #else
@@ -43,8 +43,8 @@
 struct sreadahead_profdata {
 	char procname[PROC_NAMELEN];
 	unsigned char name[FILE_PATHLEN+FILE_NAMELEN];
-	long long len; /* same as pos[][1] - pos[][0] */
-	long long pos[2]; /* 0: start position 1: end position */
+	long long len; /*                             */
+	long long pos[2]; /*                                   */
 };
 
 struct sreadahead_prof {
@@ -58,4 +58,4 @@ struct sreadahead_prof {
 };
 
 int sreadahead_prof(struct file *filp, size_t len, loff_t pos);
-/* LGE_CHANGE_E */
+/*              */

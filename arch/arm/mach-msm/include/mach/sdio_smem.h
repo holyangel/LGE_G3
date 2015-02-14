@@ -29,4 +29,4 @@ struct sdio_smem_client {
 	int (*cb_func)(int event);
 };
 
-#endif	/* __SDIO_SMEM_H */
+#endif	/*               */

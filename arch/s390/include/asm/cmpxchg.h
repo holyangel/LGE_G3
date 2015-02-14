@@ -66,7 +66,7 @@ static inline unsigned long __xchg(unsigned long x, void *ptr, int size)
 			: "d" (x), "Q" (*(long *) ptr)
 			: "memory", "cc");
 		return old;
-#endif /* CONFIG_64BIT */
+#endif /*              */
 	}
 	__xchg_called_with_bad_pointer();
 	return x;
@@ -81,9 +81,9 @@ static inline unsigned long __xchg(unsigned long x, void *ptr, int size)
 })
 
 /*
- * Atomic compare and exchange.	 Compare OLD with MEM, if identical,
- * store NEW in MEM.  Return the initial value in MEM.	Success is
- * indicated by comparing RETURN with OLD.
+                                                                    
+                                                                 
+                                          
  */
 
 #define __HAVE_ARCH_CMPXCHG
@@ -154,7 +154,7 @@ static inline unsigned long __cmpxchg(void *ptr, unsigned long old,
 			: "0" (old), "d" (new), "Q" (*(long *) ptr)
 			: "memory", "cc");
 		return prev;
-#endif /* CONFIG_64BIT */
+#endif /*              */
 	}
 	__cmpxchg_called_with_bad_pointer();
 	return old;
@@ -169,7 +169,7 @@ static inline unsigned long __cmpxchg(void *ptr, unsigned long old,
 ({									\
 	cmpxchg((ptr), (o), (n));					\
 })
-#else /* CONFIG_64BIT */
+#else /*              */
 static inline unsigned long long __cmpxchg64(void *ptr,
 					     unsigned long long old,
 					     unsigned long long new)
@@ -188,7 +188,7 @@ static inline unsigned long long __cmpxchg64(void *ptr,
 	((__typeof__(*(ptr)))__cmpxchg64((ptr),				\
 					 (unsigned long long)(o),	\
 					 (unsigned long long)(n)))
-#endif /* CONFIG_64BIT */
+#endif /*              */
 
 #include <asm-generic/cmpxchg-local.h>
 
@@ -212,8 +212,8 @@ static inline unsigned long __cmpxchg_local(void *ptr,
 }
 
 /*
- * cmpxchg_local and cmpxchg64_local are atomic wrt current CPU. Always make
- * them available.
+                                                                            
+                  
  */
 #define cmpxchg_local(ptr, o, n)					\
 	((__typeof__(*(ptr)))__cmpxchg_local((ptr), (unsigned long)(o),	\
@@ -221,4 +221,4 @@ static inline unsigned long __cmpxchg_local(void *ptr,
 
 #define cmpxchg64_local(ptr, o, n)	cmpxchg64((ptr), (o), (n))
 
-#endif /* __ASM_CMPXCHG_H */
+#endif /*                 */

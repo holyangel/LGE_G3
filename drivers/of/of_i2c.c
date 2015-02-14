@@ -23,13 +23,13 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
 	void *result;
 	struct device_node *node;
 
-	/* Only register child devices if the adapter has a node pointer set */
+	/*                                                                   */
 	if (!adap->dev.of_node)
 		return;
 
 	dev_dbg(&adap->dev, "of_i2c: walking child nodes\n");
 
-	//for_each_child_of_node(adap->dev.of_node, node) {
+	//                                                 
 	for_each_available_child_of_node(adap->dev.of_node, node) {
 		struct i2c_board_info info = {};
 		struct dev_archdata dev_ad = {};
@@ -39,9 +39,9 @@ void of_i2c_register_devices(struct i2c_adapter *adap)
 		dev_dbg(&adap->dev, "of_i2c: register %s\n", node->full_name);
 
 #ifdef CONFIG_MACH_LGE
-		/* LGE_CHANGE: check status=okay for i2c child node
-		 * 2012-11-07, bongkyu.kim@lge.com
-		 */
+		/*                                                 
+                                    
+   */
 		if (!of_device_is_available(node))
 			continue;
 
@@ -92,7 +92,7 @@ static int of_dev_node_match(struct device *dev, void *data)
         return dev->of_node == data;
 }
 
-/* must call put_device() when done with returned i2c_client device */
+/*                                                                  */
 struct i2c_client *of_find_i2c_device_by_node(struct device_node *node)
 {
 	struct device *dev;

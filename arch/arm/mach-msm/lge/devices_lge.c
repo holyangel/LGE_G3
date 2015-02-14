@@ -17,10 +17,6 @@
 #include <mach/lge_handle_panic.h>
 #endif
 
-#ifdef CONFIG_KEXEC_HARDBOOT
-#include <linux/memblock.h>
-#endif
-
 #ifdef CONFIG_LGE_PM
 #include <linux/qpnp/qpnp-adc.h>
 #include <mach/board_lge.h>
@@ -43,7 +39,7 @@
 #ifdef CONFIG_USB_G_LGE_ANDROID
 #include <linux/platform_data/lge_android_usb.h>
 #endif
-/* in drivers/staging/android */
+/*                            */
 #include "ram_console.h"
 
 static int cn_arr_len = 3;
@@ -160,7 +156,7 @@ static struct platform_device ram_console_device = {
 		.platform_data = &ram_console_pdata,
 	}
 };
-#endif /*CONFIG_ANDROID_RAM_CONSOLE*/
+#endif /*                          */
 
 #ifdef CONFIG_PERSISTENT_TRACER
 static struct platform_device persistent_trace_device = {
@@ -196,8 +192,8 @@ void __init lge_add_persist_ram_devices(void)
 	int ret;
 	struct memtype_reserve *mt = &reserve_info->memtype_reserve_table[MEMTYPE_EBI1];
 
-	/* ram->start = 0x7D600000; */
-	/* change to variable value to ram->start value */
+	/*                          */
+	/*                                              */
 	lge_persist_ram.start = mt->start - LGE_PERSISTENT_RAM_SIZE;
 	pr_info("PERSIST RAM CONSOLE START ADDR : 0x%x\n", lge_persist_ram.start);
 
@@ -207,20 +203,10 @@ void __init lge_add_persist_ram_devices(void)
 		return;
 	}
 }
-#endif /*CONFIG_ANDROID_PERSISTENT_RAM*/
+#endif /*                             */
 
 void __init lge_reserve(void)
 {
-#ifdef CONFIG_KEXEC_HARDBOOT
-	struct memtype_reserve *mt = &reserve_info->memtype_reserve_table[MEMTYPE_EBI1];
-	phys_addr_t start = mt->start - SZ_1M - LGE_PERSISTENT_RAM_SIZE;
-	int ret = memblock_remove(start, SZ_1M);
-	if(!ret)
-	pr_info("Hardboot page reserved at 0x%X\n", start);
-	else
-	pr_err("Failed to reserve space for hardboot page at 0x%X!\n", start);
-#endif	
-
 #if defined(CONFIG_ANDROID_PERSISTENT_RAM)
 	lge_add_persist_ram_devices();
 #endif
@@ -231,7 +217,7 @@ void __init lge_add_persistent_device(void)
 #ifdef CONFIG_ANDROID_RAM_CONSOLE
 	platform_device_register(&ram_console_device);
 #ifdef CONFIG_LGE_HANDLE_PANIC
-	/* write ram console addr to imem */
+	/*                                */
 	lge_set_ram_console_addr(lge_persist_ram.start,
 			LGE_RAM_CONSOLE_SIZE);
 #endif
@@ -244,7 +230,7 @@ void __init lge_add_persistent_device(void)
 
 
 
-/* BEGIN : janghyun.baek@lge.com 2012-12-26 For cable detection */
+/*                                                              */
 #ifdef CONFIG_LGE_PM
 struct chg_cable_info_table {
 	int threshhold;
@@ -276,13 +262,13 @@ void __init lge_add_qfprom_devices(void)
 static bool cable_type_defined;
 static struct chg_cable_info_table pm8941_acc_cable_type_data[MAX_CABLE_NUM];
 #endif
-/* END : janghyun.baek@lge.com 2012-12-26 */
+/*                                        */
 #ifdef CONFIG_LGE_DIAG_ENABLE_SYSFS
 static struct platform_device lg_diag_cmd_device = {
 	.name = "lg_diag_cmd",
 	.id = -1,
 	.dev    = {
-		.platform_data = 0, /* &lg_diag_cmd_pdata */
+		.platform_data = 0, /*                    */
 	},
 };
 
@@ -292,7 +278,7 @@ void __init lge_add_diag_devices(void)
 }
 #endif
 
-/* BEGIN : janghyun.baek@lge.com 2012-12-26 For cable detection */
+/*                                                              */
 #ifdef CONFIG_LGE_PM
 void get_cable_data_from_dt(void *of_node)
 {
@@ -372,9 +358,9 @@ int lge_pm_get_cable_info(struct qpnp_vadc_chip *vadc,
 		rc = qpnp_vadc_read(vadc, LR_MUX10_USB_ID_LV, &result);
 		if (rc < 0) {
 			if (rc == -ETIMEDOUT) {
-				/* reason: adc read timeout,
-				 * assume it is open cable
-				 */
+				/*                          
+                              
+     */
 				info->cable_type = CABLE_NONE;
 				info->ta_ma = C_NONE_TA_MA;
 				info->usb_ma = C_NONE_USB_MA;
@@ -388,14 +374,14 @@ int lge_pm_get_cable_info(struct qpnp_vadc_chip *vadc,
 		acc_read_value = (int)result.physical;
 		printk(KERN_ERR "%s : acc_read_value - %d\n",
 				__func__, (int)result.physical);
-		/* mdelay(10); */
+		/*             */
 	}
 
 	info->cable_type = NO_INIT_CABLE;
 	info->ta_ma = C_NO_INIT_TA_MA;
 	info->usb_ma = C_NO_INIT_USB_MA;
 
-	/* assume : adc value must be existed in ascending order */
+	/*                                                       */
 	for (i = 0; i < table_size; i++) {
 		table = &pm8941_acc_cable_type_data[i];
 
@@ -441,7 +427,7 @@ void pseudo_batt_set(struct pseudo_batt_info_type *info)
 	power_supply_changed(batt_psy);
 }
 
-/* Belows are for using in interrupt context */
+/*                                           */
 static struct chg_cable_info lge_cable_info;
 
 acc_cable_type lge_pm_get_cable_type(void)
@@ -459,7 +445,7 @@ unsigned lge_pm_get_usb_current(void)
 	return lge_cable_info.usb_ma;
 }
 
-/* This must be invoked in process context */
+/*                                         */
 void lge_pm_read_cable_info(struct qpnp_vadc_chip *vadc)
 {
 	lge_cable_info.cable_type = NO_INIT_CABLE;
@@ -469,16 +455,16 @@ void lge_pm_read_cable_info(struct qpnp_vadc_chip *vadc)
 	lge_pm_get_cable_info(vadc, &lge_cable_info);
 }
 #endif
-/* END : janghyun.baek@lge.com 2012-12-26 For cable detection */
+/*                                                            */
 
 #if defined(CONFIG_LGE_KSWITCH)
 static int kswitch_status;
 #endif
 
 #ifdef CONFIG_EARJACK_DEBUGGER
-static unsigned int uart_console_mode;  /* Not initialized */
+static unsigned int uart_console_mode;  /*                 */
 #else
-static unsigned int uart_console_mode = 1;  /* Alway Off */
+static unsigned int uart_console_mode = 1;  /*           */
 #endif
 
 unsigned int lge_get_uart_mode(void)
@@ -513,17 +499,17 @@ static int __init lge_uart_mode(char *uart_mode)
 __setup("uart_console=", lge_uart_mode);
 
 /*
-	for download complete using LAF image
-	return value : 1 --> right after laf complete & reset
+                                      
+                                                      
 */
 
 int android_dlcomplete = 0;
 
 int __init lge_android_dlcomplete(char *s)
 {
-	if(strncmp(s,"1",1) == 0)   // if same string
+	if(strncmp(s,"1",1) == 0)   //               
 		android_dlcomplete = 1;
-	else	// not same string
+	else	//                
 		android_dlcomplete = 0;
 	printk("androidboot.dlcomplete = %d\n", android_dlcomplete);
 
@@ -535,9 +521,9 @@ int lge_get_android_dlcomplete(void)
 {
 	return android_dlcomplete;
 }
-/* get boot mode information from cmdline.
- * If any boot mode is not specified,
- * boot mode is normal type.
+/*                                        
+                                     
+                            
  */
 static enum lge_boot_mode_type lge_boot_mode = LGE_BOOT_MODE_NORMAL;
 int __init lge_boot_mode_init(char *s)
@@ -559,7 +545,7 @@ int __init lge_boot_mode_init(char *s)
 	else if (!strcmp(s, "pif_910k"))
 		lge_boot_mode = LGE_BOOT_MODE_PIFBOOT3;
 	printk("ANDROID BOOT MODE : %d %s\n", lge_boot_mode, s);
-	/* LGE_UPDATE_E for MINIOS2.0 */
+	/*                            */
 
 	return 1;
 }
@@ -574,9 +560,9 @@ int lge_get_factory_boot(void)
 {
 	int res;
 
-	/*   if boot mode is factory,
-	 *   cable must be factory cable.
-	 */
+	/*                           
+                                  
+  */
 	switch (lge_boot_mode) {
 		case LGE_BOOT_MODE_FACTORY:
 		case LGE_BOOT_MODE_FACTORY2:
@@ -610,10 +596,10 @@ int lge_get_factory_cable(void)
 	return res;
 }
 
-/* for board revision */
-static hw_rev_type lge_bd_rev = HW_REV_C; //HW_REV_B;
+/*                    */
+static hw_rev_type lge_bd_rev = HW_REV_C; //         
 
-/* CAUTION: These strings are come from LK. */
+/*                                          */
 #if defined (CONFIG_MACH_MSM8974_G3_GLOBAL_COM) ||defined (CONFIG_MACH_MSM8974_G3_KDDI)
 char *rev_str[] = {"evb1", "evb2", "rev_a", "rev_a1", "rev_b", "rev_c", "rev_d",
 	"rev_e","rev_g", "rev_h", "rev_10", "rev_11", "rev_12",
@@ -631,7 +617,7 @@ static int __init board_revno_setup(char *rev_info)
 	for (i = 0; i < HW_REV_MAX; i++) {
 		if (!strncmp(rev_info, rev_str[i], 6)) {
 			lge_bd_rev = (hw_rev_type) i;
-			/* it is defined externally in <asm/system_info.h> */
+			/*                                                 */
 			system_rev = lge_bd_rev;
 			break;
 		}
@@ -646,7 +632,36 @@ hw_rev_type lge_get_board_revno(void)
 {
     return lge_bd_rev;
 }
+#if defined(CONFIG_LCD_KCAL)
+/*             
+                          
+                                
+*/
+int g_kcal_r = 255;
+int g_kcal_g = 255;
+int g_kcal_b = 255;
 
+extern int kcal_set_values(int kcal_r, int kcal_g, int kcal_b);
+static int __init display_kcal_setup(char *kcal)
+{
+	char vaild_k = 0;
+	int kcal_r = 255;
+	int kcal_g = 255;
+	int kcal_b = 255;
+
+	sscanf(kcal, "%d|%d|%d|%c", &kcal_r, &kcal_g, &kcal_b, &vaild_k);
+	pr_info("kcal is %d|%d|%d|%c\n", kcal_r, kcal_g, kcal_b, vaild_k);
+
+	if (vaild_k != 'K') {
+		pr_info("kcal not calibrated yet : %d\n", vaild_k);
+		kcal_r = kcal_g = kcal_b = 255;
+	}
+
+	kcal_set_values(kcal_r, kcal_g, kcal_b);
+	return 1;
+}
+__setup("lge.kcal=", display_kcal_setup);
+#endif
 #if defined(CONFIG_LGE_PM_BATTERY_ID_CHECKER)
 struct lge_battery_id_platform_data lge_battery_id_plat = {
 	.id = 13,
@@ -716,12 +731,12 @@ int lge_get_kswitch_status(void)
     return kswitch_status;
 }
 
-static int lge_boot_reason = -1; /* undefined for error checking */
+static int lge_boot_reason = -1; /*                              */
 static int __init lge_check_bootreason(char *reason)
 {
 	int ret = 0;
 
-	/* handle corner case of kstrtoint */
+	/*                                 */
 	if (!strcmp(reason, "0xffffffff")) {
 		lge_boot_reason = 0xffffffff;
 		return 1;
@@ -761,7 +776,7 @@ void __init lge_add_qsdl_device(void)
 {
 	platform_device_register(&lge_qsdl_device);
 }
-#endif /* CONFIG_LGE_QSDL_SUPPORT */
+#endif /*                         */
 
 #ifdef CONFIG_USB_G_LGE_ANDROID
 static int get_factory_cable(void)

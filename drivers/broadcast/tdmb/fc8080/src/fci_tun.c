@@ -33,25 +33,25 @@
 #include "../inc/fc8080_regs.h"
 
 #if (FC8080_FREQ_XTAL == 16000)
-#define CLOCK_RATIO 34359738 /* 33554432 * ((float) 1.024) */
+#define CLOCK_RATIO 34359738 /*                            */
 #elif (FC8080_FREQ_XTAL == 16384)
-#define CLOCK_RATIO 33554432 /* 33554432 * ((float) 1.) */
+#define CLOCK_RATIO 33554432 /*                         */
 #elif (FC8080_FREQ_XTAL == 19200)
-#define CLOCK_RATIO 28631996 /* 33554432 * ((float) 0.8533) */
+#define CLOCK_RATIO 28631996 /*                             */
 #elif (FC8080_FREQ_XTAL == 24000)
-#define CLOCK_RATIO 22347251 /* 33554432 * ((float) 0.666) */
+#define CLOCK_RATIO 22347251 /*                            */
 #elif (FC8080_FREQ_XTAL == 24576)
-#define CLOCK_RATIO 33554432 /* 33554432 * ((float) 1.) */
+#define CLOCK_RATIO 33554432 /*                         */
 #elif (FC8080_FREQ_XTAL == 26000)
-#define CLOCK_RATIO 31715649 /* 33554432 * ((float) 0.9452) */
+#define CLOCK_RATIO 31715649 /*                             */
 #elif (FC8080_FREQ_XTAL == 27000)
-#define CLOCK_RATIO 30541244 /* 33554432 * ((float) 0.9102) */
+#define CLOCK_RATIO 30541244 /*                             */
 #elif (FC8080_FREQ_XTAL == 27120)
-#define CLOCK_RATIO 30403670 /* 33554432 * ((float) 0.9061) */
+#define CLOCK_RATIO 30403670 /*                             */
 #elif (FC8080_FREQ_XTAL == 32000)
-#define CLOCK_RATIO 22347251 /* 33554432 * ((float) 0.666) */
+#define CLOCK_RATIO 22347251 /*                            */
 #elif (FC8080_FREQ_XTAL == 38400)
-#define CLOCK_RATIO 28631996 /* 33554432 * ((float) 0.8533) */
+#define CLOCK_RATIO 28631996 /*                             */
 #endif
 
 struct tuner_i2c_driver {

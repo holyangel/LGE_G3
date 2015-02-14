@@ -45,13 +45,6 @@ config MACH_MSM8974_G3_VZW
 	help
 	  Support for the Qualcomm MSM8974 G3 Verizon device.
 
-config MACH_MSM8974_G3_LRA
-	depends on ARCH_MSM8974
-	select MACH_LGE
-	bool "MSM8974 G3 LRA"
-	help
-	  Support for the Qualcomm MSM8974 G3 LRA device.
-
 config MACH_MSM8974_G3_ATT
 	depends on ARCH_MSM8974
 	select MACH_LGE
@@ -233,6 +226,11 @@ config LGE_KSWITCH
     depends on MACH_LGE
     help
       LGE Kill Switch
+
+config LCD_KCAL
+	depends on MACH_LGE
+	bool "Enable sysfs for LCD KCAL"
+	default n
 
 config LGE_QSDL_SUPPORT
     tristate "Support for Quality Statistics Data Logging"

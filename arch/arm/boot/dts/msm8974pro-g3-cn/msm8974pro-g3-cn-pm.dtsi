@@ -62,10 +62,6 @@
 		};
 		max17048@36 {
 			status = "ok";
-			max17048,rcomp = <96>;
-			max17048,temp_co_hot = <225>;
-			max17048,temp_co_cold = <5050>;
-			max17048,empty = <0>;
 		};
 
 		bq24296@6b {
@@ -74,19 +70,19 @@
 
 			lge,no-init-cable = <0 0 0>;
 			lge,cable-mhl-1k = <15000 500 500>;
-			lge,cable-u-28p7k = <230000 2000 500>;
+			lge,cable-u-28p7k = <230000 1200 500>;
 			lge,cable-28p7k = <330000 1200 500>;
 			lge,cable-56k = <590000 1500 1500>;
-			lge,cable-100k = <730000 2000 500>;
-			lge,cable-130k = <880000 500 1500>;
-			lge,cable-180k = <1000000 2000 500>;
-			lge,cable-200k = <1050000 2000 500>;
-			lge,cable-220k = <1110000 2000 500>;
-			lge,cable-270k = <1190000 2000 500>;
-			lge,cable-330k = <1330000 2000 500>;
-			lge,cable-620k = <1480000 2000 500>;
+			lge,cable-100k = <730000 1200 500>;
+			lge,cable-130k = <880000 1500 1500>;
+			lge,cable-180k = <1000000 1200 500>;
+			lge,cable-200k = <1050000 1200 500>;
+			lge,cable-220k = <1110000 1200 500>;
+			lge,cable-270k = <1190000 1200 500>;
+			lge,cable-330k = <1330000 1200 500>;
+			lge,cable-620k = <1480000 1200 500>;
 			lge,cable-910k = <1650000 1500 1500>;
-			lge,cable-none = <1900000 2000  500>;
+			lge,cable-none = <1900000 1800  500>;
 		};
 	};
 
@@ -101,9 +97,9 @@
 	};
 
 	qcom,msm-thermal {
-		qcom,limit-temp = <85>;
+		qcom,limit-temp = <80>;
 		qcom,temp-hysteresis = <5>;
-		qcom,core-limit-temp = <95>;
+		qcom,core-limit-temp = <90>;
 		qcom,core-temp-hysteresis = <5>;
 	};
 

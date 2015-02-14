@@ -108,7 +108,7 @@ static int bl_get(struct backlight_device *bd)
 {
 	int level, err, ret;
 
-	/* Instance 1 is "get backlight", cmp with DSDT */
+	/*                                              */
 	err = msi_wmi_query_block(1, &ret);
 	if (err) {
 		pr_err("Could not query backlight: %d\n", err);
@@ -135,7 +135,7 @@ static int bl_set_status(struct backlight_device *bd)
 	if (bright >= ARRAY_SIZE(backlight_map) || bright < 0)
 		return -EINVAL;
 
-	/* Instance 0 is "set backlight" */
+	/*                               */
 	return msi_wmi_set_block(0, backlight_map[bright]);
 }
 
@@ -170,18 +170,18 @@ static void msi_wmi_notify(u32 value, void *context)
 			cur = ktime_get_real();
 			diff = ktime_sub(cur, last_pressed[key->code -
 					SCANCODE_BASE]);
-			/* Ignore event if the same event happened in a 50 ms
-			   timeframe -> Key press may result in 10-20 GPEs */
+			/*                                                   
+                                                      */
 			if (ktime_to_us(diff) < 1000 * 50) {
 				pr_debug("Suppressed key event 0x%X - "
 					 "Last press was %lld us ago\n",
 					 key->code, ktime_to_us(diff));
-				goto msi_wmi_notify_exit;
+				return;
 			}
 			last_pressed[key->code - SCANCODE_BASE] = cur;
 
 			if (key->type == KE_KEY &&
-			/* Brightness is served via acpi video driver */
+			/*                                            */
 			(!acpi_video_backlight_support() ||
 			(key->code != MSI_WMI_BRIGHTNESSUP &&
 			key->code != MSI_WMI_BRIGHTNESSDOWN))) {
@@ -195,8 +195,6 @@ static void msi_wmi_notify(u32 value, void *context)
 			pr_info("Unknown key pressed - %x\n", eventcode);
 	} else
 		pr_info("Unknown event received\n");
-
-msi_wmi_notify_exit:
 	kfree(response.pointer);
 }
 

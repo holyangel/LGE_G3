@@ -39,5 +39,5 @@ extern void ms_must_wait(fci_s32 ms);
 }
 #endif
 
-#endif /* __FCI_OAL_H__ */
+#endif /*               */
 

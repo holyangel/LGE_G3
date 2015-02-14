@@ -18,23 +18,23 @@
 
 #include<linux/serial_core.h>
 
-/**
- * struct msm_serial_hs_platform_data - platform device data
- *					for msm hsuart device
- * @wakeup_irq : IRQ line to be configured as Wakeup source.
- * @inject_rx_on_wakeup : Set 1 if specific character to be inserted on wakeup
- * @rx_to_inject : Character to be inserted on wakeup
- * @gpio_config : Configure gpios that are used for uart communication
- * @userid : User-defined number to be used to enumerate device as tty<userid>
- * @uart_tx_gpio: GPIO number for UART Tx Line.
- * @uart_rx_gpio: GPIO number for UART Rx Line.
- * @uart_cts_gpio: GPIO number for UART CTS Line.
- * @uart_rfr_gpio: GPIO number for UART RFR Line.
- * @bam_tx_ep_pipe_index : BAM TX Endpoint Pipe Index for HSUART
- * @bam_tx_ep_pipe_index : BAM RX Endpoint Pipe Index for HSUART
+/* 
+                                                            
+                            
+                                                            
+                                                                              
+                                                     
+                                                                      
+                                                                              
+                                               
+                                               
+                                                 
+                                                 
+                                                                
+                                                                
  */
 struct msm_serial_hs_platform_data {
-	int wakeup_irq;  /* wakeup irq */
+	int wakeup_irq;  /*            */
 	unsigned char inject_rx_on_wakeup;
 	char rx_to_inject;
 	int (*gpio_config)(int);
@@ -55,14 +55,14 @@ struct uart_port *msm_hs_get_uart_port(int port_index);
 void msm_hs_set_mctrl(struct uart_port *uport,
 				    unsigned int mctrl);
 
-/* LGE_CHANGE_S, [BT][younghyun.kwon@lge.com], 2013-04-10, For G2 LPM */
-/* LG_BTUI : chanha.park@lge.com : Added bluesleep interface - [S] */
+/*                                                                    */
+/*                                                                 */
 #ifdef CONFIG_LGE_BLUESLEEP
 #define CLOCK_REQUEST_AVAILABLE 	0
 #define CLOCK_REQUEST_UNAVAILABLE 	1
 struct uart_port * msm_hs_get_bt_uport(unsigned int line);
 int msm_hs_get_bt_uport_clock_state(struct uart_port *uport);
-#endif /* CONFIG_LGE_BLUESLEEP */
-/* LG_BTUI : chanha.park@lge.com : Added bluesleep interface - [E] */
-/* LGE_CHANGE_E, [BT][younghyun.kwon@lge.com], 2013-04-10 */
+#endif /*                      */
+/*                                                                 */
+/*                                                        */
 #endif

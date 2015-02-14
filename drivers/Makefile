@@ -5,8 +5,6 @@
 # Rewritten to use lists instead of if-statements.
 #
 
-obj-$(CONFIG_CPUQUIET_FRAMEWORK)+= cpuquiet/
-
 # GPIO must come after pinctrl as gpios may need to mux pins etc
 obj-y				+= pinctrl/
 obj-y				+= gpio/
@@ -157,6 +155,3 @@ obj-$(CONFIG_LGE_FELICA)        += felica/
 
 obj-$(CONFIG_BIF)		+= bif/
 obj-$(CONFIG_SENSORS)		+= sensors/
-ifeq (1, $(shell if [ -d drivers/exfat ] ; then echo 1 ; fi))
-obj-y   += exfat/
-endif

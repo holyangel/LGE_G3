@@ -26,13 +26,13 @@ static struct gpiomux_setting gpio_uart_config = {
 
 static struct msm_gpiomux_config msm_blsp_configs[] __initdata = {
 	{
-		.gpio      = 45,	       /* BLSP8 UART TX */
+		.gpio      = 45,	       /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},
 	},
 	{
-		.gpio      = 46,	       /* BLSP8 UART RX */
+		.gpio      = 46,	       /*               */
 		.settings = {
 			[GPIOMUX_SUSPENDED] = &gpio_uart_config,
 		},

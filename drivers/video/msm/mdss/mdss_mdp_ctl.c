@@ -22,15 +22,15 @@
 #include "mdss_fb.h"
 #include "mdss_mdp.h"
 
-/* truncate at 1k */
+/*                */
 #define MDSS_MDP_BUS_FACTOR_SHIFT 10
-/* 1.5 bus fudge factor */
+/*                      */
 #define MDSS_MDP_BUS_FUDGE_FACTOR_IB(val) (((val) / 2) * 3)
 #define MDSS_MDP_BUS_FUDGE_FACTOR_HIGH_IB(val) (val << 1)
 #define MDSS_MDP_BUS_FUDGE_FACTOR_AB(val) (val << 1)
 #define MDSS_MDP_BUS_FLOOR_BW (1600000000ULL >> MDSS_MDP_BUS_FACTOR_SHIFT)
 
-/* 1.25 clock fudge factor */
+/*                         */
 #define MDSS_MDP_CLK_FUDGE_FACTOR(val) (((val) * 5) / 4)
 
 enum {
@@ -87,18 +87,18 @@ static u32 __mdss_mdp_ctrl_perf_ovrd_helper(struct mdss_mdp_mixer *mixer,
 	return ovrd;
 }
 
-/**
- * mdss_mdp_ctrl_perf_ovrd() - Determines if performance override is needed
- * @mdata:	Struct containing references to all MDP5 hardware structures
- *		and status info such as interupts, target caps etc.
- * @ab_quota:	Arbitrated bandwidth quota
- * @ib_quota:	Instantaneous bandwidth quota
- *
- * Function calculates the minimum required MDP and BIMC clocks to avoid MDP
- * underflow during portrait video playback. The calculations are based on the
- * way MDP fetches (bandwidth requirement) and processes data through
- * MDP pipeline (MDP clock requirement) based on frame size and scaling
- * requirements.
+/* 
+                                                                           
+                                                                       
+                                                       
+                                        
+                                           
+  
+                                                                            
+                                                                              
+                                                                     
+                                                                       
+                
  */
 static void __mdss_mdp_ctrl_perf_ovrd(struct mdss_data_type *mdata,
 	u64 *ab_quota, u64 *ib_quota)
@@ -171,16 +171,16 @@ static int mdss_mdp_ctl_perf_commit(struct mdss_data_type *mdata, u32 flags)
 	return 0;
 }
 
-/**
- * mdss_mdp_perf_calc_pipe() - calculate performance numbers required by pipe
- * @pipe:	Source pipe struct containing updated pipe params
- * @perf:	Structure containing values that should be updated for
- *		performance tuning
- *
- * Function calculates the minimum required performance calculations in order
- * to avoid MDP underflow. The calculations are based on the way MDP
- * fetches (bandwidth requirement) and processes data through MDP pipeline
- * (MDP clock requirement) based on frame size and scaling requirements.
+/* 
+                                                                             
+                                                           
+                                                                
+                      
+  
+                                                                             
+                                                                    
+                                                                          
+                                                                        
  */
 int mdss_mdp_perf_calc_pipe(struct mdss_mdp_pipe *pipe,
 		struct mdss_mdp_perf_params *perf)
@@ -201,11 +201,7 @@ int mdss_mdp_perf_calc_pipe(struct mdss_mdp_pipe *pipe,
 		pinfo = &mixer->ctl->panel_data->panel_info;
 #ifdef CONFIG_LGE_DEVFREQ_DFPS
 		fps = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_framerate(pinfo) : 60;
-#ifdef CONFIG_MACH_MSM8974_G3_USC_US
-		v_total = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_vtotal(pinfo) : 2647;
-#else
 		v_total = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_vtotal(pinfo) : 2571;
-#endif
 #else
 		fps = mdss_panel_get_framerate(pinfo);
 		v_total = mdss_panel_get_vtotal(pinfo);
@@ -215,18 +211,18 @@ int mdss_mdp_perf_calc_pipe(struct mdss_mdp_pipe *pipe,
 	}
 
 	/*
-	 * when doing vertical decimation lines will be skipped, hence there is
-	 * no need to account for these lines in MDP clock or request bus
-	 * bandwidth to fetch them.
-	 */
+                                                                        
+                                                                  
+                            
+  */
 	src_h = pipe->src.h >> pipe->vert_deci;
 
 	quota = fps * pipe->src.w * src_h;
 	if (pipe->src_fmt->chroma_sample == MDSS_MDP_CHROMA_420)
 		/*
-		 * with decimation, chroma is not downsampled, this means we
-		 * need to allocate bw for extra lines that will be fetched
-		 */
+                                                              
+                                                             
+   */
 		if (pipe->vert_deci)
 			quota *= 2;
 		else
@@ -240,8 +236,8 @@ int mdss_mdp_perf_calc_pipe(struct mdss_mdp_pipe *pipe,
 
 	rate *= v_total * fps;
 	if (mixer->rotator_mode) {
-		rate /= 4; /* block mode fetch at 4 pix/clk */
-		quota *= 2; /* bus read + write */
+		rate /= 4; /*                               */
+		quota *= 2; /*                  */
 		perf->ib_quota = quota;
 	} else {
 		perf->ib_quota = (quota / pipe->dst.h) * v_total;
@@ -275,11 +271,7 @@ static void mdss_mdp_perf_mixer_update(struct mdss_mdp_mixer *mixer,
 			pinfo = &mixer->ctl->panel_data->panel_info;
 #ifdef CONFIG_LGE_DEVFREQ_DFPS
 			fps = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_framerate(pinfo) : 60;
-#ifdef CONFIG_MACH_MSM8974_G3_USC_US
-			v_total = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_vtotal(pinfo) : 2647;
-#else
 			v_total = (pinfo->type!=MIPI_VIDEO_PANEL) ? mdss_panel_get_vtotal(pinfo) : 2571;
-#endif
 #else
 			fps = mdss_panel_get_framerate(pinfo);
 			v_total = mdss_panel_get_vtotal(pinfo);
@@ -295,7 +287,7 @@ static void mdss_mdp_perf_mixer_update(struct mdss_mdp_mixer *mixer,
 			*clk_rate = MDSS_MDP_CLK_FUDGE_FACTOR(*clk_rate);
 
 		if (!pinfo) {
-			/* perf for bus writeback */
+			/*                        */
 			*bus_ab_quota = fps * mixer->width * mixer->height * 3;
 			*bus_ab_quota >>= MDSS_MDP_BUS_FACTOR_SHIFT;
 			*bus_ib_quota = *bus_ab_quota;
@@ -350,14 +342,14 @@ static int mdss_mdp_ctl_perf_update(struct mdss_mdp_ctl *ctl)
 
 		if (ctl->intf_type) {
 			clk_rate = mdss_mdp_get_pclk_rate(ctl);
-			/* minimum clock rate due to inefficiency in 3dmux */
+			/*                                                 */
 			clk_rate = mult_frac(clk_rate >> 1, 9, 8);
 			if (clk_rate > max_clk_rate)
 				max_clk_rate = clk_rate;
 		}
 	}
 
-	/* request minimum bandwidth to have bus clock on when display is on */
+	/*                                                                   */
 	if (total_ib_quota == 0)
 		total_ib_quota = SZ_16M >> MDSS_MDP_BUS_FACTOR_SHIFT;
 
@@ -403,9 +395,6 @@ static struct mdss_mdp_ctl *mdss_mdp_ctl_alloc(struct mdss_data_type *mdata,
 			ctl->ref_cnt++;
 			ctl->mdata = mdata;
 			mutex_init(&ctl->lock);
-#ifdef CONFIG_LGE_SHARPENING
-			mutex_init(&ctl->offlock);
-#endif
 			BLOCKING_INIT_NOTIFIER_HEAD(&ctl->notifier_head);
 			pr_debug("alloc ctl_num=%d\n", ctl->num);
 			break;
@@ -481,9 +470,9 @@ static struct mdss_mdp_mixer *mdss_mdp_mixer_alloc(
 		nmixers = nmixers_intf;
 
 		/*
-		 * try to reserve first layer mixer for write back if
-		 * assertive display needs to be supported through wfd
-		 */
+                                                       
+                                                        
+   */
 		if (ctl->mdata->has_wb_ad && ctl->intf_num) {
 			alt_mixer = mixer_pool;
 			mixer_pool++;
@@ -502,16 +491,16 @@ static struct mdss_mdp_mixer *mdss_mdp_mixer_alloc(
 		break;
 	}
 
-	/* early mdp revision only supports mux of dual pipe on mixers 0 and 1,
-	 * need to ensure that these pipes are readily available by using
-	 * mixer 2 if available and mux is not required */
+	/*                                                                     
+                                                                  
+                                                 */
 	if (!mux && (ctl->mdata->mdp_rev == MDSS_MDP_HW_REV_100) &&
 			(type == MDSS_MDP_MIXER_TYPE_INTF) &&
 			(nmixers >= MDSS_MDP_INTF_LAYERMIXER2) &&
 			(mixer_pool[MDSS_MDP_INTF_LAYERMIXER2].ref_cnt == 0))
 		mixer_pool += MDSS_MDP_INTF_LAYERMIXER2;
 
-	/*Allocate virtual wb mixer if no dedicated wfd wb blk is present*/
+	/*                                                               */
 	if (!ctl->mdata->has_wfd_blk && (type == MDSS_MDP_MIXER_TYPE_WRITEBACK))
 		nmixers += 1;
 
@@ -664,8 +653,8 @@ static inline int mdss_mdp_set_split_ctl(struct mdss_mdp_ctl *ctl,
 	if (!ctl || !split_ctl)
 		return -ENODEV;
 
-	/* setup split ctl mixer as right mixer of original ctl so that
-	 * original ctl can work the same way as dual pipe solution */
+	/*                                                             
+                                                             */
 	ctl->mixer_right = split_ctl->mixer_left;
 
 	return 0;
@@ -816,7 +805,7 @@ static int mdss_mdp_ctl_setup_wfd(struct mdss_mdp_ctl *ctl)
 	struct mdss_mdp_mixer *mixer;
 	int mixer_type;
 
-	/* if WB2 is supported, try to allocate it first */
+	/*                                               */
 	if (mdata->nmixers_intf >= MDSS_MDP_INTF_LAYERMIXER2)
 		mixer_type = MDSS_MDP_MIXER_TYPE_INTF;
 	else
@@ -1020,12 +1009,12 @@ static void mdss_mdp_ctl_split_display_enable(int enable,
 			upper |= BIT(1);
 			lower |= BIT(1);
 
-			/* interface controlling sw trigger */
+			/*                                  */
 			if (main_ctl->intf_num == MDSS_MDP_INTF2)
 				upper |= BIT(4);
 			else
 				upper |= BIT(8);
-		} else { /* video mode */
+		} else { /*            */
 			if (main_ctl->intf_num == MDSS_MDP_INTF2)
 				lower |= BIT(4);
 			else
@@ -1097,10 +1086,10 @@ static int mdss_mdp_ctl_start_sub(struct mdss_mdp_ctl *ctl, bool handoff)
 	pr_debug("ctl_num=%d\n", ctl->num);
 
 	/*
-	 * Need start_fnc in 2 cases:
-	 * (1) handoff
-	 * (2) continuous splash finished.
-	 */
+                              
+               
+                                   
+  */
 	if (handoff || !ctl->panel_data->panel_info.cont_splash_enabled) {
 		if (ctl->start_fnc)
 			ret = ctl->start_fnc(ctl);
@@ -1161,9 +1150,9 @@ int mdss_mdp_ctl_start(struct mdss_mdp_ctl *ctl, bool handoff)
 	mutex_lock(&ctl->lock);
 
 	/*
-	 * keep power_on false during handoff to avoid unexpected
-	 * operations to overlay.
-	 */
+                                                          
+                          
+  */
 	if (!handoff)
 		ctl->power_on = true;
 
@@ -1181,7 +1170,7 @@ int mdss_mdp_ctl_start(struct mdss_mdp_ctl *ctl, bool handoff)
 
 	ret = mdss_mdp_ctl_start_sub(ctl, handoff);
 	if (ret == 0) {
-		if (sctl) { /* split display is available */
+		if (sctl) { /*                            */
 			ret = mdss_mdp_ctl_start_sub(sctl, handoff);
 			if (!ret)
 				mdss_mdp_ctl_split_display_enable(1, ctl, sctl);
@@ -1280,10 +1269,10 @@ void mdss_mdp_set_roi(struct mdss_mdp_ctl *ctl,
 	temp_roi.h = data->roi.h;
 
 	/*
-	 * No Partial Update for:
-	 * 1) dual DSI panels
-	 * 2) non-cmd mode panels
-	*/
+                          
+                      
+                          
+ */
 	if (!temp_roi.w || !temp_roi.h || ctl->mixer_right ||
 			(ctl->panel_data->panel_info.type != MIPI_CMD_PANEL) ||
 			!ctl->panel_data->panel_info.partial_update_enabled) {
@@ -1312,12 +1301,12 @@ void mdss_mdp_set_roi(struct mdss_mdp_ctl *ctl,
 }
 
 /*
- * mdss_mdp_ctl_reset() - reset mdp ctl path.
- * @ctl: mdp controller.
- * this function called when underflow happen,
- * it will reset mdp ctl path and poll for its completion
- *
- * Note: called within atomic context.
+                                             
+                        
+                                              
+                                                         
+  
+                                      
  */
 int mdss_mdp_ctl_reset(struct mdss_mdp_ctl *ctl)
 {
@@ -1327,9 +1316,9 @@ int mdss_mdp_ctl_reset(struct mdss_mdp_ctl *ctl)
 	mdss_mdp_ctl_write(ctl, MDSS_MDP_REG_CTL_SW_RESET, 1);
 
 	/*
-	 * it takes around 30us to have mdp finish resetting its ctl path
-	 * poll every 50us so that reset should be completed at 1st poll
-	 */
+                                                                  
+                                                                 
+  */
 
 	do {
 		udelay(50);
@@ -1378,7 +1367,7 @@ static int mdss_mdp_mixer_setup(struct mdss_mdp_ctl *ctl,
 	} else {
 		if (pipe->num == MDSS_MDP_SSPP_VIG3 ||
 			pipe->num == MDSS_MDP_SSPP_RGB3) {
-			/* Add 2 to account for Cursor & Border bits */
+			/*                                           */
 			mixercfg = 1 << ((3 * pipe->num)+2);
 		} else {
 			mixercfg = 1 << (3 * pipe->num);
@@ -1405,7 +1394,7 @@ static int mdss_mdp_mixer_setup(struct mdss_mdp_ctl *ctl,
 			    MDSS_MDP_BLEND_BG_ALPHA_BG_CONST);
 		fg_alpha = pipe->alpha;
 		bg_alpha = 0xFF - pipe->alpha;
-		/* keep fg alpha */
+		/*               */
 		blend_color_out |= 1 << (blend_stage + 1);
 
 		switch (pipe->blend_op) {
@@ -1530,9 +1519,9 @@ int mdss_mdp_mixer_addr_setup(struct mdss_data_type *mdata,
 	}
 
 	/*
-	 * Duplicate the last writeback mixer for concurrent line and block mode
-	 * operations
-	*/
+                                                                         
+              
+ */
 	if ((type == MDSS_MDP_MIXER_TYPE_WRITEBACK) && !mdata->has_wfd_blk)
 		head[len] = head[len - 1];
 
@@ -1593,10 +1582,10 @@ int mdss_mdp_ctl_addr_setup(struct mdss_data_type *mdata,
 	if (!mdata->has_wfd_blk) {
 		head[len - 1].shared_lock = shared_lock;
 		/*
-		 * Allocate a virtual ctl to be able to perform simultaneous
-		 * line mode and block mode operations on the same
-		 * writeback block
-		*/
+                                                              
+                                                    
+                    
+  */
 		head[len] = head[len - 1];
 		head[len].num = head[len - 1].num;
 	}
@@ -1695,7 +1684,7 @@ int mdss_mdp_mixer_pipe_update(struct mdss_mdp_pipe *pipe, int params_changed)
 	else if (pipe->num == MDSS_MDP_SSPP_VIG3 ||
 			pipe->num == MDSS_MDP_SSPP_RGB3)
 		ctl->flush_bits |= BIT(pipe->num) << 10;
-	else /* RGB/VIG 0-2 pipes */
+	else /*                   */
 		ctl->flush_bits |= BIT(pipe->num);
 
 	mutex_unlock(&ctl->lock);
@@ -1740,7 +1729,7 @@ static int mdss_mdp_mixer_update(struct mdss_mdp_mixer *mixer)
 
 	mixer->params_changed = 0;
 
-	/* skip mixer setup for rotator */
+	/*                              */
 	if (!mixer->rotator_mode) {
 		mdss_mdp_mixer_setup(mixer->ctl, mixer);
 	} else {
@@ -1788,15 +1777,15 @@ int mdss_mdp_display_wakeup_time(struct mdss_mdp_ctl *ctl,
 
 	clk_rate = mdss_mdp_get_pclk_rate(ctl);
 
-	clk_rate /= 1000;	/* in kHz */
+	clk_rate /= 1000;	/*        */
 	if (!clk_rate)
 		return -EINVAL;
 
 	/*
-	 * calculate clk_period as pico second to maintain good
-	 * accuracy with high pclk rate and this number is in 17 bit
-	 * range.
-	 */
+                                                        
+                                                             
+          
+  */
 	clk_period = 1000000000 / clk_rate;
 	if (!clk_period)
 		return -EINVAL;
@@ -1806,7 +1795,7 @@ int mdss_mdp_display_wakeup_time(struct mdss_mdp_ctl *ctl,
 		 pinfo->lcdc.h_pulse_width +
 		 pinfo->xres) * clk_period;
 
-	time_of_line /= 1000;	/* in nano second */
+	time_of_line /= 1000;	/*                */
 	if (!time_of_line)
 		return -EINVAL;
 
@@ -1935,7 +1924,7 @@ int mdss_mdp_display_commit(struct mdss_mdp_ctl *ctl, void *arg)
 			mdss_mdp_mixer_update(ctl->mixer_right);
 
 		mdss_mdp_ctl_write(ctl, MDSS_MDP_REG_CTL_TOP, ctl->opmode);
-		ctl->flush_bits |= BIT(17);	/* CTL */
+		ctl->flush_bits |= BIT(17);	/*     */
 
 		if (sctl) {
 			mdss_mdp_ctl_write(sctl, MDSS_MDP_REG_CTL_TOP,
@@ -1950,7 +1939,7 @@ int mdss_mdp_display_commit(struct mdss_mdp_ctl *ctl, void *arg)
 		ctl->wait_pingpong(ctl, NULL);
 
 	if (ctl->mfd && ctl->mfd->dcm_state != DTM_ENTER)
-		/* postprocessing setup, including dspp */
+		/*                                      */
 		mdss_mdp_pp_setup_locked(ctl);
 
 	mdss_mdp_ctl_write(ctl, MDSS_MDP_REG_CTL_FLUSH, ctl->flush_bits);
@@ -1962,7 +1951,7 @@ int mdss_mdp_display_commit(struct mdss_mdp_ctl *ctl, void *arg)
 	ctl->flush_bits = 0;
 
 	if (ctl->display_fnc)
-		ret = ctl->display_fnc(ctl, arg); /* kickoff */
+		ret = ctl->display_fnc(ctl, arg); /*         */
 	if (ret)
 		pr_warn("error displaying frame\n");
 
@@ -2021,13 +2010,13 @@ int mdss_mdp_get_ctl_mixers(u32 fb_num, u32 *mixer_id)
 	return mixer_cnt;
 }
 
-/**
- * @mdss_mdp_ctl_mixer_switch() - return ctl mixer of @return_type
- * @ctl: Pointer to ctl structure to be switched.
- * @return_type: wb_type of the ctl to be switched to.
- *
- * Virtual mixer switch should be performed only when there is no
- * dedicated wfd block and writeback block is shared.
+/* 
+                                                                  
+                                                 
+                                                      
+  
+                                                                 
+                                                     
  */
 struct mdss_mdp_ctl *mdss_mdp_ctl_mixer_switch(struct mdss_mdp_ctl *ctl,
 					       u32 return_type)
@@ -2091,17 +2080,17 @@ error:
 	return rc;
 }
 
-/**
- * mdss_mdp_mixer_handoff() - Stages a given pipe on the appropriate mixer
- * @ctl:  pointer to the control structure associated with the overlay device.
- * @num:  the mixer number on which the pipe needs to be staged.
- * @pipe: pointer to the pipe to be staged.
- *
- * Function stages a given pipe on either the left mixer or the right mixer
- * for the control structre based on the mixer number. If the input mixer
- * number does not match either of the mixers then an error is returned.
- * This function is called during overlay handoff when certain pipes are
- * already staged by the bootloader.
+/* 
+                                                                          
+                                                                              
+                                                                
+                                           
+  
+                                                                           
+                                                                         
+                                                                        
+                                                                        
+                                    
  */
 int mdss_mdp_mixer_handoff(struct mdss_mdp_ctl *ctl, u32 num,
 	struct mdss_mdp_pipe *pipe)
@@ -2111,9 +2100,9 @@ int mdss_mdp_mixer_handoff(struct mdss_mdp_ctl *ctl, u32 num,
 	struct mdss_mdp_mixer *mx_right = ctl->mixer_right;
 
 	/*
-	 * For performance calculations, stage the handed off pipe
-	 * as MDSS_MDP_STAGE_UNUSED
-	 */
+                                                           
+                            
+  */
 	if (mx_left && (mx_left->num == num)) {
 		rc = __mdss_mdp_mixer_handoff_helper(mx_left, pipe);
 	} else if (mx_right && (mx_right->num == num)) {

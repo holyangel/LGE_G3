@@ -32,9 +32,9 @@ typedef struct _diva_card {
 } diva_card;
 
 /*
- * prototypes
+             
  */
 int init_capifunc(void);
 void finit_capifunc(void);
 
-#endif /* __CAPIFUNC_H__ */
+#endif /*                */

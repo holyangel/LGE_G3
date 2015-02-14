@@ -41,10 +41,10 @@
 #define BL_OFF       0
 
 
-/* LGE_CHANGE
- * To turn backlight on by setting default brightness
- * while kernel booting
- * 2013-01-30, baryun.hwang@lge.com
+/*           
+                                                     
+                       
+                                   
  */
 #define BOOT_BRIGHTNESS 1
 
@@ -112,10 +112,10 @@ EXPORT_SYMBOL(wireless_backlight_state);
 static void lm3630_hw_reset(void)
 {
 	int gpio = main_lm3630_dev->gpio;
-	/* LGE_CHANGE
-	 * Fix GPIO Setting Warning
-	 * 2011. 12. 14, kyunghoo.ryu@lge.com
-	 */
+	/*           
+                            
+                                      
+  */
 
 	if (gpio_is_valid(gpio)) {
 		gpio_direction_output(gpio, 1);
@@ -241,23 +241,23 @@ void lm3630_backlight_on(int level)
 		pr_err("%s with level %d\n", __func__, level);
 		lm3630_hw_reset();
 
-		/*  OVP(24V),OCP(1.0A) , Boost Frequency(500khz) */
+		/*                                               */
 		lm3630_write_reg(main_lm3630_dev->client, 0x02, 0x30);
 
 		if (lm3630_pwm_enable) {
-			/* eble Feedback , disable  PWM for BANK A,B */
+			/*                                           */
 			lm3630_write_reg(main_lm3630_dev->client, 0x01, 0x09);
 		} else {
-			/* eble Feedback , disable  PWM for BANK A,B */
+			/*                                           */
 			lm3630_write_reg(main_lm3630_dev->client, 0x01, 0x08);
 		}
 
-		/* Brightness Code Setting Max on Bank A */
-		/* Full-Scale Current (20.2mA) of BANK A */
-		/* 20.2mA : 0x13 , 23.4mA : 0x17 */
+		/*                                       */
+		/*                                       */
+		/*                               */
 		lm3630_write_reg(main_lm3630_dev->client, 0x05, 0x16);
 
-		/* Enable LED A to Exponential, LED2 is connected to BANK_A */
+		/*                                                          */
 		lm3630_write_reg(main_lm3630_dev->client, 0x00, 0x15);
 	}
 	mdelay(1);
@@ -311,11 +311,11 @@ static int bl_set_intensity(struct backlight_device *bd)
 #else
 	struct i2c_client *client = to_i2c_client(bd->dev.parent);
 
-	/* LGE_CHANGE
-	 * if it's trying to set same backlight value,
-	 * skip it.
-	 * 2013-02-15, baryun.hwang@lge.com
-	 */
+	/*           
+                                               
+            
+                                    
+  */
 	if (bd->props.brightness == cur_main_lcd_level) {
 		pr_debug("%s level is already set. skip it\n", __func__);
 		return 0;
@@ -656,8 +656,8 @@ static int lm3630_probe(struct i2c_client *i2c_dev,
 #endif
 
 #if defined(CONFIG_MACH_LGE)
-/*	if (!lge_get_cont_splash_enabled())
-		lm3630_lcd_backlight_set_level(0); */
+/*                                    
+                                     */
 #endif
 
 	pr_err("[LCD][DEBUG] %s: i2c probe done\n", __func__);

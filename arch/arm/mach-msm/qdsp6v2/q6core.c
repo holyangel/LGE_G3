@@ -431,7 +431,7 @@ static int __init core_init(void)
 #ifdef CONFIG_DEBUG_FS
 	dentry = debugfs_create_file("apr", S_IFREG | S_IRUGO | S_IWUSR
 		| S_IWGRP, NULL, (void *) NULL, &apr_debug_fops);
-#endif /* CONFIG_DEBUG_FS */
+#endif /*                 */
 
 	return 0;
 }

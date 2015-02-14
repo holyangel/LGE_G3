@@ -100,12 +100,12 @@ struct max17048_chip {
 	struct delayed_work		low_polling_work;
 #endif
 	struct max17048_battery_model	*model_data;
-	/* battery voltage */
+	/*                 */
 	int vcell;
-	/* battery capacity */
+	/*                  */
 	int soc;
-	/* battery capacity */
-	/* Capacity_level modified for indicating custom model SOC */
+	/*                  */
+	/*                                                         */
 	int capacity_level;
 
 	int lasttime_vcell;
@@ -135,7 +135,7 @@ int lge_power_test_flag = 1;
 #endif
 
 #ifdef CONFIG_LGE_PM_BATTERY_ID_CHECKER
-/* using to cal rcomp */
+/*                    */
 int cell_info;
 #endif
 
@@ -181,9 +181,7 @@ static int max17048_get_config(struct i2c_client *client)
 		dev_err(&client->dev, "%s: err %d\n", __func__, config);
 		return config;
 	} else {
-#ifdef MAX17048_DEBUG
 		printk(KERN_ERR "%s : config = 0x%x\n", __func__, config);
-#endif
 		chip->config = config;
 		return 0;
 	}
@@ -199,16 +197,14 @@ static int max17048_get_status(struct i2c_client *client)
 		dev_err(&client->dev, "%s: err %d\n", __func__, status);
 		return status;
 	} else {
-#ifdef MAX17048_DEBUG
 		printk(KERN_ERR "%s : status = 0x%x\n", __func__, status);
-#endif
 		chip->status = status;
 		return 0;
 	}
 }
 
-/* Using Quickstart instead of reset for Power Test
-*  DO NOT USE THIS COMMAND ANOTHER SCENE.
+/*                                                 
+                                         
 */
 static int max17048_set_reset(struct i2c_client *client)
 {
@@ -243,7 +239,7 @@ static int max17048_capacity_evaluator(int raw_soc)
 		return raw_soc;
 }
 
-/* Calculate MAX17048 custom model SOC */
+/*                                     */
 #ifdef CONFIG_MAX17048_CUSTOM
 static int max17048_get_capacity_from_soc(void)
 {
@@ -256,15 +252,15 @@ static int max17048_get_capacity_from_soc(void)
 	buf[0] = (ref->soc & 0x0000FF00) >> 8;
 	buf[1] = (ref->soc & 0x000000FF);
 
-	/* The unit of bit[0] is 1/512 %, Change it to 1% */
+	/*                                                */
 	batt_soc = ((buf[0]*256)+buf[1])*19531;
 
 	pr_debug("[max17048]%s : MAXIM Raw Capacity : %d , *100 is %d \n"
 			, __func__, (int)(batt_soc/10000000)
 			, (int)(batt_soc/100000));
 
-	/* SOC scaling for stable max SOC and changed Cut-off */
-	/*Adj SOC = (FG SOC-Emply)/(Full-Empty)*100*/
+	/*                                                    */
+	/*                                         */
 	batt_soc = (batt_soc-((ref->model_data->empty)*100000))
 		/(9400-(ref->model_data->empty))*10000;
 	batt_soc /= 10000000;
@@ -272,8 +268,8 @@ static int max17048_get_capacity_from_soc(void)
 	batt_soc = max17048_capacity_evaluator((int)batt_soc);
 #ifdef CONFIG_LGE_UPSCALING_LOW_SOC
 #ifdef CONFIG_LGE_BATT_DUALISATION
-	/* Report 0.42%(0x300) ~ 1% to 1% */
-	/* If Full and Emplty is changed, need to modify the value, 3 */
+	/*                                */
+	/*                                                            */
 	else if (batt_soc == 0 && buf[0] >= 3) {
 		if (cell_info == LGC_LLL && buf[0] >= 3) {
 			printk(KERN_ERR "%s : buf[0] is %d, upscale to 1%%\n"
@@ -286,8 +282,8 @@ static int max17048_get_capacity_from_soc(void)
 		}
 	}
 #else
-	/* Report 0.42%(0x300) ~ 1% to 1% */
-	/* If Full and Emplty is changed, need to modify the value, 3 */
+	/*                                */
+	/*                                                            */
 	else if (batt_soc == 0 && buf[0] >= 3) {
 		printk(KERN_ERR "%s : buf[0] is %d, upscale to 1%%\n"
 				, __func__, buf[0]);
@@ -350,10 +346,10 @@ static void max17048_get_ocv(struct i2c_client *client)
 	int batt_mv;
 	int org_ocv;
 
-	/* Unlock Model Access */
+	/*                     */
 	max17048_write_word(client, MAX17048_UNLOCK, MAX17048_UNLOCK_VALUE);
 
-	/* Read OCV */
+	/*          */
 	org_ocv = max17048_read_word(client, MAX17048_OCV);
 	if (org_ocv == 0xFFFF) {
 		pr_err("%s: unlock fail %x\n",	__func__, org_ocv);
@@ -365,7 +361,7 @@ static void max17048_get_ocv(struct i2c_client *client)
 		pr_info("%s : ocv is 0x%02x%02x - %d\n",
 			__func__, values[0], values[1], batt_mv);
 
-		/*Lock Model Access */
+		/*                  */
 		max17048_write_word(client, MAX17048_UNLOCK, 0x0000);
 	}
 }
@@ -428,10 +424,10 @@ psy_error:
 
 
 #ifdef CONFIG_MAX17048_POLLING
-/*  func : max17048_polling_work
- *  This work func  just print MAX17048 reg. value at kernel log
- *  and does not update it at battery power supply
- *  It means that battery data from this func. is not delivered to user
+/*                              
+                                                                
+                                                  
+                                                                       
  */
 static void max17048_polling_work(struct work_struct *work)
 {
@@ -446,7 +442,7 @@ static void max17048_polling_work(struct work_struct *work)
 		return;
 	}
 
-	/* Read VCELL */
+	/*            */
 	vcell = max17048_read_word(chip->client, MAX17048_VCELL);
 	if (vcell < 0) {
 		printk(KERN_ERR "%s: error get vcell register %d\n",
@@ -456,7 +452,7 @@ static void max17048_polling_work(struct work_struct *work)
 		voltage  = (vcell * 5) >> 2;
 	}
 
-	/* Read SOC */
+	/*          */
 	soc = max17048_read_word(chip->client, MAX17048_SOC);
 	if (soc < 0) {
 		printk(KERN_ERR "%s: error get soc register %d\n",
@@ -465,22 +461,22 @@ static void max17048_polling_work(struct work_struct *work)
 		buf[0] = (soc & 0x0000FF00) >> 8;
 		buf[1] = (soc & 0x000000FF);
 
-		/* The unit of bit[0] is 1/512 %, Change it to 1% */
+		/*                                                */
 		capacity = ((buf[0]*256)+buf[1])*19531;
 
 		pr_debug("%s : Raw Capacity : %d , *100 is %d \n"
 			, __func__, (int)(capacity/10000000)
 			, (int)(capacity/100000));
 
-		/* SOC scaling for stable max SOC and changed Cut-off */
-		/* Adj SOC = (FG SOC-Emply) / (Full-Empty) * 100 */
+		/*                                                    */
+		/*                                               */
 		capacity = (capacity-((ref->model_data->empty)*100000))
 			/(9400-(ref->model_data->empty))*10000;
 
 		capacity /= 10000000;
 
-		/* Report 0.42%(0x300) ~ 1% to 1% */
-		/* If Full and Emplty is changed, need to modify the value, 3 */
+		/*                                */
+		/*                                                            */
 		if (capacity == 0 && buf[0] >= 3) {
 			printk(KERN_ERR "%s : buf[0] is %d, upscale to 1%%\n"
 				, __func__, buf[0]);
@@ -500,12 +496,12 @@ static void max17048_polling_work(struct work_struct *work)
 	}
 
 	if (3 < capacity && capacity < 8) {
-		/* 4%~7% 10sec polling */
+		/*                     */
 		schedule_delayed_work(&chip->polling_work,
 			round_jiffies_relative(msecs_to_jiffies(
 				MAX17048_POLLING_PERIOD_7)));
 	} else {
-		/* 0%~3% 5sec polling */
+		/*                    */
 		schedule_delayed_work(&chip->polling_work,
 			round_jiffies_relative(msecs_to_jiffies(
 				MAX17048_POLLING_PERIOD_3)));
@@ -550,23 +546,23 @@ static void max17048_work(struct work_struct *work)
 #ifdef CONFIG_LGE_SHOW_OCV
 	max17048_get_ocv(chip->client);
 #endif
-	/* Update recently VCELL, SOC and CAPACITY */
+	/*                                         */
 	max17048_get_vcell(chip->client);
 	max17048_get_soc(chip->client);
-#ifdef MAX17048_DEBUG
+
 	printk(KERN_ERR "%s : Raw SOC : 0x%x / vcell : 0x%x\n",
 		__func__, chip->soc, chip->vcell);
-#endif
+
 #ifdef CONFIG_LGE_PM
 	if ((abs(chip->voltage - chip->lasttime_voltage) >= 50) ||
 		chip->capacity_level != chip->lasttime_capacity_level) {
 		chip->lasttime_voltage = chip->voltage;
 		chip->lasttime_soc = chip->soc;
 		chip->lasttime_capacity_level = chip->capacity_level;
-#ifdef MAX17048_DEBUG
+
 		printk(KERN_ERR "%s : Reported Capacity : %d / voltage : %d\n",
 				__func__, chip->capacity_level, chip->voltage);
-#endif
+
 		if (!chip->batt_psy) {
 			chip->batt_psy = power_supply_get_by_name("battery");
 
@@ -667,7 +663,7 @@ static int max17048_clear_interrupt(struct i2c_client *client)
 	if (chip == NULL)
 		return -ENODEV;
 
-	/* Clear low battery alert config register */
+	/*                                         */
 	if (chip->config & 0x0020) {
 		chip->config &= 0xffdf;
 		ret = max17048_write_word(chip->client,
@@ -676,7 +672,7 @@ static int max17048_clear_interrupt(struct i2c_client *client)
 			return ret;
 	}
 
-	/* Clear All setted status register */
+	/*                                  */
 	if (chip->status & 0xFF00) {
 		chip->status &= 0x00FF;
 		ret = max17048_write_word(chip->client,
@@ -703,11 +699,11 @@ static int max17048_set_athd_alert(struct i2c_client *client, int level)
 
 	level = 32 - level;
 
-	/* If same LEVEL set previous value */
+	/*                                  */
 	if (level == (chip->config & 0x1F))
 		return level;
 
-	/* New LEVEL set and Set alert threshold flag */
+	/*                                            */
 
 	chip->config = ((chip->config & 0xffe0) | level);
 
@@ -729,7 +725,7 @@ static int max17048_set_alsc_alert(struct i2c_client *client,
 		return -ENODEV;
 
 	if (enable) {
-		/* Enable SOC change alert */
+		/*                         */
 		if (!(chip->config & 0x0040)) {
 			chip->config |= 0x0040;
 			ret = max17048_write_word(chip->client,
@@ -738,7 +734,7 @@ static int max17048_set_alsc_alert(struct i2c_client *client,
 				return ret;
 		}
 	} else {
-		/* Disable SOC change alert */
+		/*                          */
 		if (chip->config & 0x0040) {
 			chip->config &= 0xFFBF;
 			ret = max17048_write_word(chip->client,
@@ -788,7 +784,7 @@ int max17048_set_rcomp_by_temperature(struct i2c_client *client)
 
 	struct max17048_chip *chip = i2c_get_clientdata(client);
 
-	/* if fuel gauge is not initialized, */
+	/*                                   */
 	if (ref == NULL || chip == NULL)
 		return -1;
 
@@ -833,14 +829,14 @@ int max17048_set_rcomp_by_temperature(struct i2c_client *client)
 #endif
 	temp /= 10;
 
-	/* Read RCOMP applied*/
+	/*                   */
 	pre_rcomp = max17048_read_word(client, MAX17048_CONFIG);
 	pre_rcomp = (pre_rcomp & 0xFF00) >> 8;
 
 	if (pre_rcomp < 0)
 		return pre_rcomp;
 
-	/* Calculate RCOMP by temperature*/
+	/*                               */
 	if (temp > 20)
 		new_rcomp = init_rcomp + (int)((temp - 20)*temp_hot/(-1000));
 	else if (temp < 20)
@@ -856,7 +852,7 @@ int max17048_set_rcomp_by_temperature(struct i2c_client *client)
 	pr_err("%s : temp = %d, pre_rcomp = 0x%02X -> new_rcomp = 0x%02X\n"
 		, __func__ , temp, pre_rcomp, new_rcomp);
 
-	/* Write RCOMP */
+	/*             */
 	if (new_rcomp != pre_rcomp) {
 		rc = max17048_set_rcomp(chip->client, new_rcomp);
 		if (rc < 0)
@@ -883,10 +879,10 @@ static void max17048_alert_work(struct work_struct *work)
 		goto error;
 	}
 
-	/* MAX17048 update register */
+	/*                          */
 	max17048_work(&(chip->work.work));
 
-	/* Clear Interrupt status */
+	/*                        */
 	ret = max17048_clear_interrupt(chip->client);
 	if (ret < 0)
 		printk(KERN_INFO "%s : error clear alert interrupt register.\n",
@@ -899,7 +895,7 @@ error:
 	return;
 }
 
-/* Sysfs & Export symbol for other device */
+/*                                        */
 ssize_t max17048_show_voltage(struct device *dev,
 			 struct device_attribute *attr,
 			 char *buf)
@@ -915,16 +911,16 @@ ssize_t max17048_show_voltage(struct device *dev,
 #else
 		cancel_delayed_work(&ref->work);
 #endif
-		/* Reduce charger source */
+		/*                       */
 #ifdef CONFIG_LGE_PM
 		external_charger_enable(0);
 #endif
 
-		/* Wait for Fuel-gauge stability */
+		/*                               */
 		msleep(1000);
 		max17048_work(&(ref->work.work));
 
-		/* Restore charger source */
+		/*                        */
 #ifdef CONFIG_LGE_PM
 		external_charger_enable(1);
 #endif
@@ -956,20 +952,20 @@ ssize_t max17048_show_capacity(struct device *dev,
 #else
 		cancel_delayed_work(&ref->work);
 #endif
-		/* Reduce charger source */
+		/*                       */
 #ifdef CONFIG_LGE_PM
 		external_charger_enable(0);
 #endif
-		/* Wait for Fuel-gauge stability */
+		/*                               */
 		msleep(1000);
 		max17048_set_reset(ref->client);
 
-		/* Wait for re-calculate values by Fuel-gauge */
+		/*                                            */
 		msleep(300);
 
 		max17048_work(&(ref->work.work));
 
-		/* Restore charger source */
+		/*                        */
 #ifdef CONFIG_LGE_PM
 		external_charger_enable(1);
 #endif
@@ -1012,7 +1008,7 @@ DEVICE_ATTR(fuelrst, 0664, NULL, max17048_store_status);
 
 int max17048_get_voltage(void)
 {
-	/* if fuel gauge is not initialized, */
+	/*                                   */
 	if (ref == NULL) {
 		return 4350;
 	}
@@ -1023,7 +1019,7 @@ EXPORT_SYMBOL(max17048_get_voltage);
 
 int max17048_get_capacity(void)
 {
-	/* if fuel gauge is not initialized, */
+	/*                                   */
 	if (ref == NULL) {
 		return 100;
 	}
@@ -1034,7 +1030,7 @@ EXPORT_SYMBOL(max17048_get_capacity);
 
 int max17048_get_fulldesign(void)
 {
-	/* if fuel gauge is not initialized, */
+	/*                                   */
 	if (ref == NULL) {
 		return 2000;
 	}
@@ -1064,19 +1060,6 @@ static int max17048_parse_dt(struct device *dev,
 			&mdata->full_design);
 
 #ifdef CONFIG_LGE_PM_BATTERY_ID_CHECKER
-#ifdef CONFIG_MACH_MSM8974_G3_CN
-	if (cell_info == LGC_LLL) {
-		mdata->rcomp = 96;
-		mdata->temp_co_hot = 225;
-		mdata->temp_co_cold = 5050;
-		mdata->empty = 0;
-	} else if (cell_info == TCD_AAC) {
-		mdata->rcomp = 55;
-		mdata->temp_co_hot = 637;
-		mdata->temp_co_cold = 4525;
-		mdata->empty = 0;
-	}
-#else
 	if (cell_info == LGC_LLL) {
 		mdata->rcomp = 103;
 		mdata->temp_co_hot = 375;
@@ -1088,7 +1071,6 @@ static int max17048_parse_dt(struct device *dev,
 		mdata->temp_co_cold = 4525;
 		mdata->empty = 0;
 	}
-#endif
 #else
 	rc = of_property_read_u32(dev_node, "max17048,rcomp",
 			&mdata->rcomp);
@@ -1118,7 +1100,7 @@ static int max17048_parse_dt(struct device *dev,
 }
 #endif
 
-#define BATT_NOT_PRESENT 200 /*in case of battery not presence */
+#define BATT_NOT_PRESENT 200 /*                                */
 static int __devinit max17048_probe(struct i2c_client *client,
 			const struct i2c_device_id *id)
 {
@@ -1146,10 +1128,10 @@ static int __devinit max17048_probe(struct i2c_client *client,
 #ifdef CONFIG_LGE_PM_BATTERY_ID_CHECKER
 		 else if (_batt_id_ == BATT_DS2704_L
 			|| _batt_id_ == BATT_ISL6296_C) {
-			cell_info = LGC_LLL; /* LGC Battery */
+			cell_info = LGC_LLL; /*             */
 		} else if (_batt_id_ == BATT_DS2704_C
 			|| _batt_id_ == BATT_ISL6296_L) {
-			cell_info = TCD_AAC; /* Tocad, Hitachi Battery */
+			cell_info = TCD_AAC; /*                        */
 		} else {
 			printk(KERN_INFO "[MAX17048] probe : Unknown cell, Using LGC profile\n");
 			cell_info = LGC_LLL;
@@ -1167,10 +1149,10 @@ static int __devinit max17048_probe(struct i2c_client *client,
 #ifdef CONFIG_LGE_PM_BATTERY_ID_CHECKER
 		 else if (*batt_id == BATT_DS2704_L
 			|| *batt_id == BATT_ISL6296_C) {
-			cell_info = LGC_LLL; /* LGC Battery */
+			cell_info = LGC_LLL; /*             */
 		} else if (*batt_id == BATT_DS2704_C
 			|| *batt_id == BATT_ISL6296_L) {
-			cell_info = TCD_AAC; /* Tocad, Hitachi Battery */
+			cell_info = TCD_AAC; /*                        */
 		} else {
 			printk(KERN_INFO "[MAX17048] probe : Unknown cell, Using LGC profile\n");
 			cell_info = LGC_LLL;
@@ -1203,7 +1185,7 @@ static int __devinit max17048_probe(struct i2c_client *client,
 
 	chip->client = client;
 
-/* Parsing Device Tress or Using Device Platform data */
+/*                                                    */
 #ifdef CONFIG_OF
 	if (&client->dev.of_node) {
 		mdata = devm_kzalloc(&client->dev,
@@ -1239,7 +1221,7 @@ static int __devinit max17048_probe(struct i2c_client *client,
 	ref = chip;
 
 #ifdef CONFIG_LGE_PM
-	/* MAX17048 alert gpio setting */
+	/*                             */
 	if (chip->model_data->alert_gpio) {
 		ret = gpio_request(chip->model_data->alert_gpio,
 				"max17048_alert");
@@ -1272,21 +1254,21 @@ static int __devinit max17048_probe(struct i2c_client *client,
 #endif
 	}
 
-	/* sysfs path : /sys/bus/i2c/devices/84-0036/voltage */
+	/*                                                   */
 	ret = device_create_file(&client->dev, &dev_attr_voltage);
 	if (ret < 0) {
 		pr_err("%s:File device creation failed: %d\n", __func__, ret);
 		ret = -ENODEV;
 		goto err_create_file_voltage_failed;
 	}
-	/* sysfs path : /sys/bus/i2c/devices/84-0036/capacity */
+	/*                                                    */
 	ret = device_create_file(&client->dev, &dev_attr_capacity);
 	if (ret < 0) {
 		pr_err("%s:File device creation failed: %d\n", __func__, ret);
 		ret = -ENODEV;
 		goto err_create_file_capacity_failed;
 	}
-	/* sysfs path : /sys/bus/i2c/devices/84-0036/fuelrst */
+	/*                                                   */
 	ret = device_create_file(&client->dev, &dev_attr_fuelrst);
 	if (ret < 0) {
 		pr_err("%s:File device creation failed: %d\n", __func__, ret);
@@ -1311,21 +1293,21 @@ static int __devinit max17048_probe(struct i2c_client *client,
 	wake_lock_init(&chip->alert_lock, WAKE_LOCK_SUSPEND, "max17048_alert");
 
 
-	/* Update recently status register & clears the reset indicator */
+	/*                                                              */
 	max17048_get_status(client);
 	ret = max17048_write_word(client,
 			MAX17048_STATUS, chip->status & 0xFEFF);
 	if (ret < 0)
 		goto err_i2c_write_failed;
 
-	/* Update recently config register */
+	/*                                 */
 	max17048_get_config(client);
-	/* Set RCOMP*/
+	/*          */
 	max17048_set_rcomp_by_temperature(chip->client);
-	/* Set low battery alert threshold */
+	/*                                 */
 	max17048_set_athd_alert(client, chip->model_data->alert_threshold);
 
-	/* Set register following each mode define */
+	/*                                         */
 #ifdef CONFIG_MAX17048_SOC_ALERT
 	max17048_set_alsc_alert(client, 1);
 	chip->state = 1;
@@ -1340,7 +1322,7 @@ static int __devinit max17048_probe(struct i2c_client *client,
 			msecs_to_jiffies(MAX17048_POLLING_PERIOD)));
 #endif
 
-	/* Clear CONFIG.ATHD and Any setted STATUS register flag */
+	/*                                                       */
 	max17048_clear_interrupt(client);
 #ifdef CONFIG_MAX17048_SOC_ALERT
 	enable_irq(gpio_to_irq(chip->model_data->alert_gpio));
@@ -1415,7 +1397,7 @@ static int max17048_suspend(struct i2c_client *client,
 #ifndef CONFIG_MAX17048_SOC_ALERT
 	cancel_delayed_work(&ref->work);
 #else
-	/* Disable ALSC(1% alert) */
+	/*                        */
 	max17048_set_alsc_alert(client, 0);
 	ref->state = 0;
 #endif
@@ -1436,7 +1418,7 @@ static int max17048_resume(struct i2c_client *client)
 #else
 	max17048_work(&(ref->work.work));
 	ref->state = 1;
-	/* Enable ALSC(1% alert) */
+	/*                       */
 	max17048_set_alsc_alert(client, 1);
 #endif
 	return 0;
@@ -1447,7 +1429,7 @@ static int max17048_resume(struct i2c_client *client)
 #define max17048_suspend NULL
 #define max17048_resume NULL
 
-#endif /* CONFIG_PM */
+#endif /*           */
 
 #ifdef CONFIG_OF
 static struct of_device_id max17048_match_table[] = {

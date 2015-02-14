@@ -22,7 +22,6 @@
 #include <linux/err.h>
 #include <linux/regulator/consumer.h>
 #include <mach/board_lge.h>
-#include <linux/lcd_notify.h>
 
 #include "mdss.h"
 #include "mdss_panel.h"
@@ -169,7 +168,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 						26)) {
 			const char *st = NULL;
 
-			/* vreg-name */
+			/*           */
 			rc = of_property_read_string(supply_node,
 				"qcom,supply-name", &st);
 #ifdef CONFIG_MACH_LGE
@@ -187,7 +186,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			snprintf(mp->vreg_config[i].vreg_name,
 				ARRAY_SIZE((mp->vreg_config[i].vreg_name)),
 				"%s", st);
-			/* vreg-min-voltage */
+			/*                  */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-min-voltage", &tmp);
 			if (rc) {
@@ -197,7 +196,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			}
 			mp->vreg_config[i].min_voltage = tmp;
 
-			/* vreg-max-voltage */
+			/*                  */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-max-voltage", &tmp);
 			if (rc) {
@@ -207,7 +206,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			}
 			mp->vreg_config[i].max_voltage = tmp;
 
-			/* enable-load */
+			/*             */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-enable-load", &tmp);
 			if (rc) {
@@ -217,7 +216,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			}
 			mp->vreg_config[i].enable_load = tmp;
 
-			/* disable-load */
+			/*              */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-disable-load", &tmp);
 			if (rc) {
@@ -227,7 +226,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			}
 			mp->vreg_config[i].disable_load = tmp;
 
-			/* pre-sleep */
+			/*           */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-pre-on-sleep", &tmp);
 			if (rc) {
@@ -244,7 +243,7 @@ static int mdss_dsi_get_dt_vreg_data(struct device *dev,
 			}
 			mp->vreg_config[i].pre_off_sleep = (!rc ? tmp : 0);
 
-			/* post-sleep */
+			/*            */
 			rc = of_property_read_u32(supply_node,
 				"qcom,supply-post-on-sleep", &tmp);
 			if (rc) {
@@ -345,10 +344,10 @@ static int mdss_dsi_off(struct mdss_panel_data *pdata)
 	if (pdata->panel_info.type == MIPI_CMD_PANEL)
 		mdss_dsi_clk_ctrl(ctrl_pdata, 1);
 
-	/* disable DSI controller */
+	/*                        */
 	mdss_dsi_controller_cfg(0, pdata);
 
-	/* disable DSI phy */
+	/*                 */
 	mdss_dsi_phy_disable(ctrl_pdata);
 
 	mdss_dsi_clk_ctrl(ctrl_pdata, 0);
@@ -485,7 +484,7 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x34, 0);
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x38, (vspw << 16));
 
-	} else {		/* command mode */
+	} else {		/*              */
 		if (mipi->dst_format == DSI_CMD_DST_FORMAT_RGB888)
 			bpp = 3;
 		else if (mipi->dst_format == DSI_CMD_DST_FORMAT_RGB666)
@@ -493,16 +492,16 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 		else if (mipi->dst_format == DSI_CMD_DST_FORMAT_RGB565)
 			bpp = 2;
 		else
-			bpp = 3;	/* Default format set to RGB888 */
+			bpp = 3;	/*                              */
 
 		ystride = width * bpp + 1;
 
-		/* DSI_COMMAND_MODE_MDP_STREAM_CTRL */
+		/*                                  */
 		data = (ystride << 16) | (mipi->vc << 8) | DTYPE_DCS_LWRITE;
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x60, data);
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x58, data);
 
-		/* DSI_COMMAND_MODE_MDP_STREAM_TOTAL */
+		/*                                   */
 		data = height << 16 | width;
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x64, data);
 		MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x5C, data);
@@ -512,9 +511,9 @@ int mdss_dsi_on(struct mdss_panel_data *pdata)
 	mdss_dsi_host_init(mipi, pdata);
 
 	/*
-	 * Issue hardware reset line after enabling the DSI clocks and data
-	 * data lanes for LP11 init
-	 */
+                                                                    
+                            
+  */
 #ifdef CONFIG_MACH_LGE
 	if (pdata->panel_info.mipi.lp11_init){
 		mdelay(10);
@@ -864,13 +863,13 @@ static int mdss_dsi_ctl_partial_update(struct mdss_panel_data *pdata)
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-	/* DSI_COMMAND_MODE_MDP_STREAM_CTRL */
+	/*                                  */
 	data = (((pdata->panel_info.roi_w * 3) + 1) << 16) |
 			(pdata->panel_info.mipi.vc << 8) | DTYPE_DCS_LWRITE;
 	MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x60, data);
 	MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x58, data);
 
-	/* DSI_COMMAND_MODE_MDP_STREAM_TOTAL */
+	/*                                   */
 	data = pdata->panel_info.roi_h << 16 | pdata->panel_info.roi_w;
 	MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x64, data);
 	MIPI_OUTP((ctrl_pdata->ctrl_base) + 0x5C, data);
@@ -912,13 +911,11 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 
 	switch (event) {
 	case MDSS_EVENT_UNBLANK:
-		lcd_notifier_call_chain(LCD_EVENT_ON_START, NULL);
 		rc = mdss_dsi_on(pdata);
 		mdss_dsi_op_mode_config(pdata->panel_info.mipi.mode,
 							pdata);
 		if (ctrl_pdata->on_cmds.link_state == DSI_LP_MODE)
 			rc = mdss_dsi_unblank(pdata);
-		lcd_notifier_call_chain(LCD_EVENT_ON_END, NULL);
 		break;
 	case MDSS_EVENT_PANEL_ON:
 		ctrl_pdata->ctrl_state |= CTRL_STATE_MDP_ACTIVE;
@@ -926,10 +923,8 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 			rc = mdss_dsi_unblank(pdata);
 		break;
 	case MDSS_EVENT_BLANK:
-		lcd_notifier_call_chain(LCD_EVENT_OFF_START, NULL);
 		if (ctrl_pdata->off_cmds.link_state == DSI_HS_MODE)
 			rc = mdss_dsi_blank(pdata);
-		lcd_notifier_call_chain(LCD_EVENT_OFF_END, NULL);
 		break;
 	case MDSS_EVENT_PANEL_OFF:
 		ctrl_pdata->ctrl_state &= ~CTRL_STATE_MDP_ACTIVE;
@@ -964,21 +959,13 @@ static int mdss_dsi_event_handler(struct mdss_panel_data *pdata,
 		break;
 	case MDSS_EVENT_CONT_SPLASH_BEGIN:
 		if (ctrl_pdata->off_cmds.link_state == DSI_HS_MODE) {
-			/* Panel is Enabled in Bootloader */
+			/*                                */
 			rc = mdss_dsi_blank(pdata);
 		}
 		break;
 	case MDSS_EVENT_ENABLE_PARTIAL_UPDATE:
 		rc = mdss_dsi_ctl_partial_update(pdata);
 		break;
-#ifdef CONFIG_LGE_SHARPENING
-	case MDSS_EVENT_SET_SHARPENING:
-		rc = ctrl_pdata->set_sharpening(ctrl_pdata, (int) arg, NULL);
-		break;
-	case MDSS_EVENT_GET_SHARPENING:
-		rc = ctrl_pdata->get_sharpening(ctrl_pdata);
-		break;
-#endif
 	default:
 		pr_debug("%s: unhandled event=%d\n", __func__, event);
 		break;
@@ -995,11 +982,11 @@ static struct device_node *mdss_dsi_pref_prim_panel(
 	pr_debug("%s:%d: Select primary panel from dt\n",
 					__func__, __LINE__);
 #ifdef CONFIG_MACH_LGE
-	/* LGE_CHANGE
-	 * if rev is higher than EVB1,
-	 * SIC panel would be initialized.
-	 * 2014-01-20, baryun.hwang@lge.com
-	 */
+	/*           
+                               
+                                   
+                                    
+  */
 	if(lge_get_board_revno() == HW_REV_EVB1)
 		dsi_pan_node = of_parse_phandle(pdev->dev.of_node,
 				"qcom,dsi-pref-prim-pan-oldrev", 0);
@@ -1014,19 +1001,19 @@ static struct device_node *mdss_dsi_pref_prim_panel(
 	return dsi_pan_node;
 }
 
-/**
- * mdss_dsi_find_panel_of_node(): find device node of dsi panel
- * @pdev: platform_device of the dsi ctrl node
- * @panel_cfg: string containing intf specific config data
- *
- * Function finds the panel device node using the interface
- * specific configuration data. This configuration data is
- * could be derived from the result of bootloader's GCDB
- * panel detection mechanism. If such config data doesn't
- * exist then this panel returns the default panel configured
- * in the device tree.
- *
- * returns pointer to panel node on success, NULL on error.
+/* 
+                                                               
+                                              
+                                                          
+  
+                                                           
+                                                          
+                                                        
+                                                         
+                                                             
+                      
+  
+                                                           
  */
 static struct device_node *mdss_dsi_find_panel_of_node(
 		struct platform_device *pdev, char *panel_cfg)
@@ -1040,7 +1027,7 @@ static struct device_node *mdss_dsi_find_panel_of_node(
 
 	len = strlen(panel_cfg);
 	if (!len) {
-		/* no panel cfg chg, parse dt */
+		/*                            */
 		pr_debug("%s:%d: no cmd line cfg present\n",
 			 __func__, __LINE__);
 		goto end;
@@ -1173,7 +1160,7 @@ static int __devinit mdss_dsi_ctrl_probe(struct platform_device *pdev)
 		goto error_ioremap;
 	}
 
-	/* Parse the regulator information */
+	/*                                 */
 	rc = mdss_dsi_get_dt_vreg_data(&pdev->dev,
 				       &ctrl_pdata->power_data);
 	if (rc) {
@@ -1182,14 +1169,14 @@ static int __devinit mdss_dsi_ctrl_probe(struct platform_device *pdev)
 		goto error_vreg;
 	}
 
-	/* DSI panels can be different between controllers */
+	/*                                                 */
 	rc = mdss_dsi_get_panel_cfg(panel_cfg);
 	if (!rc)
-		/* dsi panel cfg not present */
+		/*                           */
 		pr_warn("%s:%d:dsi specific cfg not present\n",
 			__func__, __LINE__);
 
-	/* find panel device node */
+	/*                        */
 	dsi_pan_node = mdss_dsi_find_panel_of_node(pdev, panel_cfg);
 	if (!dsi_pan_node) {
 		pr_err("%s: can't find panel node %s\n", __func__, panel_cfg);
@@ -1638,8 +1625,8 @@ int dsi_panel_device_register(struct device_node *pan_node,
 
 	mdss_dsi_ctrl_init(ctrl_pdata);
 	/*
-	 * register in mdp driver
-	 */
+                          
+  */
 
 	ctrl_pdata->pclk_rate = mipi->dsi_pclk_rate;
 	ctrl_pdata->byte_clk_rate = pinfo->clk_rate / 8;

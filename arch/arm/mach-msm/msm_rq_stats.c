@@ -11,7 +11,7 @@
  *
  */
 /*
- * Qualcomm MSM Runqueue Stats and cpu utilization Interface for Userspace
+                                                                          
  */
 #include <linux/kernel.h>
 #include <linux/init.h>
@@ -54,22 +54,6 @@ struct cpu_load_data {
 };
 
 static DEFINE_PER_CPU(struct cpu_load_data, cpuload);
-
-unsigned int get_rq_info(void)
-{
-	unsigned long flags = 0;
-	unsigned int rq = 0;
-
-	spin_lock_irqsave(&rq_lock, flags);
-
-	rq = rq_info.rq_avg;
-	rq_info.rq_avg = 0;
-
-	spin_unlock_irqrestore(&rq_lock, flags);
-
-	return rq;
-}
-EXPORT_SYMBOL(get_rq_info);
 
 static inline u64 get_cpu_idle_time_jiffy(unsigned int cpu, u64 *wall)
 {
@@ -144,19 +128,19 @@ static int update_average_load(unsigned int freq, unsigned int cpu)
 
 	cur_load = 100 * (wall_time - idle_time) / wall_time;
 
-	/* Calculate the scaled load across CPU */
+	/*                                      */
 	load_at_max_freq = (cur_load * freq) / pcpu->policy_max;
 
 	if (!pcpu->avg_load_maxfreq) {
-		/* This is the first sample in this window*/
+		/*                                        */
 		pcpu->avg_load_maxfreq = load_at_max_freq;
 		pcpu->window_size = wall_time;
 	} else {
 		/*
-		 * The is already a sample available in this window.
-		 * Compute weighted average with prev entry, so that we get
-		 * the precise weighted load.
-		 */
+                                                      
+                                                             
+                               
+   */
 		pcpu->avg_load_maxfreq =
 			((pcpu->avg_load_maxfreq * pcpu->window_size) +
 			(load_at_max_freq * wall_time)) /
@@ -261,7 +245,7 @@ static void def_work_fn(struct work_struct *work)
 	do_div(diff, 1000 * 1000);
 	rq_info.def_interval = (unsigned int) diff;
 
-	/* Notify polling threads on change of value */
+	/*                                           */
 	sysfs_notify(rq_info.kobj, NULL, "def_timer_ms");
 }
 
@@ -272,7 +256,7 @@ static ssize_t run_queue_avg_show(struct kobject *kobj,
 	unsigned long flags = 0;
 
 	spin_lock_irqsave(&rq_lock, flags);
-	/* rq avg currently available only on one core */
+	/*                                             */
 	val = rq_info.rq_avg;
 	rq_info.rq_avg = 0;
 	spin_unlock_irqrestore(&rq_lock, flags);
@@ -372,7 +356,7 @@ static int init_rq_attribs(void)
 	rq_info.rq_avg = 0;
 	rq_info.attr_group = &rq_attr_group;
 
-	/* Create /sys/devices/system/cpu/cpu0/rq-stats/... */
+	/*                                                  */
 	rq_info.kobj = kobject_create_and_add("rq-stats",
 			&get_cpu_device(0)->kobj);
 	if (!rq_info.kobj)
@@ -394,7 +378,7 @@ static int __init msm_rq_stats_init(void)
 	struct cpufreq_policy cpu_policy;
 
 #ifndef CONFIG_SMP
-	/* Bail out if this is not an SMP Target */
+	/*                                       */
 	rq_info.init = 0;
 	return -ENOSYS;
 #endif
@@ -434,7 +418,7 @@ late_initcall(msm_rq_stats_init);
 static int __init msm_rq_stats_early_init(void)
 {
 #ifndef CONFIG_SMP
-	/* Bail out if this is not an SMP Target */
+	/*                                       */
 	rq_info.init = 0;
 	return -ENOSYS;
 #endif

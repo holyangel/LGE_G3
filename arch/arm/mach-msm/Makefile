@@ -1,7 +1,5 @@
 CFLAGS_scm.o :=$(call as-instr,.arch_extension sec,-DREQUIRES_SEC=1)
 
-KBUILD_CFLAGS	+=-O3
-
 obj-y += io.o dma.o memory.o
 ifndef CONFIG_ARM_ARCH_TIMER
 obj-y += timer.o
@@ -407,7 +405,6 @@ ifdef CONFIG_MSM_CPR
 obj-$(CONFIG_DEBUG_FS) += msm_cpr-debug.o
 endif
 obj-$(CONFIG_MACH_LGE) += lge/
-obj-$(CONFIG_FORCE_FAST_CHARGE) += fastchg.o
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq.o
 obj-$(CONFIG_MSM_FIQ) += msm7k_fiq_handler.o
 
@@ -425,7 +422,6 @@ obj-$(CONFIG_WALL_CLK) += wallclk.o
 obj-$(CONFIG_WALL_CLK_SYSFS) += wallclk_sysfs.o
 obj-$(CONFIG_ARCH_RANDOM) += early_random.o
 obj-$(CONFIG_PERFMAP) += perfmap.o
-obj-$(CONFIG_MSM_CPUFREQ_LIMITER) += cpufreq_limit.o
+
 obj-$(CONFIG_ARCH_MSM8974) += lge_moca_drv.o
 obj-$(CONFIG_ARCH_MSM8974) += moca_kernel_probe.o
-obj-$(CONFIG_HAS_MACH_MEMUTILS) += memutils/

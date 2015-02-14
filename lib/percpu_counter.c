@@ -1,5 +1,5 @@
 /*
- * Fast batching percpu counters.
+                                 
  */
 
 #include <linux/percpu_counter.h>
@@ -12,7 +12,7 @@
 
 #ifdef CONFIG_HOTPLUG_CPU
 static LIST_HEAD(percpu_counters);
-static DEFINE_SPINLOCK(percpu_counters_lock);
+static DEFINE_MUTEX(percpu_counters_lock);
 #endif
 
 #ifdef CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER
@@ -50,12 +50,12 @@ static inline void debug_percpu_counter_deactivate(struct percpu_counter *fbc)
 	debug_object_free(fbc, &percpu_counter_debug_descr);
 }
 
-#else	/* CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER */
+#else	/*                                     */
 static inline void debug_percpu_counter_activate(struct percpu_counter *fbc)
 { }
 static inline void debug_percpu_counter_deactivate(struct percpu_counter *fbc)
 { }
-#endif	/* CONFIG_DEBUG_OBJECTS_PERCPU_COUNTER */
+#endif	/*                                     */
 
 void percpu_counter_set(struct percpu_counter *fbc, s64 amount)
 {
@@ -90,8 +90,8 @@ void __percpu_counter_add(struct percpu_counter *fbc, s64 amount, s32 batch)
 EXPORT_SYMBOL(__percpu_counter_add);
 
 /*
- * Add up all the per-cpu counts, return the result.  This is a more accurate
- * but much slower version of percpu_counter_read_positive()
+                                                                             
+                                                            
  */
 s64 __percpu_counter_sum(struct percpu_counter *fbc)
 {
@@ -123,9 +123,9 @@ int __percpu_counter_init(struct percpu_counter *fbc, s64 amount,
 
 #ifdef CONFIG_HOTPLUG_CPU
 	INIT_LIST_HEAD(&fbc->list);
-	spin_lock(&percpu_counters_lock);
+	mutex_lock(&percpu_counters_lock);
 	list_add(&fbc->list, &percpu_counters);
-	spin_unlock(&percpu_counters_lock);
+	mutex_unlock(&percpu_counters_lock);
 #endif
 	return 0;
 }
@@ -139,9 +139,9 @@ void percpu_counter_destroy(struct percpu_counter *fbc)
 	debug_percpu_counter_deactivate(fbc);
 
 #ifdef CONFIG_HOTPLUG_CPU
-	spin_lock(&percpu_counters_lock);
+	mutex_lock(&percpu_counters_lock);
 	list_del(&fbc->list);
-	spin_unlock(&percpu_counters_lock);
+	mutex_unlock(&percpu_counters_lock);
 #endif
 	free_percpu(fbc->counters);
 	fbc->counters = NULL;
@@ -170,7 +170,7 @@ static int __cpuinit percpu_counter_hotcpu_callback(struct notifier_block *nb,
 		return NOTIFY_OK;
 
 	cpu = (unsigned long)hcpu;
-	spin_lock(&percpu_counters_lock);
+	mutex_lock(&percpu_counters_lock);
 	list_for_each_entry(fbc, &percpu_counters, list) {
 		s32 *pcount;
 		unsigned long flags;
@@ -181,28 +181,28 @@ static int __cpuinit percpu_counter_hotcpu_callback(struct notifier_block *nb,
 		*pcount = 0;
 		raw_spin_unlock_irqrestore(&fbc->lock, flags);
 	}
-	spin_unlock(&percpu_counters_lock);
+	mutex_unlock(&percpu_counters_lock);
 #endif
 	return NOTIFY_OK;
 }
 
 /*
- * Compare counter against given value.
- * Return 1 if greater, 0 if equal and -1 if less
+                                       
+                                                 
  */
 int percpu_counter_compare(struct percpu_counter *fbc, s64 rhs)
 {
 	s64	count;
 
 	count = percpu_counter_read(fbc);
-	/* Check to see if rough count will be sufficient for comparison */
+	/*                                                               */
 	if (abs(count - rhs) > (percpu_counter_batch*num_online_cpus())) {
 		if (count > rhs)
 			return 1;
 		else
 			return -1;
 	}
-	/* Need to use precise count */
+	/*                           */
 	count = percpu_counter_sum(fbc);
 	if (count > rhs)
 		return 1;

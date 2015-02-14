@@ -31,47 +31,47 @@
 extern "C" {
 #endif
 
-/* ---- Include Files ---------------------------------------------------- */
-/* ---- Constants and Types ---------------------------------------------- */
+/*                                                                         */
+/*                                                                         */
 
-#define MINIOPT_MAXKEY	128	/* Max options */
+#define MINIOPT_MAXKEY	128	/*             */
 typedef struct miniopt {
 
-	/* These are persistent after miniopt_init() */
-	const char* name;		/* name for prompt in error strings */
-	const char* flags;		/* option chars that take no args */
-	bool longflags;		/* long options may be flags */
-	bool opt_end;		/* at end of options (passed a "--") */
+	/*                                           */
+	const char* name;		/*                                  */
+	const char* flags;		/*                                */
+	bool longflags;		/*                           */
+	bool opt_end;		/*                                   */
 
-	/* These are per-call to miniopt() */
+	/*                                 */
 
-	int consumed;		/* number of argv entries cosumed in
-				 * the most recent call to miniopt()
-				 */
+	int consumed;		/*                                  
+                                        
+     */
 	bool positional;
-	bool good_int;		/* 'val' member is the result of a sucessful
-				 * strtol conversion of the option value
-				 */
+	bool good_int;		/*                                          
+                                            
+     */
 	char opt;
 	char key[MINIOPT_MAXKEY];
-	char* valstr;		/* positional param, or value for the option,
-				 * or null if the option had
-				 * no accompanying value
-				 */
-	uint uval;		/* strtol translation of valstr */
-	int  val;		/* strtol translation of valstr */
+	char* valstr;		/*                                           
+                                
+                            
+     */
+	uint uval;		/*                              */
+	int  val;		/*                              */
 } miniopt_t;
 
 void miniopt_init(miniopt_t *t, const char* name, const char* flags, bool longflags);
 int miniopt(miniopt_t *t, char **argv);
 
 
-/* ---- Variable Externs ------------------------------------------------- */
-/* ---- Function Prototypes ---------------------------------------------- */
+/*                                                                         */
+/*                                                                         */
 
 
 #ifdef __cplusplus
 	}
 #endif
 
-#endif  /* MINI_OPT_H  */
+#endif  /*             */

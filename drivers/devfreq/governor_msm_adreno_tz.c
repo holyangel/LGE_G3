@@ -25,8 +25,8 @@
 static DEFINE_SPINLOCK(tz_lock);
 
 /*
- * FLOOR is 5msec to capture up to 3 re-draws
- * per frame for 60fps content.
+                                             
+                               
  */
 #define FLOOR			5000
 #define LONG_FLOOR		50000
@@ -35,8 +35,8 @@ static DEFINE_SPINLOCK(tz_lock);
 #define CAP			75
 
 /*
- * CEILING is 50msec, larger than any standard
- * frame length, but less than the idle timer.
+                                              
+                                              
  */
 #define CEILING			50000
 #define TZ_RESET_ID		0x3
@@ -45,12 +45,12 @@ static DEFINE_SPINLOCK(tz_lock);
 
 #define TAG "msm_adreno_tz: "
 
-/* Trap into the TrustZone, and call funcs there. */
+/*                                                */
 static int __secure_tz_entry2(u32 cmd, u32 val1, u32 val2)
 {
 	int ret;
 	spin_lock(&tz_lock);
-	/* sync memory before sending the commands to tz*/
+	/*                                              */
 	__iowmb();
 	ret = scm_call_atomic2(SCM_SVC_IO, cmd, val1, val2);
 	spin_unlock(&tz_lock);
@@ -61,7 +61,7 @@ static int __secure_tz_entry3(u32 cmd, u32 val1, u32 val2, u32 val3)
 {
 	int ret;
 	spin_lock(&tz_lock);
-	/* sync memory before sending the commands to tz*/
+	/*                                              */
 	__iowmb();
 	ret = scm_call_atomic3(SCM_SVC_IO, cmd, val1, val2, val3);
 	spin_unlock(&tz_lock);
@@ -79,12 +79,6 @@ static void _update_cutoff(struct devfreq_msm_adreno_tz_data *priv,
 		priv->bus.down[i] = priv->bus.p_down[i] * norm_max / 100;
 	}
 }
-
-#ifdef CONFIG_SIMPLE_GPU_ALGORITHM
-extern int simple_gpu_active;
-extern int simple_gpu_algorithm(int level,
-				struct devfreq_msm_adreno_tz_data *priv);
-#endif
 
 static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 				u32 *flag)
@@ -120,10 +114,10 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	}
 
 	/*
-	 * Do not waste CPU cycles running this algorithm if
-	 * the GPU just started, or if less than FLOOR time
-	 * has passed since the last run.
-	 */
+                                                     
+                                                    
+                                  
+  */
 	if ((stats.total_time == 0) ||
 		(priv->bin.total_time < FLOOR)) {
 		return 1;
@@ -137,34 +131,24 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	}
 
 	/*
-	 * If there is an extended block of busy processing,
-	 * increase frequency.  Otherwise run the normal algorithm.
-	 */
+                                                     
+                                                            
+  */
 	if (priv->bin.busy_time > CEILING) {
 		val = -1 * level;
 	} else {
-#ifdef CONFIG_SIMPLE_GPU_ALGORITHM
-		if (simple_gpu_active != 0)
-			val = simple_gpu_algorithm(level, priv);
-		else
-			val = __secure_tz_entry3(TZ_UPDATE_ID,
-					level,
-					priv->bin.total_time,
-					priv->bin.busy_time);
-#else
 		val = __secure_tz_entry3(TZ_UPDATE_ID,
 				level,
 				priv->bin.total_time,
 				priv->bin.busy_time);
-#endif
 	}
 	priv->bin.total_time = 0;
 	priv->bin.busy_time = 0;
 
 	/*
-	 * If the decision is to move to a different level, make sure the GPU
-	 * frequency changes.
-	 */
+                                                                      
+                      
+  */
 	if (val) {
 		level += val;
 		level = max(level, 0);
@@ -179,18 +163,18 @@ static int tz_get_target_freq(struct devfreq *devfreq, unsigned long *freq,
 	gpu_percent = (100 * (unsigned int)priv->bus.gpu_time) /
 			(unsigned int) priv->bus.total_time;
 	/*
-	 * If there's a new high watermark, update the cutoffs and send the
-	 * FAST hint.  Otherwise check the current value against the current
-	 * cutoffs.
-	 */
+                                                                    
+                                                                     
+            
+  */
 	if (norm_cycles > priv->bus.max) {
 		_update_cutoff(priv, norm_cycles);
 		*flag = DEVFREQ_FLAG_FAST_HINT;
 	} else {
 		/*
-		 * Normalize by gpu_time unless it is a small fraction of
-		 * the total time interval.
-		 */
+                                                           
+                             
+   */
 		norm_cycles = (100 * norm_cycles) / TARGET;
 		act_level = priv->bus.index[level] + b.mod;
 		act_level = (act_level < 0) ? 0 : act_level;
@@ -225,7 +209,7 @@ static int tz_notify(struct notifier_block *nb, unsigned long type, void *devp)
 		result = update_devfreq(devfreq);
 		mutex_unlock(&devfreq->lock);
 		break;
-	/* ignored by this governor */
+	/*                          */
 	case ADRENO_DEVFREQ_NOTIFY_SUBMIT:
 	default:
 		break;
@@ -240,18 +224,10 @@ static int tz_start(struct devfreq *devfreq)
 	unsigned int t1, t2 = 2 * HIST;
 	int i, out, ret;
 
-	struct msm_adreno_extended_profile *ext_profile = container_of(
-					(devfreq->profile),
-					struct msm_adreno_extended_profile,
-					profile);
-
-	/*
-	 * Assuming that we have only one instance of the adreno device
-	 * connected to this governor,
-	 * can safely restore the pointer to the governor private data
-	 * from the container of the device profile
-	 */
-	devfreq->data = ext_profile->private_data;
+	if (devfreq->data == NULL) {
+		pr_err(TAG "data is required for this governor\n");
+		return -EINVAL;
+	}
 
 	priv = devfreq->data;
 	priv->nb.notifier_call = tz_notify;
@@ -272,7 +248,7 @@ static int tz_start(struct devfreq *devfreq)
 	if (ret != 0)
 		pr_err(TAG "tz_init failed\n");
 
-	/* Set up the cut-over percentages for the bus calculation. */
+	/*                                                          */
 	if (priv->bus.num) {
 		for (i = 0; i < priv->bus.num; i++) {
 			t1 = (u32)(100 * priv->bus.ib[i]) /
@@ -281,7 +257,7 @@ static int tz_start(struct devfreq *devfreq)
 			priv->bus.p_down[i] = t2 - 2 * HIST;
 			t2 = t1;
 		}
-		/* Set the upper-most and lower-most bounds correctly. */
+		/*                                                     */
 		priv->bus.p_down[0] = 0;
 		priv->bus.p_down[1] = (priv->bus.p_down[1] > (2 * HIST)) ?
 					priv->bus.p_down[1] : (2 * HIST);
@@ -298,8 +274,6 @@ static int tz_stop(struct devfreq *devfreq)
 	struct devfreq_msm_adreno_tz_data *priv = devfreq->data;
 
 	kgsl_devfreq_del_notifier(devfreq->dev.parent, &priv->nb);
-	/* leaving the governor and cleaning the pointer to private data */
-	devfreq->data = NULL;
 	return 0;
 }
 
@@ -351,7 +325,7 @@ static int tz_handler(struct devfreq *devfreq, unsigned int event, void *data)
 		break;
 
 	case DEVFREQ_GOV_INTERVAL:
-		/* ignored, this governor doesn't use polling */
+		/*                                            */
 	default:
 		result = 0;
 		break;

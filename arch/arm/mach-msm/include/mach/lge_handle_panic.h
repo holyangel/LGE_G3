@@ -12,7 +12,7 @@
 #ifndef __MACH_LGE_HANDLE_PANIC_H
 #define __MACH_LGE_HANDLE_PANIC_H
 
-/* LGE reboot reason for crash handler */
+/*                                     */
 #define LGE_RB_MAGIC    0x6D630000
 
 #define LGE_ERR_KERN    0x0100
@@ -39,7 +39,7 @@
 #define LGE_ERR_TZ_ERR         0x0002
 #define LGE_ERR_TZ_WDT_BARK    0x0003
 
-#define LAF_DLOAD_MODE   0x6C616664 /* lafd */
+#define LAF_DLOAD_MODE   0x6C616664 /*      */
 
 int lge_set_magic_subsystem(const char *name, int type);
 void lge_skip_dload_by_sbl(int on);
