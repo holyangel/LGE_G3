@@ -101,10 +101,10 @@ void __init lge_add_lcd_misc_devices(void)
 #endif
 
 /*
-                                                           
-                                                                           
-                                                                        
-                                                     
+ * Used to satisfy dependencies for devices that need to be
+ * run early or in a particular order. Most likely your device doesn't fall
+ * into this category, and thus the driver should not be added here. The
+ * EPROBE_DEFER can satisfy most dependency problems.
  */
 /*                                                                    */
 #if defined(CONFIG_BCMDHD) || defined(CONFIG_BCMDHD_MODULE)
@@ -143,16 +143,6 @@ void __init msm8974_add_drivers(void)
 	init_bcm_wifi();
 #endif
 /*                                                                    */
-<<<<<<< HEAD
-#if defined(CONFIG_LCD_KCAL)
-/*             
-                          
-                                
-*/
-	lge_add_lcd_kcal_devices();
-#endif /*                 */
-=======
->>>>>>> 8a4d2a9... g3-tmo_us: Remove LGE's LCD_KCAL driver
 #if defined(CONFIG_LGE_PM_BATTERY_ID_CHECKER)
 	lge_battery_id_devices();
 #endif
