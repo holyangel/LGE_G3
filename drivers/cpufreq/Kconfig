@@ -100,7 +100,6 @@ config CPU_FREQ_DEFAULT_GOV_POWERSAVE
 config CPU_FREQ_DEFAULT_GOV_WHEATLEY
 	bool "wheatley"
 	select CPU_FREQ_GOV_WHEATLEY
-	select CPU_FREQ_GOV_PERFORMANCE
 	help
 	  Use the CPUFreq governor 'wheatley' as default.
 
@@ -116,7 +115,6 @@ config CPU_FREQ_DEFAULT_GOV_USERSPACE
 config CPU_FREQ_DEFAULT_GOV_ONDEMAND
 	bool "ondemand"
 	select CPU_FREQ_GOV_ONDEMAND
-	select CPU_FREQ_GOV_PERFORMANCE
 	help
 	  Use the CPUFreq governor 'ondemand' as default. This allows
 	  you to get a full dynamic frequency capable system by simply
@@ -128,7 +126,6 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMAND
 config CPU_FREQ_DEFAULT_GOV_ONDEMANDPLUS
 	bool "ondemandplus"
 	select CPU_FREQ_GOV_ONDEMANDPLUS
-	select CPU_FREQ_GOV_PERFORMANCE
 	help
 	  Use the CPUFreq governor 'ondemandplus' as default. This allows
 	  you to get a full dynamic frequency capable system by simply
@@ -140,7 +137,6 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMANDPLUS
 config CPU_FREQ_DEFAULT_GOV_CONSERVATIVE
 	bool "conservative"
 	select CPU_FREQ_GOV_CONSERVATIVE
-	select CPU_FREQ_GOV_PERFORMANCE
 	help
 	  Use the CPUFreq governor 'conservative' as default. This allows
 	  you to get a full dynamic frequency capable system by simply
@@ -296,7 +292,7 @@ config CPU_FREQ_GOV_SMARTASSV2
 		'smartassV2' - a "smart" governor
 		If in doubt, say N.
 
-config SMARTASSV2_SLEEP_IDEAL_FREQ
+config SMARTASSV2_AWAKE_IDEAL_FREQ
 	int "The ideal frequency to use when awake."
 	default 1190400
 	depends on CPU_FREQ_GOV_SMARTASSV2
@@ -305,7 +301,7 @@ config SMARTASSV2_SLEEP_IDEAL_FREQ
 	  towards the ideal frequency and slower after it has passed it. Similarly,
 	  lowering the frequency towards the ideal frequency is faster than below it.
 
-config SMARTASSV2_AWAKE_IDEAL_FREQ
+config SMARTASSV2_SLEEP_IDEAL_FREQ
 	int "The ideal frequency to use when suspended."
 	default 300000
 	depends on CPU_FREQ_GOV_SMARTASSV2
@@ -365,7 +361,7 @@ config SMARTASSV2_DOWN_RATE_US
 
 config SMARTASSV2_SLEEP_WAKEUP_FREQ
 	int "The frequency to set when waking up from sleep."
-	default 99999999
+	default 1190400
 	depends on CPU_FREQ_GOV_SMARTASSV2
 	help
 	  The frequency to set when waking up from sleep.
